@@ -6,6 +6,7 @@ const queries = require('../queries');
 
 //create the passport local strategy
 passport.use(new LocalStrategy(function verify(username, password, cb) {
+    console.table({username, password})
     //query the databse to find if a customer matches the submitted email, used as a username
     db.query(queries.checkUserAuth, [username], function (err, result) {
         //handle errors and mismatches

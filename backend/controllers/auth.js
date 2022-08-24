@@ -5,9 +5,10 @@ const queries = require('../queries');
 const registerUser = async (req, response) => {
     //extract the form information from the request body, created at the signup form
     const {firstName, lastName, address, city, state, zip, email, phone, password, squareFeet} = req.body;
-    console.log(req.body);
     //generate a salted hash with bcrypt to be stored as the password data in the customers table
-    const salt = await bcrypt.genSalt(process.env.SALTROUNDS);
+    console.table({firstName, lastName, address, city, state, zip, email, phone, password, squareFeet})
+    
+    const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
 
     //get today's date to timestamp the day of user creation. This is used in the date_created part of the schema
@@ -27,9 +28,10 @@ const registerUser = async (req, response) => {
     })
 }
 
-const loginUser = (req, res) => {
+const loginUser = (req, res, next) => {
     //login callback middleware. Nothing really to do with login right now, so it simply returns the user object from passport
-    res.send(req.user)
+    res.status(200).send({message: 'Sucessful login'});
+    next();
 }
 
 module.exports = {

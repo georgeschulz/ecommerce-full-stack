@@ -1,0 +1,29 @@
+footer {
+    width: 100%;
+    padding: 100px 30px;
+    background-color: #003506;
+    color: white;
+    font-size: 14px;
+    font-weight: 400;
+    display: flex;
+}
+
+.footer-nav {
+    list-style: none;
+}
+
+footer .column p, footer.column b {
+    line-height: 1.4;
+}
+
+.footer-nav li {
+    line-height: 1.8;
+}
+
+.nav-group {
+    display: flex;
+    justify-content: space-between;
+    width: 35%;
+    margin-left: 15%;
+    min-width: 500px;
+}

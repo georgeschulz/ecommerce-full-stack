@@ -1,0 +1,21 @@
+#signup-form {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.multipane-content-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.multipane-button-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.multipane-button-container p {
+    margin: 0px 10px;
+}

@@ -12,7 +12,6 @@ loginRouter.get('/', (req, res) => res.send('Login page'))
 
 //authenticate the user
 loginRouter.post('/', passport.authenticate('local', { 
-    failureRedirect: '/login'
 }), controllers.loginUser);
 
 module.exports = {

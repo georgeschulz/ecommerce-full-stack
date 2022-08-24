@@ -11,7 +11,11 @@ const cartRouter = require('./routes/cart');
 const ordersRouter = require('./routes/orders');
 const passport = require('passport'); //passport library to initialize it
 const session = require('express-session'); //creates a session
+var cors = require('cors');  
+
 require('./services/passport'); //passport configuration that allows passport to lookup information in db and compare it to user submissions
+
+app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 
 app.use(express.json()); //parses json data submitted and sent
 app.use(require('cookie-parser')()); // this middleware parses cookies sent with HTTP requests

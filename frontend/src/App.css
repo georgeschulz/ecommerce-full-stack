@@ -2,4 +2,115 @@
   padding: 0px;
   margin: 0px;
   box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+}
+
+h1, h2, h3, h4, h5 {
+  font-weight: 700;
+}
+
+h1 {
+  font-size: 45px;
+}
+
+h2 {
+  font-size: 25px;
+  margin: 30px 0px 30px 0px;
+  text-align: center;
+  width: 100%;
+}
+
+.subheader {
+  font-size: 15px;
+  font-weight: 400;
+  text-align: center;
+  width: 100%;
+  font-family: 'Montserrat', 'sans-serif';
+}
+
+.button-large {
+  font-size: 15px;
+  font-weight: 700;
+  text-align: center;
+  font-family: 'Montserrat', 'sans-serif';
+  background-color: #003506;
+  padding: 15px 60px;
+  border-radius: 10px;
+}
+
+.button-medium {
+  width: 180px;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+  font-family: 'Montserrat', 'sans-serif';
+  padding: 10px 50px;
+  border-radius: 10px;
+}
+
+.button-color-primary {
+  background-color: #003506;
+  color: white;
+}
+
+.button-color-secondary {
+  border:#003506 3px solid;
+  color: black;
+  background-color: white;
+}
+
+.button-large:hover, .submit-button:hover, .button-medium:hover {
+  transform: scale(1.02);
+  transition-duration: 250ms;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+section {
+  margin: 40px 0px;
+}
+
+form {
+  display: flex;
+  flex-wrap: wrap;
+  width: 40%;
+}
+
+input {
+  width: 100%;
+  font-size: 17px;
+  padding: 8px;
+}
+
+label {
+  width: 100%;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.form-group {
+  width: 100%;
+  margin: 15px 0px;
+}
+
+.submit-button {
+  background-color: #003506;
+  border-radius: 20px;
+  padding: 10px 40px;
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/*Misc CSS for quick addition of rules*/
+.row {
+  width: 100%;
+  display: flex;
+  padding: 30px 0px;
+}
+
+.row-center {
+  justify-content: center;
+  display: flex;
 }

@@ -1,0 +1,9 @@
+.pest-button {
+    width: 175px;
+    cursor: pointer;
+}
+
+.pest-button:hover {
+    transform: scale(1.1);
+    transition-duration: 500ms;
+}

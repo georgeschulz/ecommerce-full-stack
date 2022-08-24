@@ -10,7 +10,7 @@ nav {
     font-size: 14px;
 }
 /* Create lines in between each nav item */
-ul > li + li {
+ul.nav-list > li + li {
     border-left: 1px solid white;
     margin-left: 10px;
     padding-left: 10px;

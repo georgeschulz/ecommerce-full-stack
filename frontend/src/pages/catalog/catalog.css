@@ -1,0 +1,36 @@
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 40px;
+}
+
+h2.page-header {
+    text-align: left;
+}
+
+.filters {
+    display: flex;
+    justify-content: space-between;
+    width: 50%;
+    min-width: 700px;
+    padding: 15px;
+}
+
+select {
+    background-color: rgb(218, 218, 218);
+    padding: 5px 20px;
+    border-radius: 100px;
+    min-width: 15em;
+    font-weight: 700;
+    border: 0px;
+}
+
+.filter-group {
+    margin: 0px 10px;
+}
+
+.filter-group label {
+    font-weight: 700;
+    font-size: 10px;
+    margin-left: 2.5em;
+}

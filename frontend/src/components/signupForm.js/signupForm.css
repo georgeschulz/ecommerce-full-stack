@@ -1,0 +1,7 @@
+.form-group-split {
+    display: flex;
+}
+
+.form-group-split > .form-group-col + .form-group-col {
+    margin-left: 20px;
+}

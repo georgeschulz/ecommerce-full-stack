@@ -1,11 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './nav.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectIsAuth } from '../../features/auth';
+import { deauthorize } from '../../features/auth';
+import { Dispatch } from 'react';
 
 function Nav(props) {
-    const { homeNav, showSolution, showServices, showAccountSettings, user } = props;
-    let isLoggedIn = user !== null;
+    const { homeNav, showSolution, showServices, showAccountSettings } = props;
+    let isAuth = useSelector(selectIsAuth)
     let homeNavElement;
+    const dispatch = useDispatch();
 
     //conditionally render what the home navigation should be - i.e. should it be the main site of company of store?
     switch (homeNav) {
@@ -33,17 +38,17 @@ function Nav(props) {
                     <li className={showServices ? 'nav-item' : 'hidden'}>
                         <Link to="/catalog">View Services Catalog</Link>
                     </li>
-                    <li className={showAccountSettings && !isLoggedIn ? 'nav-item' : 'hidden'}>
+                    <li className={showAccountSettings && !isAuth ? 'nav-item' : 'hidden'}>
                         <Link to="/login">Login</Link>
                     </li>
-                    <li className={showAccountSettings && !isLoggedIn ? 'nav-item' : 'hidden'}>
+                    <li className={showAccountSettings && !isAuth ? 'nav-item' : 'hidden'}>
                         <Link to="/signup">Signup</Link>
                     </li>
-                    <li className={showAccountSettings && isLoggedIn ? 'nav-item' : 'hidden'}>
+                    <li className={showAccountSettings && isAuth ? 'nav-item' : 'hidden'}>
                         <Link to="/settings">Settings</Link>
                     </li>
-                    <li className={showAccountSettings && isLoggedIn ? 'nav-item' : 'hidden'}>
-                        <Link to="/logout">Logout</Link>
+                    <li onClick={() => dispatch(deauthorize())}className={showAccountSettings && isAuth ? 'nav-item' : 'hidden'}>
+                        <Link to="/login">Logout</Link>
                     </li>
                 </ul>
             </div>
