@@ -1,0 +1,21 @@
+.progress-bar {
+    width: 90%;
+    height: 28px;
+    margin-bottom: 30px;
+}
+
+.shaded {
+    background-color: #003506;
+    z-index: 1;
+}
+
+.unshaded {
+    background-color: #D9D9D9;
+    z-index: 0;
+}
+
+.shaded, .unshaded {
+    border-radius: 100px;
+    height: 28px;
+    position: absolute;
+}
