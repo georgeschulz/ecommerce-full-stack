@@ -1,0 +1,17 @@
+
+.medium-info-box {
+    width: 400px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.4);
+    margin: 0px 30px;
+    color: black;
+    padding: 20px 30px 40px 30px;
+    margin: 3%;
+}
+
+.medium-info-box p {
+    width: fit-content;
+}
+
+.medium-info-box h3, .medium-info-box p, .medium-info-boxbutton-container {
+    margin: 30px 0px;
+}

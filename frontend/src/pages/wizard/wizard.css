@@ -6,3 +6,10 @@ h1.wizard-header {
     font-size: 35px;
     margin-bottom: 25px;
 }
+
+#medium-box-options-row {
+    margin-top: 50px;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}

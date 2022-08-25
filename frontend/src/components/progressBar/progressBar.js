@@ -5,7 +5,7 @@ function ProgressBar({ percent }) {
         <div className="progress-bar-container">
             <div className="progress-bar">
                 <div className="shaded" style={{width: percent + '%'}}></div>
-                <div className="unshaded"vstyle={{width: '96%'}}></div>
+                <div className="unshaded" style={{width: '96%'}}></div>
             </div>
         </div>
     );
