@@ -6,9 +6,13 @@ import spiders from '../../assets/pest icons/spiders.png';
 import termites from '../../assets/pest icons/termites.png';
 import mosquito from '../../assets/pest icons/mosquito.png';
 import rodent from '../../assets/pest icons/rodent.png';
+import { useSelector } from "react-redux";
+import { selectIsAuth } from "../../features/auth";
 
 
 function PestButtonRowSmall(props) {
+    const isAuth = useSelector(selectIsAuth);
+
     const pests = [
         { name: 'ants', img: ants},
         { name: 'bees', img: bees},
@@ -22,7 +26,7 @@ function PestButtonRowSmall(props) {
         return (<PestButton 
             name={pest.name}
             img={pest.img}
-            redirect='/wizard/1'
+            redirect={isAuth ? '/wizard/2' : '/wizard/1'}
         />)
     })
 

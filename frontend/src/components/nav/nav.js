@@ -4,7 +4,6 @@ import './nav.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectIsAuth } from '../../features/auth';
 import { deauthorize } from '../../features/auth';
-import { Dispatch } from 'react';
 
 function Nav(props) {
     const { homeNav, showSolution, showServices, showAccountSettings } = props;
@@ -33,7 +32,7 @@ function Nav(props) {
             <div className='nav-right-group'>
                 <ul className='nav-list'>
                     <li className={showSolution ? 'nav-item' : 'hidden'}>
-                        <Link to="/wizard/1">Find a Solution</Link>
+                        <Link to={isAuth ? '/wizard/2' : '/wizard/1'}>Find a Solution</Link>
                     </li>
                     <li className={showServices ? 'nav-item' : 'hidden'}>
                         <Link to="/catalog">View Services Catalog</Link>

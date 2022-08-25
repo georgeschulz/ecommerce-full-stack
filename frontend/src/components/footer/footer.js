@@ -1,7 +1,11 @@
 import './footer.css';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectIsAuth } from '../../features/auth';
 
 function Footer() {
+    const isAuth = useSelector(selectIsAuth);
+
     return (
         <footer>
             <div className='nav-group'>
@@ -18,7 +22,7 @@ function Footer() {
                     <ul className='footer-nav'>
                         <li><Link to="/">Home</Link></li>
                         <li><Link to="/catalog">Services Catalog</Link></li>
-                        <li><Link to="/wizard/1">Quote Wizard</Link></li>
+                        <li><Link to={isAuth ? '/wizard/2' : '/wizard/1'}>Quote Wizard</Link></li>
                         <li><a href="https://www.bettertermite.com/privacy-policy/">Privacy Policy</a></li>
                     </ul>
 

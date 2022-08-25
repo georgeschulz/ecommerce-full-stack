@@ -7,8 +7,18 @@ import explainer from '../../assets/Howitworks.png';
 import PestButtonRowSmall from '../../components/pestButtonRowSmall/pestButtonRowSmall';
 import SmallServiceHighlightRow from '../../components/smallServiceHighlightRow/smallServiceHighlightRow';
 import Footer from '../../components/footer/footer';
+import { useEffect } from 'react';
+import { endWizardFlow } from '../../features/wizardSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectIsAuth } from '../../features/auth';
 
 function Home() {
+    const dispatch = useDispatch();
+    const isAuth = useSelector(selectIsAuth)
+    useEffect(() => {
+        dispatch(endWizardFlow())
+    }, [])
+
     return (
         <div>
             <Nav
@@ -21,7 +31,7 @@ function Home() {
                 <img src={logo} />
                 <h1>Solve Your Pest Problem How You Want To</h1>
                 <p className='subheader'>No pushy salespeople. Get your custom quote and schedule without ever having to call. Take the time you need to compare your options how YOU like to buy.</p>
-                <Link to="/wizard/1" className='button-large'>Get My Quote</Link>
+                <Link to={isAuth ? '/wizard/2' : '/wizard/1'} className='button-large'>Get My Quote</Link>
             </section>
             <section id="issues">
                 <h2>Browse by Issue</h2>

@@ -3,8 +3,29 @@ import ProgressBar from "../../components/progressBar/progressBar";
 import './wizard.css'
 import MediumInfoBox from "../../components/mediumInfoBox/mediumInfoBox";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { startWizardFlow } from "../../features/wizardSlice";
+import { useSelector } from "react-redux";
+import { selectIsAuth } from "../../features/auth";
+import { useNavigate } from "react-router-dom";
 
 function WizardOne() {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const isAuth = useSelector(selectIsAuth);
+
+    useEffect(() => {
+        //signal that we are in the wizard flow so that redirects to next page in login works properly
+        dispatch(startWizardFlow())
+
+        //check to see if they are logged in already. If so, shoot them over to pest selection
+        if(isAuth) {
+            navigate('/wizard/2');
+        }
+
+    }, [])
+
     const loginButton = (
         <Link to="/login">
             <p className="button-medium button-color-primary">Login to your Account</p>
@@ -15,7 +36,7 @@ function WizardOne() {
         <Link to="/signup">
             <p className="button-medium button-color-primary">Sign in to your Account</p>
         </Link>
-    )
+    );
 
     return (
         <div className="wizard-container">
