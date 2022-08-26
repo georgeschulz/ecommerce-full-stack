@@ -108,6 +108,24 @@ const getAllOrders = `SELECT * FROM orders`;
 
 const getOrderById = `SELECT * FROM orders WHERE order_id = $1`;
 
+const getServiceByTarget = `
+    SELECT 
+        services_pests.service_id,
+        services.service_name,
+        services.price_per_square_foot,
+        services.billing_type,
+        services.tier_multiplier,
+        services.services_per_year,
+        services.base_price,
+        services.setup_fee,
+        services.img_path,
+        services.frequency
+    FROM services_pests 
+    INNER JOIN services
+    ON services_pests.service_id = services.service_id
+    WHERE pest_name = 'Crickets';
+`
+
 module.exports = {
     createCustomer,
     checkUserAuth,
