@@ -8,7 +8,8 @@ const userAuthFromLocalStorage = () => {
 const authSlice = createSlice({
     name: 'auth',
     initialState: {
-        isAuth: userAuthFromLocalStorage()
+        isAuth: userAuthFromLocalStorage(),
+        userId: null
     },
     reducers: {
         authorize: (state) => {
@@ -17,10 +18,14 @@ const authSlice = createSlice({
         deauthorize: (state) => {
             localStorage.removeItem('isAuth')
             state.isAuth = false;
+        },
+        setUserId: (state, action) => {
+            state.userId = action.payload.userId;
         }
     }
 })
 
 export const selectIsAuth = state => state.auth.isAuth;
-export const { authorize, deauthorize } = authSlice.actions;
+export const selectUserId = state => state.auth.userId;
+export const { authorize, deauthorize, setUserId } = authSlice.actions;
 export default authSlice.reducer;

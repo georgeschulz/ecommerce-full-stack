@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import './loginForm.css';
 import { useDispatch } from "react-redux";
-import { authorize } from '../../features/auth';
+import { authorize, setUserId } from '../../features/auth';
 import { onLogin } from '../../api/login';
 
 
@@ -15,8 +15,9 @@ function LoginForm(props) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await onLogin({username, password});
-            console.log('authorized right!')
+            const response = await onLogin({username, password});
+            const customerId = response.data.id;
+            dispatch(setUserId({userId: customerId}));
             dispatch(authorize());
             localStorage.setItem('isAuth', 'true');
         } catch (err) {

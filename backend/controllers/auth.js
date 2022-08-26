@@ -30,7 +30,8 @@ const registerUser = async (req, response) => {
 
 const loginUser = (req, res, next) => {
     //login callback middleware. Nothing really to do with login right now, so it simply returns the user object from passport
-    res.status(200).send({message: 'Sucessful login'});
+    const customerId = req.user.customerID;
+    res.status(200).send({id: customerId});
     next();
 }
 
