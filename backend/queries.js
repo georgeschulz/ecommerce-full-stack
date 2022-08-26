@@ -14,7 +14,9 @@ SELECT
     city,
     state_abbreviation,
     zip,
-    square_feet
+    square_feet,
+    email,
+    phone
 FROM customers WHERE customer_id = $1`;
 
 const updateUserByIdPart1 = 'UPDATE customers SET ';

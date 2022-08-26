@@ -10,6 +10,8 @@ import RestrictedRoutes from './components/restrictedRoutes/restrictedRoutes';
 import SignupPage from './pages/signup/signup';
 import WizardOne from './pages/wizard/wizardOne';
 import WizardTwo from './pages/wizard/wizardTwo';
+import WizardThree from './pages/wizard/wizardThree';
+import WizardFour from './pages/wizard/wizardFour';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -23,6 +25,8 @@ function App() {
           
           <Route path="/wizard/1" element={<WizardOne />} />
           <Route path="/wizard/2" element={<WizardTwo />} />
+          <Route path="/wizard/3" element={<WizardThree />} />
+          <Route path="/wizard/4" element={<WizardFour />} />
           
           <Route element={<RestrictedRoutes />}>
             <Route path="/login" element={<Login user={user} setUser={setUser} />} />
