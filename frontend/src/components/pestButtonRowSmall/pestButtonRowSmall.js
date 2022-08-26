@@ -24,6 +24,7 @@ function PestButtonRowSmall(props) {
 
     const buttons = pests.map(pest => {
         return (<PestButton 
+            key={pest.name}
             name={pest.name}
             img={pest.img}
             redirect={isAuth ? '/wizard/2' : '/wizard/1'}
