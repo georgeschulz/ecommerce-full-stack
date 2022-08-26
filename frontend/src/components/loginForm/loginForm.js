@@ -20,6 +20,7 @@ function LoginForm(props) {
             dispatch(setUserId({userId: customerId}));
             dispatch(authorize());
             localStorage.setItem('isAuth', 'true');
+            localStorage.setItem('userId', customerId);
         } catch (err) {
             setError(err.message);
         }
