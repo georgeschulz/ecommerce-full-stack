@@ -14,11 +14,12 @@ const getUserById = (req, res) => {
     const id = req.params.id;
     db.query(queries.getUserById, [id], (err, results) => {
         if(err) {
-            res.status(404).send('Could not find user');
+            res.status(404).send({msg: 'Could not find user'});
         } else if (results.rows.length <= 0) {
-            res.status(404).send([]); //send an error when no customers are found for that ID
+            res.status(404).send({users: []}); //send an error when no customers are found for that ID
         } else {
-            res.send(results.rows);
+            console.log('success')
+            res.send({users: results.rows});
         }
     })
 }
