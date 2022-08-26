@@ -6,7 +6,16 @@ const checkUserAuth = `SELECT * FROM customers WHERE email = $1`;
 
 const getUsers = `SELECT * FROM customers`;
 
-const getUserById = `SELECT * FROM customers WHERE customer_id = $1`;
+const getUserById = `
+SELECT 
+    first_name,
+    last_name,
+    address,
+    city,
+    state_abbreviation,
+    zip,
+    square_feet
+FROM customers WHERE customer_id = $1`;
 
 const updateUserByIdPart1 = 'UPDATE customers SET ';
 const updateUserByIdPart2 = ' WHERE customer_id = $1';

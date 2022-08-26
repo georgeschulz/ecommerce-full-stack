@@ -3,6 +3,7 @@ import { getAccountInfo } from "../../api/getAccountInfo";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 
+//wizard two confirms the address information which is necessary for a proper calculation of a quote
 function WizardTwo() {
     const customerId = useSelector(selectUserId);
 
