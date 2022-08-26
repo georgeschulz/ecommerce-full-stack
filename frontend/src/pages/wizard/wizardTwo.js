@@ -84,7 +84,7 @@ function WizardTwo() {
                         </div>
                     </div>
                     <div className="multipane-button-container" style={{'width': '100%'}}>
-                        <p className="button-medium button-color-secondary">Update</p>
+                        <Link to='/settings'><p className="button-medium button-color-secondary">Update</p></Link>
                         <Link to={skipPest ? '/wizard/4' : '/wizard/3'}><p className="button-medium button-color-primary">Continue</p></Link>
                     </div>
                 </div>

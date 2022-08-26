@@ -38,3 +38,10 @@ h1.wizard-header {
     line-height: 1.6;
     font-size: 18px;
 }
+
+.large-button-container {
+    width: 80%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
