@@ -132,6 +132,7 @@ const getTestimonialByServiceId = `SELECT * FROM testimonial WHERE service_id = 
 
 const getPestTier = `SELECT tier FROM pests WHERE pest_name = $1;`
 
+
 module.exports = {
     createCustomer,
     checkUserAuth,

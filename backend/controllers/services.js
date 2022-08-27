@@ -85,8 +85,85 @@ const getServiceDetailedByTarget = async (req, res) => {
     res.status(200).send({services})
 }
 
+const getDetailedServiceById = async (req, res) => {
+    const user = req.params.id;
+    const serviceId = req.params.serviceId;
+    const target = req.query.target;
+
+    let serviceQuery = await db.query(queries.getServiceById, [serviceId]);
+    let service = serviceQuery.rows;
+
+    //get squareFeet for the user
+    let squareFeetQuery = await db.query(queries.getSquareFeet, [user]);
+    let squareFeet = squareFeetQuery.rows[0].square_feet;
+
+    //get pest tier
+    let pestTierQuery = await db.query(queries.getPestTier, [target])
+    let tier = pestTierQuery.rows[0].tier;
+
+    //add benefits and testimonials to the service object so they can be rendered by the landing page
+    let benefitsQuery = await db.query(queries.getBenefitsByServiceId, [serviceId]);
+    service[0]["benefits"] = benefitsQuery.rows;
+
+    let testimonialQuery = await db.query(queries.getTestimonialByServiceId, [serviceId]);
+    service[0]["testimonials"] = testimonialQuery.rows;
+
+    //add pricing
+    const pricePerSquareFeet = Number(service[0].price_per_square_foot);
+    const base = Number(service[0].base_price);
+    const multiplier = Number(service[0].tier_multiplier);
+    const frequency = Number(service[0].frequency)
+
+    const cost = Math.round(
+        (Math.pow(multiplier, tier - 1) * 
+        (base + (pricePerSquareFeet * Number(squareFeet)))) * 100
+    )/100;
+    
+    service[0]["price"] = cost;
+    service[0]["billing_amount"] = service[0].billing_type === 'month' 
+        ? cost * (frequency /12) 
+        : cost;
+    
+    //pull out the data to restructure for response
+    const {
+        service_id, 
+        service_name,
+        price_per_square_foot,
+        billing_type,
+        tier_multiplier,
+        services_per_year,
+        base_price,
+        setup_fee,
+        img_path,
+        benefits,
+        testimonials,
+        price,
+        billing_amount
+    } = service[0];
+
+    res.status(200).send({
+        service_id, 
+        service_name,
+        price_per_square_foot,
+        billing_type,
+        tier_multiplier,
+        services_per_year,
+        base_price,
+        setup_fee,
+        price,
+        billing_amount,
+        frequency,
+        tier,
+        squareFeet,
+        img_path,
+        benefits,
+        testimonials
+    } );
+}
+
 module.exports = {
     getAllServices,
     getServiceById,
-    getServiceDetailedByTarget
+    getServiceDetailedByTarget,
+    getDetailedServiceById
 }
