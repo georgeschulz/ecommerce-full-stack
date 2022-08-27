@@ -10,7 +10,7 @@ function PestButton(props) {
     const dispatch = useDispatch();
 
     const handleClick = (e) => {
-        dispatch(updateSelectedPest({pest: name}));
+        dispatch(updateSelectedPest({pest: 'Crickets'}));
     }
 
     return (

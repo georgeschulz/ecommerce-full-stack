@@ -1,6 +1,27 @@
 import WizardTemplate from "./wizardTemplate";
+import { useEffect, useState } from "react";
+import { getDetailedServiceInfo } from "../../api/getServices";
+import { useSelector } from "react-redux";
+import { selectUserId } from "../../features/auth";
+import { selectSelectedPest } from "../../features/wizardSlice";
 
 function WizardFour() {
+    const [servicesFound, setServicesFound] = useState([]);
+    const userId = useSelector(selectUserId);
+    const target = useSelector(selectSelectedPest);
+
+    useEffect(() => {
+        const getData = async () => {
+            try {
+                const data = await getDetailedServiceInfo(userId, target);
+                setServicesFound(data.data);
+            } catch (e) {
+                console.log(e);
+            }
+        }
+        getData();   
+    }, [])
+
     return (
         <WizardTemplate
             num='3'
