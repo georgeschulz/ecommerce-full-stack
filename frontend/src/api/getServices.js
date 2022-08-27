@@ -8,6 +8,5 @@ export const getServices = async (target, programType, warranty) => {
 }
 
 export const getDetailedServiceInfo = async (customerId, target) => {
-    console.log(target)
     return await axios.get(`${endpoint}/services/detail/user/${customerId}?target=${target}`);
 }

@@ -56,10 +56,30 @@ const getServiceDetailedByTarget = async (req, res) => {
         const multiplier = Number(serviceToUpdate.tier_multiplier);
     
         //do the math
-        serviceToUpdate["price"] = Math.round(
+        const cost = Math.round(
             (Math.pow(multiplier, tier - 1) * 
             (base + (pricePerSquareFeet * Number(squareFeet)))) * 100
         )/100;
+        
+        //calculate billing amount
+        let billingAmount;
+        switch(serviceToUpdate.billing_type) {
+            case 'month':
+                billingAmount = cost * (serviceToUpdate.frequency / 12);
+                break;
+            case 'year':
+                billingAmount = cost;
+                break;
+            case 'service':
+                billingAmount = cost;
+                break;
+            default:
+                billingAmount = cost;
+                break;
+        }
+
+        serviceToUpdate["price"] = cost;
+        serviceToUpdate["billing_amount"] = billingAmount;
     }
 
     res.status(200).send({services})

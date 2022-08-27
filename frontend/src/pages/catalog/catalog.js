@@ -3,7 +3,6 @@ import Footer from "../../components/footer/footer";
 import './catalog.css';
 import { getServices } from "../../api/getServices";
 import { useEffect, useState } from "react";
-import LargeServiceBox from "../../components/largeServiceBox/largeServiceBox";
 
 function Catalog(props) {
     const [services, setServices] = useState([]);
