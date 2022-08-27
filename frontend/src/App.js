@@ -12,6 +12,7 @@ import WizardOne from './pages/wizard/wizardOne';
 import WizardTwo from './pages/wizard/wizardTwo';
 import WizardThree from './pages/wizard/wizardThree';
 import WizardFour from './pages/wizard/wizardFour';
+import ServiceDetail from './pages/serviceDetail/serviceDetail';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -33,6 +34,7 @@ function App() {
             <Route path="/wizard/2" element={<WizardTwo />} />
             <Route path="/wizard/3" element={<WizardThree />} />
             <Route path="/wizard/4" element={<WizardFour />} />
+            <Route path="/service/:serviceId" element={<ServiceDetail />} />
           </Route>
 
           <Route path="*" element={<p>404 Not found</p>} />

@@ -1,8 +1,9 @@
 import deweb from '../../assets/deweb.JPG';
 import './mediumServiceBox.css';
 import BenefitList from '../benefitsList/benefitsList';
+import { Link } from 'react-router-dom';
 
-function MediumServiceBox({ serviceName, billingType, billingAmount, frequency, benefits }) {
+function MediumServiceBox({ serviceName, billingType, billingAmount, frequency, benefits, serviceId }) {
     //destructure the data from the service object
 
     return (
@@ -15,7 +16,9 @@ function MediumServiceBox({ serviceName, billingType, billingAmount, frequency, 
                 <p>$ {billingAmount} / {billingType} | {frequency} Services per Year</p>
                 <BenefitList benefits={benefits} />
                 <div className="medium-service-box-button-container">
-                    <p className='button-medium button-color-secondary button-text-small'>Learn More</p>
+                    <Link to={`/service/${serviceId}`}>
+                        <p className='button-medium button-color-secondary button-text-small'>Learn More</p>
+                    </Link>
                     <p className='button-medium button-color-primary button-text-small'>Add to Cart</p>
                 </div>
             </div>

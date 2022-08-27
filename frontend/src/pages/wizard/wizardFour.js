@@ -42,6 +42,7 @@ function WizardFour() {
                                     billingAmount={service.billing_amount}
                                     frequency={service.frequency}
                                     benefits={service.benefits}
+                                    serviceId={service.service_id}
                                     key={service.service_id}
                                 />)
                         }) : ''}

@@ -59,6 +59,6 @@
     font-weight: 700;
 }
 
-.medium-service-box-button-container > .button-medium + .button-medium {
+.medium-service-box-button-container > a + .button-medium {
     margin-left: 10px !important;
 }
