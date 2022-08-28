@@ -1,32 +1,33 @@
 import React from "react";
 import PestButton from "../pestButton/pestButton";
-import ants from '../../assets/pest icons/ants.png';
-import bees from '../../assets/pest icons/bees.png';
-import spiders from '../../assets/pest icons/spiders.png';
-import termites from '../../assets/pest icons/termites.png';
-import mosquito from '../../assets/pest icons/mosquito.png';
-import rodent from '../../assets/pest icons/rodent.png';
 import { useSelector } from "react-redux";
 import { selectIsAuth } from "../../features/auth";
+import { useEffect } from "react";
+import { getHomeTargets } from "../../api/getTargets";
+import { useState } from "react";
 
 
 function PestButtonRowSmall(props) {
     const isAuth = useSelector(selectIsAuth);
+    let [pests, setPests] = useState([])
 
-    const pests = [
-        { name: 'ants', img: ants},
-        { name: 'bees', img: bees},
-        { name: 'spiders', img: spiders},
-        { name: 'termites', img: termites},
-        { name: 'mosquitoes', img: mosquito},
-        { name: 'rodent', img: rodent } 
-    ]
+    useEffect(() => {
+        (async () => {
+            try {
+                const response = await getHomeTargets();
+                setPests(response.data)
+            } catch(e) {
+                console.log(e)
+            }
+        })();
+    }, [])
+    
 
     const buttons = pests.map(pest => {
         return (<PestButton 
-            key={pest.name}
-            name={pest.name}
-            img={pest.img}
+            key={pest.pest_name}
+            name={pest.pest_name}
+            img={`images/icons/${pest.path}`}
             redirect={isAuth ? '/wizard/2' : '/wizard/1'}
         />)
     })
