@@ -132,6 +132,8 @@ const getTestimonialByServiceId = `SELECT * FROM testimonial WHERE service_id = 
 
 const getPestTier = `SELECT tier FROM pests WHERE pest_name = $1;`
 
+const getCoveredPestsByServiceId = `SELECT pest_name AS pests FROM services_pests WHERE service_id = $1`
+
 
 module.exports = {
     createCustomer,
@@ -155,5 +157,6 @@ module.exports = {
     getServiceByTarget,
     getBenefitsByServiceId,
     getTestimonialByServiceId,
-    getPestTier
+    getPestTier,
+    getCoveredPestsByServiceId
 }

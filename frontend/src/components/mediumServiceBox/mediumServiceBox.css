@@ -12,7 +12,6 @@
 }
 
 .medium-service-box {
-    width: 460px;
     margin: 20px 40px;
     background: #FFFFFF;
     border: 1px solid #DDDDDD;
@@ -49,7 +48,7 @@
 .medium-service-box-button-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: flex-start;
     padding: 20px 0px;
 }
 
@@ -59,6 +58,6 @@
     font-weight: 700;
 }
 
-.medium-service-box-button-container > a + .button-medium {
+.medium-service-box-button-container > div + div {
     margin-left: 10px !important;
 }

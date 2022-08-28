@@ -5,6 +5,8 @@ import { useSelector } from "react-redux";
 import { selectUserId } from "../../features/auth";
 import { selectSelectedPest } from "../../features/wizardSlice";
 import MediumServiceBox from "../../components/mediumServiceBox/mediumServiceBox";
+import AddToCartButton from "../../components/buttons/addToCartButton";
+import GetServiceInfoButton from "../../components/buttons/getServiceInfoButton";
 
 function WizardFour() {
     const [servicesFound, setServicesFound] = useState([]);
@@ -44,6 +46,12 @@ function WizardFour() {
                                     benefits={service.benefits}
                                     serviceId={service.service_id}
                                     key={service.service_id}
+                                    width='460px'
+                                    showImg={true}
+                                    buttons={[
+                                        <AddToCartButton />, 
+                                        <GetServiceInfoButton serviceId={service.service_id} />
+                                    ]}
                                 />)
                         }) : ''}
                     </div>

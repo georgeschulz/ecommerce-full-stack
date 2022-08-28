@@ -1,0 +1,25 @@
+.banner-img {
+    width: 100%;
+    overflow-y: hidden;
+    max-height: 400px;
+    display: flex;
+    align-items: flex-end;
+}
+
+.banner-img img {
+    width: 100%;
+}
+
+.service-highlights {
+    display: flex;
+    justify-content: center;
+}
+
+.feature-img {
+    width: 50%;
+    padding: 25px;
+}
+
+.feature-img img {
+    width: fit-content;
+}

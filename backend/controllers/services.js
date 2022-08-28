@@ -108,6 +108,10 @@ const getDetailedServiceById = async (req, res) => {
     let testimonialQuery = await db.query(queries.getTestimonialByServiceId, [serviceId]);
     service[0]["testimonials"] = testimonialQuery.rows;
 
+    //get a list of covered pests from the services_pests table
+    let pestsQuery = await db.query(queries.getCoveredPestsByServiceId, [serviceId]);
+    const coveredPests = pestsQuery.rows.map(pest => pest["pests"]);
+
     //add pricing
     const pricePerSquareFeet = Number(service[0].price_per_square_foot);
     const base = Number(service[0].base_price);
@@ -140,7 +144,7 @@ const getDetailedServiceById = async (req, res) => {
         price,
         billing_amount
     } = service[0];
-
+    
     res.status(200).send({
         service_id, 
         service_name,
@@ -157,7 +161,8 @@ const getDetailedServiceById = async (req, res) => {
         squareFeet,
         img_path,
         benefits,
-        testimonials
+        testimonials,
+        coveredPests
     } );
 }
 

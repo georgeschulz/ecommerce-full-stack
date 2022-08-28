@@ -51,6 +51,7 @@ h2 {
 .button-color-primary {
   background-color: #003506;
   color: white;
+  border:#003506 2px solid;
 }
 
 .button-color-secondary {
