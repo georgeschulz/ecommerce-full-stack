@@ -70,5 +70,6 @@ export const defaultTesting = {
             "name": "Steven Johnson",
             "body": "Keep up the great work ABC Pest!"
         }
-    ]
+    ],
+    "coveredPests": ["pest1", "pest2", "pest3", "pest4", "pest5"]
 }

@@ -1,0 +1,16 @@
+.covered-pests-list {
+    display: flex;
+    flex-wrap: wrap;
+    width: 80%;
+}
+
+.covered-pests-list div {
+    width: 33%;
+    display: flex;
+    justify-content: center;
+    margin: 5px 0px;
+}
+
+.covered-pests-list li {
+    font-size: 18px;
+}

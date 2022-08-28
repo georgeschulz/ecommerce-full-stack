@@ -11,6 +11,7 @@ import './serviceDetail.css'
 import MediumServiceBox from "../../components/mediumServiceBox/mediumServiceBox";
 import { defaultTesting } from "./defaultTesting";
 import AddToCartButton from "../../components/buttons/addToCartButton";
+import CoveredPests from "../../components/coveredPests/coveredPests";
 
 function ServiceDetail() {
     const { serviceId } = useParams();
@@ -61,27 +62,17 @@ function ServiceDetail() {
                 />
                 <img src={rodentImage} className="feature-img" />
             </div>
-            <h4>Covered Pests</h4>
-            <div className="row">
-                <ul className="covered-pests">
-                    <li>American Roaches</li>
-                    <li>Ants</li>
-                    <li>Box Elder Bugs</li>
-                    <li>Brown Banded Roaches</li>
-                    <li>Camel Crickets</li>
-                    <li>Centipedes</li>
-                    <li>Cigarrette Beetles</li>
-                    <li>Clover Mites</li>
-                    <li>Drug Store Beetles</li>
-                    <li>Spiders</li>
-                    <li>Sow Bugs</li>
-                    <li>Wasps, at Ground Level</li>
-                    <li>American Roaches</li>
-                    <li>Ants</li>
-                </ul>
+            <div className="row row-center">
+                <h4>Covered Pests</h4>
             </div>
-            <div className="row">
+            
+            <div className="row row-center">
+                <CoveredPests pestList={service.coveredPests} />
+            </div>
+            <div className="row row-center">
                 <h4>The ABC Promise</h4>
+            </div>
+            <div className="row row-center gauruntee">
                 <p>We believe customers expect prompt, friendly and effective service. If you are ever unhappy with your service, your plan covers unlimited free callbacks in between services. If we can't find a way to make you happy, you can cancel at anytime. </p>
             </div>
 

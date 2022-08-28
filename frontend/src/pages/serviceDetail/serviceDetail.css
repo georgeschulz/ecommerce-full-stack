@@ -23,3 +23,12 @@
 .feature-img img {
     width: fit-content;
 }
+
+h4 {
+    font-size: 23px;
+}
+
+.gauruntee {
+    text-align: center;
+    padding: 0% 20%;
+}
