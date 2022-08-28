@@ -12,6 +12,8 @@ import MediumServiceBox from "../../components/mediumServiceBox/mediumServiceBox
 import { defaultTesting } from "./defaultTesting";
 import AddToCartButton from "../../components/buttons/addToCartButton";
 import CoveredPests from "../../components/coveredPests/coveredPests";
+import Footer from "../../components/footer/footer";
+import TestimonialBlock from "../../components/testimonialBlock/testimonialBlock";
 
 function ServiceDetail() {
     const { serviceId } = useParams();
@@ -35,7 +37,7 @@ function ServiceDetail() {
     return (
         <div>
             <Nav
-                homeNav="store"
+                homeNav="results"
                 showSolution={false}
                 showServices={true}
                 showAccountSettings={true}
@@ -76,6 +78,15 @@ function ServiceDetail() {
                 <p>We believe customers expect prompt, friendly and effective service. If you are ever unhappy with your service, your plan covers unlimited free callbacks in between services. If we can't find a way to make you happy, you can cancel at anytime. </p>
             </div>
 
+            <div className="row row-center">
+                <TestimonialBlock testimonials={service.testimonials}/>
+            </div>
+            <div className="cta">
+                <h4>Sign Up Today</h4>
+                <p>Set up your {service.service_name} today - totally online in 3 minutes or less.</p>
+                <AddToCartButton />
+            </div>
+            <Footer />
 
         </div>
     )

@@ -28,7 +28,25 @@ h4 {
     font-size: 23px;
 }
 
-.gauruntee {
+.gauruntee, .cta {
     text-align: center;
     padding: 0% 20%;
+    font-size: 18px;
+}
+
+.cta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    height: 200px;
+    align-content: flex-start;
+}
+
+.cta h4 {
+    margin-bottom: 10px;
+}
+
+.cta p {
+    width: 100%;
+    margin-bottom: 15px;
 }

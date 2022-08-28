@@ -19,6 +19,9 @@ function Nav(props) {
         case "store":
             homeNavElement = <Link to="/">{'<< Back to Store Home'}</Link>
             break;
+        case "results":
+            homeNavElement = <Link to="/wizard/4">{'<< Back to Service Results'}</Link>
+            break;
         default:
             homeNavElement = "";
             break;

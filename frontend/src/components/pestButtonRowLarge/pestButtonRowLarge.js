@@ -20,7 +20,7 @@ function PestButtonRowLarge(props) {
     const isAuth = useSelector(selectIsAuth);
 
     const pests = [
-        { name: 'ants', img: ants},
+        { name: 'ants', img: '/images/ants.png'},
         { name: 'bees', img: bees},
         { name: 'spiders', img: spiders},
         { name: 'termites', img: termites},
