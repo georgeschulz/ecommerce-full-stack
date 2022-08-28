@@ -9,6 +9,7 @@ const usersRouter = require('./routes/users');
 const servicesRouter = require('./routes/services');
 const cartRouter = require('./routes/cart');
 const ordersRouter = require('./routes/orders');
+const targetRouter = require('./routes/targets');
 const passport = require('passport'); //passport library to initialize it
 const session = require('express-session'); //creates a session
 var cors = require('cors');  
@@ -43,6 +44,7 @@ app.use('/users', usersRouter);
 app.use('/services', servicesRouter);
 app.use('/cart', cartRouter);
 app.use('/orders', ordersRouter);
+app.use('/target', targetRouter);
 
 //auth testing route to represent reaching account after success in auth
 app.get('/account', (req, res) => {

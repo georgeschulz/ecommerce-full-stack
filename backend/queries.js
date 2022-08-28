@@ -134,6 +134,8 @@ const getPestTier = `SELECT tier FROM pests WHERE pest_name = $1;`
 
 const getCoveredPestsByServiceId = `SELECT pest_name AS pests FROM services_pests WHERE service_id = $1`
 
+const getTargetsForHomePage = `SELECT * FROM pests WHERE include_home = true;`
+const getTargetsForWizardPage = `SELECT * FROM pests WHERE include_wizard = true;`
 
 module.exports = {
     createCustomer,
@@ -158,5 +160,7 @@ module.exports = {
     getBenefitsByServiceId,
     getTestimonialByServiceId,
     getPestTier,
-    getCoveredPestsByServiceId
+    getCoveredPestsByServiceId,
+    getTargetsForHomePage,
+    getTargetsForWizardPage
 }
