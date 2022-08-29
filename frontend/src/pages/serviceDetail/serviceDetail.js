@@ -14,6 +14,7 @@ import AddToCartButton from "../../components/buttons/addToCartButton";
 import CoveredPests from "../../components/coveredPests/coveredPests";
 import Footer from "../../components/footer/footer";
 import TestimonialBlock from "../../components/testimonialBlock/testimonialBlock";
+import Gallery from "../../components/gallery/gallery";
 
 function ServiceDetail() {
     const { serviceId } = useParams();
@@ -43,7 +44,7 @@ function ServiceDetail() {
                 showAccountSettings={true}
             />
             <div className="banner-img">
-                <img src={lawnshieldImage} />
+            <img src={`/images/services/${service.bannerImg.path}.${service.bannerImg.file_type}`} />
             </div>
             <div className="row">
                 <h2>{service.service_name}</h2>
@@ -62,7 +63,7 @@ function ServiceDetail() {
                         <AddToCartButton />
                     ]}
                 />
-                <img src={rodentImage} className="feature-img" />
+                <Gallery images={service.supportingImages} />
             </div>
             <div className="row row-center">
                 <h4>Covered Pests</h4>

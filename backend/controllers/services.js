@@ -112,6 +112,11 @@ const getDetailedServiceById = async (req, res) => {
     let pestsQuery = await db.query(queries.getCoveredPestsByServiceId, [serviceId]);
     const coveredPests = pestsQuery.rows.map(pest => pest["pests"]);
 
+    //get supporting images for slideshow
+    const imageQuery = await db.query(queries.getServiceImages, [serviceId]);
+    const supportingImages = imageQuery.rows.filter(image => image.type === 'Supporting');
+    const bannerImg = imageQuery.rows.filter(image => image.type === 'Banner')[0];
+
     //add pricing
     const pricePerSquareFeet = Number(service[0].price_per_square_foot);
     const base = Number(service[0].base_price);
@@ -162,9 +167,13 @@ const getDetailedServiceById = async (req, res) => {
         img_path,
         benefits,
         testimonials,
-        coveredPests
+        coveredPests,
+        supportingImages,
+        bannerImg
     } );
 }
+
+
 
 module.exports = {
     getAllServices,

@@ -137,6 +137,18 @@ const getCoveredPestsByServiceId = `SELECT pest_name AS pests FROM services_pest
 const getTargetsForHomePage = `SELECT * FROM pests WHERE include_home = true;`
 const getTargetsForWizardPage = `SELECT * FROM pests WHERE include_wizard = true;`
 
+const getServiceImages = `
+    SELECT
+        service_images.image_id,
+        services_service_images.type,
+        service_images.path,
+        service_images.file_type
+    FROM services_service_images
+    INNER JOIN service_images
+       ON services_service_images.image_id = service_images.image_id
+    WHERE services_service_images.service_id = $1
+`
+
 module.exports = {
     createCustomer,
     checkUserAuth,
@@ -162,5 +174,6 @@ module.exports = {
     getPestTier,
     getCoveredPestsByServiceId,
     getTargetsForHomePage,
-    getTargetsForWizardPage
+    getTargetsForWizardPage,
+    getServiceImages
 }
