@@ -15,21 +15,8 @@ function Gallery({ images }) {
     const maxSlideNum = max + 1;
 
     //callbacks to adjust state    
-    const next = () => {
-        if(slide >= max) {
-            setSlide(min)
-        } else {
-            setSlide(slide + 1)
-        }
-    }
-
-    const back = () => {
-        if(slide <= min) {
-            setSlide(max)
-        } else {
-            setSlide(slide - 1)
-        }
-    }
+    const next = () => slide >= max ? setSlide(min) : setSlide(slide + 1);
+    const back = () => slide <= min ? setSlide(max) : setSlide(slide - 1);
 
     return (
         <div className="gallery">
