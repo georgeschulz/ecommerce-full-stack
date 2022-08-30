@@ -147,7 +147,9 @@ const getServiceImages = `
     INNER JOIN service_images
        ON services_service_images.image_id = service_images.image_id
     WHERE services_service_images.service_id = $1
-`
+`;
+
+const getCities = `SELECT city FROM areas`
 
 module.exports = {
     createCustomer,
@@ -175,5 +177,6 @@ module.exports = {
     getCoveredPestsByServiceId,
     getTargetsForHomePage,
     getTargetsForWizardPage,
-    getServiceImages
+    getServiceImages,
+    getCities
 }
