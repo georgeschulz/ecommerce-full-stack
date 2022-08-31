@@ -4,7 +4,7 @@ function CoveredPests({pestList}) {
     return (
         <ul className="covered-pests-list">
             {pestList.map((pest, i) => {
-                return ( <div className='list-item-container'><li key={i}>{pest}</li></div>)
+                return ( <div key={i} className='list-item-container'><li>{pest}</li></div>)
             })}
         </ul>
     )

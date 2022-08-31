@@ -7,7 +7,6 @@ const addServiceToCart = async (req, res) => {
     //extract parameters for api call from params (url) and request body
     const { customer_id, service_id } = req.params;
     const { target } = req.body;
-    console.log(req.body)
     
     if (target.length <= 0) {
          //handle cases where the user forgets to add a body to their request
@@ -15,8 +14,7 @@ const addServiceToCart = async (req, res) => {
         throw new Error('Please add a target')
     }
 
-    //create the query from the body. The filters are added as OR clauses for pest name, then the query pulls out the highest tier that matches the filter
-    //concatenate the two templates in the queries.js file with the filter
+    //get the service parameters to calculate pricing correctly
     const serviceParameterQuery = await db.query(queries.getServiceById, [service_id]);
     const service = serviceParameterQuery.rows[0];
     //update the service object to have the cost information in it

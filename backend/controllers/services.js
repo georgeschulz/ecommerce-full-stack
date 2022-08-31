@@ -1,5 +1,6 @@
 const queries = require('../queries');
 const db = require('../db');
+const calculatePrice = require('../helpers/calculatePrice');
 
 //get all services as an array of objects, each object representing a service
 const getAllServices = (req, res) => {
@@ -47,42 +48,15 @@ const getServiceDetailedByTarget = async (req, res) => {
         serviceToUpdate['testimonials'] = testimonialQuery.rows;
     }
 
-    //calculate pricing based on the completed detailed data object
-    for(const service in services) { 
-        let serviceToUpdate = services[service];
-        //pull the data we need from the service object
-        const pricePerSquareFeet = Number(serviceToUpdate.price_per_square_foot);
-        const base = Number(serviceToUpdate.base_price);
-        const multiplier = Number(serviceToUpdate.tier_multiplier);
-    
-        //do the math
-        const cost = Math.round(
-            (Math.pow(multiplier, tier - 1) * 
-            (base + (pricePerSquareFeet * Number(squareFeet)))) * 100
-        )/100;
-        
-        //calculate billing amount
-        let billingAmount;
-        switch(serviceToUpdate.billing_type) {
-            case 'month':
-                billingAmount = cost * (serviceToUpdate.frequency / 12);
-                break;
-            case 'year':
-                billingAmount = cost;
-                break;
-            case 'service':
-                billingAmount = cost;
-                break;
-            default:
-                billingAmount = cost;
-                break;
-        }
+    const servicesWithPricing = [];
 
-        serviceToUpdate["price"] = cost;
-        serviceToUpdate["billing_amount"] = billingAmount;
+    //calculate pricing based on the completed detailed data object
+    for(let service in services) {
+        const serviceWithPrice = await calculatePrice(services[service], user, target); 
+        servicesWithPricing.push(serviceWithPrice)
     }
 
-    res.status(200).send({services})
+    res.status(200).send({services: servicesWithPricing})
 }
 
 const getDetailedServiceById = async (req, res) => {
@@ -118,21 +92,8 @@ const getDetailedServiceById = async (req, res) => {
     const bannerImg = imageQuery.rows.filter(image => image.type === 'Banner')[0];
 
     //add pricing
-    const pricePerSquareFeet = Number(service[0].price_per_square_foot);
-    const base = Number(service[0].base_price);
-    const multiplier = Number(service[0].tier_multiplier);
-    const frequency = Number(service[0].frequency)
+    const serviceWithPricing = calculatePrice(service[0], user, target);
 
-    const cost = Math.round(
-        (Math.pow(multiplier, tier - 1) * 
-        (base + (pricePerSquareFeet * Number(squareFeet)))) * 100
-    )/100;
-    
-    service[0]["price"] = cost;
-    service[0]["billing_amount"] = service[0].billing_type === 'month' 
-        ? cost * (frequency /12) 
-        : cost;
-    
     //pull out the data to restructure for response
     const {
         service_id, 
@@ -147,8 +108,9 @@ const getDetailedServiceById = async (req, res) => {
         benefits,
         testimonials,
         price,
-        billing_amount
-    } = service[0];
+        billing_amount,
+        frequency
+    } = await serviceWithPricing;
     
     res.status(200).send({
         service_id, 
