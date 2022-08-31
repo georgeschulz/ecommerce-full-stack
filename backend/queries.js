@@ -1,6 +1,6 @@
 const createCustomer = `
-    INSERT INTO customers (first_name, last_name, address, city, state_abbreviation, zip, email, phone, password, square_feet, date_created) 
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`;
+    INSERT INTO customers (first_name, last_name, address, city, state_abbreviation, zip, email, phone, password, square_feet, date_created, area_id) 
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`;
 
 const checkUserAuth = `SELECT * FROM customers WHERE email = $1`;
 
@@ -149,7 +149,33 @@ const getServiceImages = `
     WHERE services_service_images.service_id = $1
 `;
 
-const getCities = `SELECT city FROM areas`
+const getCities = `SELECT city FROM areas`;
+const getAreaId = `SELECT area_id FROM areas WHERE city = $1`;
+
+const getAvailability = `
+SELECT
+    routes.route_id,
+    routes.route_date,
+    areas.area_id,
+    routes.tech_id,
+    routes.slots_available,
+    techs.tech_first_name,
+    techs.tech_last_name,
+    techs.tech_profile_pic,
+    areas.city
+FROM routes
+INNER JOIN techs
+    ON routes.tech_id = techs.tech_id
+INNER JOIN areas
+    ON techs.tech_id = areas.tech_id
+WHERE area_id = $1
+    AND route_date >= $2
+ORDER BY route_date ASC;`
+
+const getAreaIdByCustomer = `
+    SELECT area_id FROM customers WHERE customer_id = $1;
+`
+
 
 module.exports = {
     createCustomer,
@@ -178,5 +204,8 @@ module.exports = {
     getTargetsForHomePage,
     getTargetsForWizardPage,
     getServiceImages,
-    getCities
+    getCities,
+    getAreaId,
+    getAvailability,
+    getAreaIdByCustomer
 }

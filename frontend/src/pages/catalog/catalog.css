@@ -16,7 +16,7 @@ h2.page-header {
     padding: 15px;
 }
 
-select {
+.filter {
     background-color: rgb(218, 218, 218);
     padding: 5px 20px;
     border-radius: 100px;

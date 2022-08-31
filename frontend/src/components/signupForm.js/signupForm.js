@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { authorize } from "../../features/auth";
 import MultipaneForm from "../multipaneForm/multipaneForm";
 import './signupForm.css'
 import { onSignup } from "../../api/signup";
 import { useNavigate } from "react-router-dom";
+import { getCities } from "../../api/schedule";
 
 function SignupForm() {
     const [firstName, setFirstName] = useState('');
@@ -18,6 +19,7 @@ function SignupForm() {
     const [zip, setZip] = useState('');
     const [squareFeet, setSquareFeet] = useState('');
     const [error, setError] = useState('');
+    const [cityOptions, setCityOptions] = useState(['test']);
 
     const navigate = useNavigate();
 
@@ -30,6 +32,18 @@ function SignupForm() {
             setError(error.message);
         }
     }
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const response = await getCities();
+                setCityOptions(response.data);
+            } catch(err) {
+                console.log(err)
+            }
+
+        })();
+    }, [])
 
     const pageOne = (
         <div id="pageOne">
@@ -67,7 +81,11 @@ function SignupForm() {
             <div className="form-group form-group-split">
                 <div className="form-group-col">
                     <label for="city">City</label>
-                    <input type="text" name="city" value={city} onChange={(e) => setCity(e.target.value)} />
+                    <select name="city" value={city} onChange={(e) => setCity(e.target.value)}>
+                        {cityOptions.map(element => {
+                            return (<option value={element}>{element}</option>)
+                        })}
+                    </select>
                 </div>
                 <div className="form-group-col">
                     <label for="state">State</label>

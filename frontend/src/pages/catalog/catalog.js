@@ -29,21 +29,21 @@ function Catalog(props) {
                 <div className="filters">
                     <div className="filter-group">
                         <label for="target">Pest Type</label>
-                        <select name="target">
+                        <select name="target" className="filter">
                             <option value="ants">Ants</option>
                             <option value="rodents">Rodents</option>
                         </select>
                     </div>
                     <div className="filter-group">
                         <label for="serviceType">Service Type</label>
-                        <select name="serviceType">
+                        <select name="serviceType" className="filter">
                             <option value="One Time">One Time</option>
                             <option value="Recurring">Ongoing Program</option>
                         </select>
                     </div>
                     <div className="filter-group">
                         <label for="warranty">Includes Warranty?</label>
-                        <select name="warranty">
+                        <select name="warranty" className="filter">
                             <option value="yes">Yes</option>
                             <option value="No">No</option>
                         </select>
