@@ -12,6 +12,7 @@ import WizardOne from './pages/wizard/wizardOne';
 import WizardTwo from './pages/wizard/wizardTwo';
 import WizardThree from './pages/wizard/wizardThree';
 import WizardFour from './pages/wizard/wizardFour';
+import WizardFive from './pages/wizard/wizardFive';
 import ServiceDetail from './pages/serviceDetail/serviceDetail';
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
             <Route path="/wizard/2" element={<WizardTwo />} />
             <Route path="/wizard/3" element={<WizardThree />} />
             <Route path="/wizard/4" element={<WizardFour />} />
+            <Route path="/wizard/5" element={<WizardFive />} />
             <Route path="/service/:serviceId" element={<ServiceDetail />} />
           </Route>
 

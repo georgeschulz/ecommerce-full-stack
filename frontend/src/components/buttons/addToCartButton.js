@@ -4,7 +4,7 @@ import MediumButton from "./mediumButton";
 
 function AddToCartButton() {
     return (
-        <MediumButton redirect={'/'} level='primary'>
+        <MediumButton redirect={'/wizard/5'} level='primary'>
             Add to Cart
         </MediumButton>
     )
