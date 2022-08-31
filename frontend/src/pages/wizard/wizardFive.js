@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { selectUserId } from "../../features/auth";
 import { useEffect, useState } from "react";
 import { getAvailability } from "../../api/schedule";
+import AvailabilityDetails from "../../components/availabilityDetails/availabilityDetails";
 
 function WizardFive() {
     const customerId = useSelector(selectUserId);
@@ -15,10 +16,26 @@ function WizardFive() {
                 setAvailabilty(response.data);
             } catch (err) {
                 console.log(err)
-            }        
+             }        
         })();
     }, [])
 
+    const availabilityContent = availability.map((slot, i) => {
+        return (
+            <AvailabilityDetails
+                key={slot.route_id}
+                routeId={slot.route_id}
+                routeDate={slot.route_date}
+                areaId={slot.area_id}
+                techId={slot.tech_id}
+                slotsAvailabile={slot.slots_available}
+                techFirstName={slot.tech_first_name}
+                techLastName={slot.tech_last_name}
+                techProfilePic={slot.tech_profile_pic}
+                city={slot.city}
+            />
+        )
+    })
 
     return (
         <WizardTemplate
@@ -27,7 +44,9 @@ function WizardFive() {
             percent='80'
             headline='Select Your Date'
             instruction='Please choose the date for your next service based on the days, we’ll have a technician in your area. Your technician will provide you with a two hour time window the morning of your service.'
-            body={'test'}
+            body={
+                availabilityContent
+            }
         />
     )
 }
