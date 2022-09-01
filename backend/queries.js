@@ -88,6 +88,12 @@ const deleteCartItem = `
     DELETE FROM cart WHERE cart_id = $1;
 `
 
+const deleteDuplicateCartItems = `
+    DELETE FROM cart
+    WHERE customer_id = $1
+    AND service_id = $2;
+`
+
 const clearCart = `
     DELETE FROM cart WHERE customer_id = $1;
 `
@@ -200,5 +206,6 @@ module.exports = {
     getCities,
     getAreaId,
     getAvailability,
-    getAreaIdByCustomer
+    getAreaIdByCustomer,
+    deleteDuplicateCartItems
 }

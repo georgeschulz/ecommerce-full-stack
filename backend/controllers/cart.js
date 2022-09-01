@@ -22,6 +22,9 @@ const addServiceToCart = async (req, res) => {
     const serviceWithPricing = await calculatePrice(service, customer_id, target);
     const { price } = serviceWithPricing;
 
+    //delete any duplicate cart items (there is only ever the most recent instance of a service in the cart)
+    await db.query(queries.deleteDuplicateCartItems, [customer_id, service_id])
+
     //Add the service to the cart
     const addServiceToCartQuery = await db.query(queries.addServiceToCart, [customer_id, service_id, price]);
     res.status(201).send({message: 'Success', data: serviceWithPricing});
@@ -132,7 +135,6 @@ const createStripeSession = async (req, res) => {
     const cartQuery = await db.query(queries.getUserCart, [customerId]);
     const cart = cartQuery.rows;
 
-    console.log(cart)
 
     //structure the cart contents to prepare them for stripe's formatting
     const lineItems = cart.map(item => {
@@ -148,9 +150,6 @@ const createStripeSession = async (req, res) => {
             quantity: 1
         }
     })
-
-    console.log(lineItems[0].price_data.product_data);
-
     
     const session = await stripe.checkout.sessions.create({
         line_items: lineItems,
