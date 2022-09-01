@@ -5,4 +5,6 @@ export const addToCartApi = async (serviceId, target, userId) => {
     return await axios.post(`${endpoint}/cart/${userId}/service/${serviceId}`, {target})
 }
 
-//localhost:4000/cart/:customer_id/service/:service_id
+export const getStripeLink = async (customer_id, date_scheduled) => {
+    return await axios.post(`${endpoint}/cart/stripe/customer/${customer_id}`, {date_scheduled});
+}

@@ -77,18 +77,11 @@ const addServiceToCart = `
 const getSquareFeet = `SELECT square_feet FROM customers WHERE customer_id = $1`;
 
 const getUserCart = `
-    SELECT
-        cart.cart_id,
-        cart.customer_id, 
-        cart.service_id,
-        services.service_name,
-        services.billing_type,
-        services.services_per_year,
-        cart.price
+    SELECT * 
     FROM cart
     INNER JOIN services
-        ON cart.service_id = services.service_id
-    WHERE customer_id = $1;
+    ON cart.service_id = services.service_id
+    WHERE customer_id = $1;    
 `
 
 const deleteCartItem = `

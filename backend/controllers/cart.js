@@ -121,20 +121,41 @@ const checkout = (req, res) => {
 }
 
 const createStripeSession = async (req, res) => {
-    const session = await stripe.checkout.sessions.create({
-        line_items: [{
+    //get the contents of the customer's cart
+    const { customerId } = req.params;
+    const { date_scheduled } = req.body;
+    
+    //get the customer so we can make an order with their correct contact/address
+    const customerQuery = await db.query(queries.getUserById, [customerId]);
+    const customer = customerQuery.rows[0];
+
+    const cartQuery = await db.query(queries.getUserCart, [customerId]);
+    const cart = cartQuery.rows;
+
+    console.log(cart)
+
+    //structure the cart contents to prepare them for stripe's formatting
+    const lineItems = cart.map(item => {
+        return {
             price_data: {
                 currency: 'usd',
-                unit_amount: 25000,
+                unit_amount: item.price * 100,
                 product_data: {
-                    name: 'All in One Program',
-                    description: 'Bimonthly pest, termite and rodent control'
+                    name: item.service_name,
+                    description: item.description
                 }
-           },
-           quantity: 1
-        }],
+            },
+            quantity: 1
+        }
+    })
+
+    console.log(lineItems[0].price_data.product_data);
+
+    
+    const session = await stripe.checkout.sessions.create({
+        line_items: lineItems,
         mode: 'payment',
-        success_url: 'http://localhost:3000/',
+        success_url: 'http://localhost:3000/order',
         cancel_url: 'http://localhost:3000/wizard/5',
         automatic_tax: {enabled: false}
     });

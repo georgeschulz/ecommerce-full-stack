@@ -8,6 +8,6 @@ router.get('/:customer_id', controllers.getCartContents);
 router.delete('/:cart_id', controllers.deleteCartItem);
 router.delete('/clear/:customer_id', controllers.clearCart);
 router.post('/:customer_id/checkout', controllers.checkout);
-router.post('/stripe', controllers.createStripeSession);
+router.post('/stripe/customer/:customerId', controllers.createStripeSession);
 
 module.exports = router;

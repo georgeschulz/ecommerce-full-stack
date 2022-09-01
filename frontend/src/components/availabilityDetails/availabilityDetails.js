@@ -18,7 +18,7 @@ function AvailabilityDetails({routeId, routeDate, areaId, techId, slotsAvailabil
                 <p className={slotsAvailabile <= 3 ? 'red' : 'green'}>{slotsAvailabile} Spots Remaining</p>
             </div>
             <div className="availability-details-group">
-                <BookButton />
+                <BookButton date={date} />
             </div>
         </div>
     )
