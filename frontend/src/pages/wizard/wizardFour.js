@@ -49,7 +49,10 @@ function WizardFour() {
                                     width='460px'
                                     showImg={true}
                                     buttons={[
-                                        <AddToCartButton />, 
+                                        <AddToCartButton
+                                            serviceId={service.service_id}
+                                            target={target}
+                                        />, 
                                         <GetServiceInfoButton serviceId={service.service_id} />
                                     ]}
                                 />)

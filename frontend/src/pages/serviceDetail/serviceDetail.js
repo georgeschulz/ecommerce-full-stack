@@ -60,7 +60,10 @@ function ServiceDetail() {
                     width='480px'
                     showImg={false}
                     buttons={[
-                        <AddToCartButton />
+                        <AddToCartButton
+                            serviceId={serviceId}
+                            target={target}
+                        />
                     ]}
                 />
                 <Gallery images={service.supportingImages} />
@@ -85,7 +88,10 @@ function ServiceDetail() {
             <div className="cta">
                 <h4>Sign Up Today</h4>
                 <p>Set up your {service.service_name} today - totally online in 3 minutes or less.</p>
-                <AddToCartButton />
+                <AddToCartButton
+                    serviceId={serviceId}
+                    target={target}
+                />
             </div>
             <Footer />
 
