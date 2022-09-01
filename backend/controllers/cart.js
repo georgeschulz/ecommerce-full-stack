@@ -1,6 +1,7 @@
 const queries = require('../queries');
 const db = require('../db');
 const calculatePrice = require('../helpers/calculatePrice');
+const stripe = require('stripe')(process.env.STRIPEKEY);
 
 //controller that adds a service to the cart
 const addServiceToCart = async (req, res) => {
@@ -119,10 +120,33 @@ const checkout = (req, res) => {
     }
 }
 
+const createStripeSession = async (req, res) => {
+    const session = await stripe.checkout.sessions.create({
+        line_items: [{
+            price_data: {
+                currency: 'usd',
+                unit_amount: 25000,
+                product_data: {
+                    name: 'All in One Program',
+                    description: 'Bimonthly pest, termite and rodent control'
+                }
+           },
+           quantity: 1
+        }],
+        mode: 'payment',
+        success_url: 'http://localhost:3000/',
+        cancel_url: 'http://localhost:3000/wizard/5',
+        automatic_tax: {enabled: false}
+    });
+
+    res.status(200).send(session.url);
+}
+
 module.exports = {
     addServiceToCart,
     getCartContents,
     deleteCartItem,
     clearCart,
-    checkout
+    checkout,
+    createStripeSession
 }
