@@ -18,8 +18,8 @@ const calculatePrice = async (service, userId, target) => {
 
     const cost = Math.round(
         (Math.pow(multiplier, tier - 1) * 
-        (base + (pricePerSquareFeet * Number(squareFeet)))) * 100
-    )/100;
+        (base + (pricePerSquareFeet * Number(squareFeet))))
+    );
 
     service["price"] = cost;
     service["billing_amount"] = service.billing_type === 'month' 

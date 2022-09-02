@@ -3,7 +3,7 @@ import './mediumServiceBox.css';
 import BenefitList from '../benefitsList/benefitsList';
 import { Link } from 'react-router-dom';
 
-function MediumServiceBox({ serviceName, billingType, billingAmount, frequency, benefits, serviceId, buttons, width, showImg }) {
+function MediumServiceBox({ serviceName, billingType, billingAmount, frequency, benefits, serviceId, buttons, width, showImg, setupFee }) {
     //destructure the data from the service object
 
     return (
@@ -13,7 +13,7 @@ function MediumServiceBox({ serviceName, billingType, billingAmount, frequency, 
             </div>
             <div className='medium-service-box-content'>
                 <h2>{serviceName}</h2>
-                <p>$ {billingAmount} / {billingType} | {frequency} Services per Year</p>
+                <p>${setupFee}, then ${billingAmount} / {billingType} | {frequency} Services per Year</p>
                 <BenefitList benefits={benefits} />
                 <div className="medium-service-box-button-container">
                     {buttons.map((button, i) => {

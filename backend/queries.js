@@ -70,8 +70,8 @@ const getServiceByTargetPestAndServicePart2 = `
 `
 
 const addServiceToCart = `
-    INSERT INTO cart (customer_id, service_id, price)
-    VALUES ($1, $2, $3);
+    INSERT INTO cart (customer_id, service_id, price, setup_fee, billing_amount, billing_type)
+    VALUES ($1, $2, $3, $4, $5, $6);
 `;
 
 const getSquareFeet = `SELECT square_feet FROM customers WHERE customer_id = $1`;

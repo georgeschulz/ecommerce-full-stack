@@ -1,7 +1,9 @@
 const queries = require('../queries');
 const db = require('../db');
 const calculatePrice = require('../helpers/calculatePrice');
+const { application, response } = require('express');
 const stripe = require('stripe')(process.env.STRIPEKEY);
+const endpointSecret = process.env.WEBHOOKSECRET;
 
 //controller that adds a service to the cart
 const addServiceToCart = async (req, res) => {
@@ -20,13 +22,13 @@ const addServiceToCart = async (req, res) => {
     const service = serviceParameterQuery.rows[0];
     //update the service object to have the cost information in it
     const serviceWithPricing = await calculatePrice(service, customer_id, target);
-    const { price } = serviceWithPricing;
+    const { price, setup_fee, billing_amount, billing_type } = serviceWithPricing;
 
     //delete any duplicate cart items (there is only ever the most recent instance of a service in the cart)
     await db.query(queries.deleteDuplicateCartItems, [customer_id, service_id])
 
     //Add the service to the cart
-    const addServiceToCartQuery = await db.query(queries.addServiceToCart, [customer_id, service_id, price]);
+    const addServiceToCartQuery = await db.query(queries.addServiceToCart, [customer_id, service_id, price, setup_fee, billing_amount, billing_type]);
     res.status(201).send({message: 'Success', data: serviceWithPricing});
 }
 
@@ -141,10 +143,10 @@ const createStripeSession = async (req, res) => {
         return {
             price_data: {
                 currency: 'usd',
-                unit_amount: item.price * 100,
+                unit_amount: item.setup_fee * 100,
                 product_data: {
-                    name: item.service_name,
-                    description: item.description
+                    name: `${item.service_name} Setup Fee`,
+                    description: `Setup fee is $${item.setup_fee}, then you will be billed $${item.billing_amount} per ${item.billing_type}. ${item.description}`
                 }
             },
             quantity: 1
@@ -162,11 +164,44 @@ const createStripeSession = async (req, res) => {
     res.status(200).send(session.url);
 }
 
+const fufillOrder = (session) => {
+    console.log("Fufilling order");
+}
+
+const recievePayment = (request, response) => {
+    const payload = request.body;
+    const sig = request.headers['stripe-signature'];
+  
+    let event = request.body;
+
+    if(endpointSecret) {
+        const signature = request.headers['stripe-signature'];
+        try {
+            event = stripe.webhooks.constructEvent(
+                request.body,
+                signature,
+                endpointSecret
+            );
+        } catch (err) {
+            console.log(`Wehook verification failed`, err.message);
+            return response.status(400).send();
+        }
+    }
+
+    if(event.type = 'checkout.session.completed') {
+        const session = event.data.object;
+        fufillOrder(session);
+    }
+
+    response.status(200).send()
+}
+
 module.exports = {
     addServiceToCart,
     getCartContents,
     deleteCartItem,
     clearCart,
     checkout,
-    createStripeSession
+    createStripeSession,
+    recievePayment
 }

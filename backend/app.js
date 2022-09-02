@@ -19,7 +19,6 @@ require('./services/passport'); //passport configuration that allows passport to
 
 app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 
-app.use(express.json()); //parses json data submitted and sent
 app.use(require('cookie-parser')()); // this middleware parses cookies sent with HTTP requests
 
 //setup an express session
@@ -39,14 +38,14 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //add routes as middleware
-app.use('/register', registerRouter);
-app.use('/login', loginRouter);
-app.use('/users', usersRouter);
-app.use('/services', servicesRouter);
+app.use('/register', express.json(), registerRouter);
+app.use('/login', express.json(), loginRouter);
+app.use('/users', express.json(), usersRouter);
+app.use('/services', express.json(), servicesRouter);
 app.use('/cart', cartRouter);
-app.use('/orders', ordersRouter);
-app.use('/target', targetRouter);
-app.use('/schedule', scheduleRouter);
+app.use('/orders', express.json(), ordersRouter);
+app.use('/target', express.json(), targetRouter);
+app.use('/schedule',express.json(),  scheduleRouter);
 
 //auth testing route to represent reaching account after success in auth
 app.get('/account', (req, res) => {

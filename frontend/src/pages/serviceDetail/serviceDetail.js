@@ -5,8 +5,6 @@ import { useSelector } from 'react-redux';
 import { selectSelectedPest } from "../../features/wizardSlice";
 import { selectUserId } from "../../features/auth";
 import Nav from "../../components/nav/nav";
-import lawnshieldImage from '../../assets/lawnshieldBanner.JPG';
-import rodentImage from '../../assets/rodentbait.JPG';
 import './serviceDetail.css'
 import MediumServiceBox from "../../components/mediumServiceBox/mediumServiceBox";
 import { defaultTesting } from "./defaultTesting";
@@ -57,6 +55,7 @@ function ServiceDetail() {
                     frequency={service.frequency}
                     benefits={service.benefits}
                     serviceId={service.service_id}
+                    setupFee={service.setup_fee}
                     width='480px'
                     showImg={false}
                     buttons={[

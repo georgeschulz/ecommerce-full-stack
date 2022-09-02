@@ -48,6 +48,7 @@ function WizardFour() {
                                     key={service.service_id}
                                     width='460px'
                                     showImg={true}
+                                    setupFee={service.setup_fee}
                                     buttons={[
                                         <AddToCartButton
                                             serviceId={service.service_id}
