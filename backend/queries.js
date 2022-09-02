@@ -175,6 +175,12 @@ const getAreaIdByCustomer = `
     SELECT area_id FROM customers WHERE customer_id = $1;
 `
 
+const setAppointmentDate = `
+    UPDATE cart
+    SET route_id = $1
+    WHERE customer_id = $2;
+`
+
 
 module.exports = {
     createCustomer,
@@ -207,5 +213,6 @@ module.exports = {
     getAreaId,
     getAvailability,
     getAreaIdByCustomer,
-    deleteDuplicateCartItems
+    deleteDuplicateCartItems,
+    setAppointmentDate
 }

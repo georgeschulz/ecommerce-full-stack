@@ -27,7 +27,17 @@ const getAvailability = async (req, res) => {
     res.status(200).send(availability);
 }
 
+const setAppointmentDate = async (req, res) => {
+    const { customerId, routeId } = req.params;
+
+    //update every cart item based on the customer Id by linking the record to a route listed in the route table
+    const appointmentQuery = await db.query(queries.setAppointmentDate, [routeId, customerId]);
+
+    res.status(200).send();
+}
+
 module.exports = {
     getCities,
-    getAvailability
+    getAvailability,
+    setAppointmentDate
 }
