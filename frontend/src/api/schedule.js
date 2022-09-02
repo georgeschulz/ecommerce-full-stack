@@ -8,3 +8,7 @@ export const getCities = async () => {
 export const getAvailability = async (customerId) => {
     return await axios.get(`${endpoint}/schedule/availability/user/${customerId}`);
 }
+
+export const setAppointmentDate = async (routeId, customerId) => {
+    return await axios.put(`${endpoint}/schedule/user/${customerId}/route/${routeId}`);
+}
