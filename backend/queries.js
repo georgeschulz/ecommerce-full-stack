@@ -97,11 +97,6 @@ const deleteDuplicateCartItems = `
 const clearCart = `
     DELETE FROM cart WHERE customer_id = $1;
 `
-/** 
-const createOrder = `
-    INSERT INTO orders (service_id, date_created, customer_id, complete, date_scheduled, price, address, city, state, zip, first_name, last_name) VALUES
-    ($1, $2, 4, false, $3, $4, $5, $6, $7, $8, $9, $10);
-` */
 
 const getAllOrders = `SELECT * FROM orders`;
 

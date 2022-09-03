@@ -73,58 +73,6 @@ const clearCart = (req, res) => {
     })
 }
 
-const checkout = (req, res) => {
-    //get the customer's information
-    const { customer_id } = req.params;
-    const { date_scheduled } = req.body;
-    let authorized = true; //dummy value while we are not processing real payments
-
-    if (authorized) { //check to make sure they have paid
-        //once authorized, get the customer data so that we can create an order with the correct address
-        db.query(queries.getUserById, [customer_id], (err, customerResults) => {
-            if (err) {
-                res.status(404).send('Error finding user.')
-            } else {
-                let customer = customerResults.rows[0];
-                //Get data from cart for the user
-                db.query(queries.getUserCart, [customer_id], (err, cartResults) => {
-                    if (err) {
-                        res.status(404).send('Error finding user cart')
-                    } else if (cartResults.rows.length <= 0) {
-                        //if the cart is empty, send an error status 
-                        res.status(404).send('Error: Query returned an empty cart')
-                    } else {
-                        //add each cart item as an order
-                        let cart = cartResults.rows;
-                        //get today's date and format it to timestamp the order
-                        const today = new Date();
-                        const dateCreatedString = today.toISOString().split('T')[0];
-                        //iterate over the contents of the cart to create a service order for each content of the cart
-                        cart.forEach(item => {
-                            db.query(queries.createOrder,
-                                [item.service_id, dateCreatedString, date_scheduled, item.price, customer.address, customer.city, customer.state_abbreviation, customer.zip, customer.first_name, customer.last_name],
-                                (err, result) => {
-                                    if (err) {
-                                        res.status(404).send('Error creating order')
-                                    } else {
-                                        //clear the cart once we've confirmed at the ordres have been created
-                                        db.query(queries.clearCart, [customer_id], (err, result) => {
-                                            if (err) {
-                                                res.status(404).send('Error clearing cart')
-                                            } else {
-                                                res.status(201).send('Order succesfully placed');
-                                            }
-                                        })
-                                    }
-                                })
-                        })
-                    }
-                })
-            }
-        })
-    }
-}
-
 const createStripeSession = async (req, res) => {
     //get the contents of the customer's cart
     const { customerId } = req.params;
@@ -196,7 +144,6 @@ const fufillOrder = async (session) => {
     const today = new Date();
     const dateCreatedString = today.toISOString().split('T')[0];
 
-    console.log(client_reference_id)
     //get the customer's personal information
     const customerQuery = await db.query(queries.getUserById, [client_reference_id]);
     const customer = customerQuery.rows[0];
@@ -208,7 +155,6 @@ const fufillOrder = async (session) => {
     //get the route data
     const routeQuery = await db.query(queries.getRouteById, [cart[0].route_id]);
     const route = routeQuery.rows[0];
-    console.log(route)
     
     //create the order with the parameters extracted from other tables
     cart.forEach(item => {
@@ -236,9 +182,6 @@ const fufillOrder = async (session) => {
 }
 
 const recievePayment = (request, response) => {
-    const payload = request.body;
-    const sig = request.headers['stripe-signature'];
-  
     let event = request.body;
 
     if(endpointSecret) {
@@ -270,7 +213,6 @@ module.exports = {
     getCartContents,
     deleteCartItem,
     clearCart,
-    checkout,
     createStripeSession,
     recievePayment
 }
