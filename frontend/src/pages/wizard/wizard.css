@@ -45,3 +45,58 @@ h1.wizard-header {
     flex-wrap: wrap;
     justify-content: center;
 }
+
+.information-box-wide {
+    border: 1px solid #DDDDDD;
+    box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    padding: 10px 80px;
+    margin: 30px 10px;
+}
+
+.order-information-main-content {
+    display: flex;
+}
+
+.information-box-wide h2 {
+    text-align: left;
+    display: flex;
+    align-items: center;
+}
+
+.order-information {
+    display: flex;
+    flex-wrap: wrap;
+    height: 100px;
+    padding: 10px 20px;
+    
+}
+
+.order-info-box {
+    width: 50%;
+    min-width: 300px;
+}
+
+.confirmed {
+    background: #1E981C;
+    border-radius: 20px;
+    color: white;
+    font-size: 12px;
+    padding: 8px 20px;
+    margin: 0px 20px;
+}
+
+.technician-tile {
+    display: flex;
+    justify-content: center;
+    width: 200px;
+    flex-wrap: wrap;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.tech-photo-large {
+    width: 200px;
+    border-radius: 100%;
+    margin-bottom: 10px;
+}
