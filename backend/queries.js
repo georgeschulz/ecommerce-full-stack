@@ -177,47 +177,26 @@ const setAppointmentDate = `
 `;
 
 const createOrder = `
-INSERT INTO orders (
-    date_created, 
-    customer_id, 
-    complete, 
-    date_scheduled, 
-    price, 
-    service_id, 
-    address, 
-    city, 
-    state,
-    zip,
-    first_name,
-    last_name,
-    route_id,
-    setup_total,
-    billing_amount,
-    billing_type
-  ) VALUES (
-    $1,
-    $2,
-    false,
-    $3,
-    $4,
-    $5,
-    $6,
-    $7,
-    $8,
-    $9,
-    $10,
-    $11,
-    $12,
-    $13,
-    $14,
-    $15
-  );
+INSERT INTO orders (date_created, customer_id, date_scheduled, address, city, state, zip, first_name, last_name, route_id, amount_paid, billing_email, time_created) 
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, to_timestamp($13 / 1000.0))
 `;
 
 const getRouteById = `
     SELECT *
     FROM routes 
     WHERE route_id = $1;
+`;
+
+const getMostRecentOrderId = `
+    SELECT order_id FROM orders
+    WHERE customer_id = $1
+    ORDER BY date_created DESC, time_created DESC
+    LIMIT 1;
+`
+
+const addItem = `
+    INSERT INTO items (order_id, service_id, complete, price, billing_amount, billing_type, setup_fee)
+    VALUES ($1, $2, false, $3, $4, $5, $6);
 `
 
 module.exports = {
@@ -253,5 +232,7 @@ module.exports = {
     getAreaIdByCustomer,
     deleteDuplicateCartItems,
     setAppointmentDate,
-    getRouteById
+    getRouteById,
+    getMostRecentOrderId,
+    addItem
 }

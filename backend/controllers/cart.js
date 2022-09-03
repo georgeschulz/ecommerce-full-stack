@@ -87,7 +87,7 @@ const createStripeSession = async (req, res) => {
 
 
     //structure the cart contents to prepare them for stripe's formatting
-    const lineItems = cart.map(item => {
+    const lineItems = await cart.map(item => {
         return {
             price_data: {
                 currency: 'usd',
@@ -113,14 +113,12 @@ const createStripeSession = async (req, res) => {
     res.status(200).send(session.url);
 }
 
-const createOrder = async (dateCreated, customerId, dateScheduled, price, serviceId, address, city, state, zip, firstName, lastName, routeId, setupTotal, billingAmount, billingType) => {
+const createOrder = async (dateCreated, customerId, dateScheduled, address, city, state, zip, firstName, lastName, routeId, amountPaid) => {
     try {
-        await db.query(queries.createOrder, [
+        const response = await db.query(queries.createOrder, [
             dateCreated,
             customerId,
             dateScheduled,
-            price,
-            serviceId,
             address,
             city,
             state,
@@ -128,15 +126,17 @@ const createOrder = async (dateCreated, customerId, dateScheduled, price, servic
             firstName,
             lastName,
             routeId,
-            setupTotal,
-            billingAmount,
-            billingType
-        ])
+            amountPaid,
+            'G',
+            Date.now()
+        ]);
+        
+        const orderId = await db.query(queries.getMostRecentOrderId, [customerId]);
+        return orderId.rows[0].order_id;
     } catch(e) {
         console.log(e);
         return false;
     }
-    
 }
 
 const fufillOrder = async (session) => {
@@ -155,26 +155,12 @@ const fufillOrder = async (session) => {
     //get the route data
     const routeQuery = await db.query(queries.getRouteById, [cart[0].route_id]);
     const route = routeQuery.rows[0];
-    
     //create the order with the parameters extracted from other tables
-    cart.forEach(item => {
-        createOrder(
-            dateCreatedString,
-            client_reference_id,
-            route.route_date,
-            item.price,
-            item.service_id,
-            customer.address,
-            customer.city,
-            customer.state_abbreviation,
-            customer.zip,
-            customer.first_name,
-            customer.last_name,
-            item.route_id,
-            item.setup_fee,
-            item.billing_amount,
-            item.billing_type
-        )
+    const orderId = await createOrder(dateCreatedString, client_reference_id, route.route_date, customer.address, customer.city, customer.state_abbreviation, customer.zip, customer.first_name, customer.last_name, route.route_id, amount_total)
+    console.log(orderId)
+
+    await cart.forEach(item => {
+        db.query(queries.addItem, [orderId, item.service_id, item.price, item.billing_amount, item.billing_type, item.setup_fee])
     })
 
     //clear the user's cart once their orders have been generated
