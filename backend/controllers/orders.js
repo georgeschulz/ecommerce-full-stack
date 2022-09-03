@@ -30,6 +30,7 @@ const getOrderByStripeSession = async (req, res) => {
     const { stripeSession } = req.params;
     const orderQuery = await db.query(queries.getOrderByStripeSession, [stripeSession]);
     const data = orderQuery.rows;
+    console.log(orderQuery.rows)
 
     const { 
         first_name, 
