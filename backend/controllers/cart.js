@@ -104,7 +104,7 @@ const createStripeSession = async (req, res) => {
     const session = await stripe.checkout.sessions.create({
         line_items: lineItems,
         mode: 'payment',
-        success_url: `http://localhost:3000/order`,
+        success_url: `http://localhost:3000/order?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: 'http://localhost:3000/wizard/5',
         automatic_tax: {enabled: false},
         client_reference_id: customerId
@@ -113,7 +113,7 @@ const createStripeSession = async (req, res) => {
     res.status(200).send(session.url);
 }
 
-const createOrder = async (dateCreated, customerId, dateScheduled, address, city, state, zip, firstName, lastName, routeId, amountPaid) => {
+const createOrder = async (dateCreated, customerId, dateScheduled, address, city, state, zip, firstName, lastName, routeId, amountPaid, stripePayment, stripeSession) => {
     try {
         const response = await db.query(queries.createOrder, [
             dateCreated,
@@ -128,7 +128,9 @@ const createOrder = async (dateCreated, customerId, dateScheduled, address, city
             routeId,
             amountPaid,
             'G',
-            Date.now()
+            Date.now(),
+            stripePayment,
+            stripeSession
         ]);
         
         const orderId = await db.query(queries.getMostRecentOrderId, [customerId]);
@@ -140,7 +142,7 @@ const createOrder = async (dateCreated, customerId, dateScheduled, address, city
 }
 
 const fufillOrder = async (session) => {
-    const { amount_total, client_reference_id } = session;
+    const { amount_total, client_reference_id, payment_intent, id } = session;
     const today = new Date();
     const dateCreatedString = today.toISOString().split('T')[0];
 
@@ -156,8 +158,9 @@ const fufillOrder = async (session) => {
     const routeQuery = await db.query(queries.getRouteById, [cart[0].route_id]);
     const route = routeQuery.rows[0];
     //create the order with the parameters extracted from other tables
-    const orderId = await createOrder(dateCreatedString, client_reference_id, route.route_date, customer.address, customer.city, customer.state_abbreviation, customer.zip, customer.first_name, customer.last_name, route.route_id, amount_total)
+    const orderId = await createOrder(dateCreatedString, client_reference_id, route.route_date, customer.address, customer.city, customer.state_abbreviation, customer.zip, customer.first_name, customer.last_name, route.route_id, amount_total, payment_intent, id)
     console.log(orderId)
+    console.log(session)
 
     await cart.forEach(item => {
         db.query(queries.addItem, [orderId, item.service_id, item.price, item.billing_amount, item.billing_type, item.setup_fee])

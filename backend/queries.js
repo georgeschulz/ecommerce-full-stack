@@ -177,8 +177,8 @@ const setAppointmentDate = `
 `;
 
 const createOrder = `
-INSERT INTO orders (date_created, customer_id, date_scheduled, address, city, state, zip, first_name, last_name, route_id, amount_paid, billing_email, time_created) 
-VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, to_timestamp($13 / 1000.0))
+INSERT INTO orders (date_created, customer_id, date_scheduled, address, city, state, zip, first_name, last_name, route_id, amount_paid, billing_email, time_created, stripe_payment, stripe_session_id) 
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, to_timestamp($13 / 1000.0), $14, $15)
 `;
 
 const getRouteById = `
@@ -197,6 +197,43 @@ const getMostRecentOrderId = `
 const addItem = `
     INSERT INTO items (order_id, service_id, complete, price, billing_amount, billing_type, setup_fee)
     VALUES ($1, $2, false, $3, $4, $5, $6);
+`;
+
+const getOrderByStripeSession = `
+    SELECT 
+        customers.first_name,
+        customers.last_name,
+        customers.email,
+        customers.phone,
+        orders.date_created,
+        orders.date_scheduled,
+        orders.address,
+        orders.city,
+        orders.state,
+        orders.zip,
+        orders.amount_paid,
+        techs.tech_first_name,
+        techs.tech_last_name,
+        techs.tech_profile_pic,
+        services.service_name,
+        services.frequency,
+        items.price,
+        items.billing_amount,
+        items.billing_type,
+        items.setup_fee
+    FROM items
+    INNER JOIN orders
+        ON items.order_id = orders.order_id
+    INNER JOIN customers
+        ON orders.customer_id = customers.customer_id
+    INNER JOIN services
+        ON items.service_id = services.service_id
+    INNER JOIN routes
+        ON orders.route_id = routes.route_id
+    INNER JOIN techs
+        ON routes.tech_id = techs.tech_id
+    WHERE stripe_session_id = $1
+    ORDER BY orders.date_created DESC, orders.time_created DESC;
 `
 
 module.exports = {
@@ -234,5 +271,6 @@ module.exports = {
     setAppointmentDate,
     getRouteById,
     getMostRecentOrderId,
-    addItem
+    addItem,
+    getOrderByStripeSession
 }

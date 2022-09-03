@@ -26,7 +26,60 @@ const getOrderById = (req, res) => {
     })
 }
 
+const getOrderByStripeSession = async (req, res) => {
+    const { stripeSession } = req.params;
+    const orderQuery = await db.query(queries.getOrderByStripeSession, [stripeSession]);
+    const data = orderQuery.rows;
+
+    const { 
+        first_name, 
+        last_name, 
+        email, 
+        phone, 
+        date_created, 
+        date_scheduled, 
+        address, 
+        city, 
+        state, 
+        zip, 
+        amount_paid, 
+        tech_first_name, 
+        tech_last_name, 
+        tech_profile_pic } = data[0];
+
+    const orderResponse = {
+        first_name,
+        last_name,
+        email,
+        phone,
+        date_created,
+        date_scheduled,
+        address,
+        city,
+        state,
+        zip,
+        amount_paid,
+        tech_first_name,
+        tech_last_name,
+        tech_profile_pic,
+        items: data.map(item => {
+            const { service_name, frequency, price, billing_amount, billing_type, setup_fee } = item;
+            return {
+                service_name,
+                frequency,
+                price,
+                billing_amount,
+                billing_type,
+                setup_fee
+            }
+        })
+    }
+    res.status(200).send(orderResponse)
+}
+
+
 module.exports = {
     getAllOrders,
-    getOrderById
+    getOrderById,
+    getOrderByStripeSession
 };
