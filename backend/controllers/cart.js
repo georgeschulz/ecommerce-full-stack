@@ -129,7 +129,7 @@ const createStripeSession = async (req, res) => {
     //get the contents of the customer's cart
     const { customerId } = req.params;
     const { date_scheduled } = req.body;
-    
+
     //get the customer so we can make an order with their correct contact/address
     const customerQuery = await db.query(queries.getUserById, [customerId]);
     const customer = customerQuery.rows[0];
@@ -156,16 +156,83 @@ const createStripeSession = async (req, res) => {
     const session = await stripe.checkout.sessions.create({
         line_items: lineItems,
         mode: 'payment',
-        success_url: 'http://localhost:3000/order',
+        success_url: `http://localhost:3000/order`,
         cancel_url: 'http://localhost:3000/wizard/5',
-        automatic_tax: {enabled: false}
+        automatic_tax: {enabled: false},
+        client_reference_id: customerId
     });
 
     res.status(200).send(session.url);
 }
 
-const fufillOrder = (session) => {
-    console.log("Fufilling order");
+const createOrder = async (dateCreated, customerId, dateScheduled, price, serviceId, address, city, state, zip, firstName, lastName, routeId, setupTotal, billingAmount, billingType) => {
+    try {
+        await db.query(queries.createOrder, [
+            dateCreated,
+            customerId,
+            dateScheduled,
+            price,
+            serviceId,
+            address,
+            city,
+            state,
+            zip,
+            firstName,
+            lastName,
+            routeId,
+            setupTotal,
+            billingAmount,
+            billingType
+        ])
+    } catch(e) {
+        console.log(e);
+        return false;
+    }
+    
+}
+
+const fufillOrder = async (session) => {
+    const { amount_total, client_reference_id } = session;
+    const today = new Date();
+    const dateCreatedString = today.toISOString().split('T')[0];
+
+    console.log(client_reference_id)
+    //get the customer's personal information
+    const customerQuery = await db.query(queries.getUserById, [client_reference_id]);
+    const customer = customerQuery.rows[0];
+
+    //get the customer's cart contents
+    const cartQuery = await db.query(queries.getUserCart, [client_reference_id]);
+    const cart = cartQuery.rows;
+
+    //get the route data
+    const routeQuery = await db.query(queries.getRouteById, [cart[0].route_id]);
+    const route = routeQuery.rows[0];
+    console.log(route)
+    
+    //create the order with the parameters extracted from other tables
+    cart.forEach(item => {
+        createOrder(
+            dateCreatedString,
+            client_reference_id,
+            route.route_date,
+            item.price,
+            item.service_id,
+            customer.address,
+            customer.city,
+            customer.state_abbreviation,
+            customer.zip,
+            customer.first_name,
+            customer.last_name,
+            item.route_id,
+            item.setup_fee,
+            item.billing_amount,
+            item.billing_type
+        )
+    })
+
+    //clear the user's cart once their orders have been generated
+    await db.query(queries.clearCart, [client_reference_id])
 }
 
 const recievePayment = (request, response) => {
@@ -183,17 +250,19 @@ const recievePayment = (request, response) => {
                 endpointSecret
             );
         } catch (err) {
-            console.log(`Wehook verification failed`, err.message);
+            console.log(err.message)
             return response.status(400).send();
         }
     }
 
     if(event.type = 'checkout.session.completed') {
         const session = event.data.object;
-        fufillOrder(session);
+        if(session.payment_status === 'paid') {
+            fufillOrder(session);
+        }
+    } else {
+        res.status(400).end()
     }
-
-    response.status(200).send()
 }
 
 module.exports = {

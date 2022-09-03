@@ -97,11 +97,11 @@ const deleteDuplicateCartItems = `
 const clearCart = `
     DELETE FROM cart WHERE customer_id = $1;
 `
-
+/** 
 const createOrder = `
     INSERT INTO orders (service_id, date_created, customer_id, complete, date_scheduled, price, address, city, state, zip, first_name, last_name) VALUES
     ($1, $2, 4, false, $3, $4, $5, $6, $7, $8, $9, $10);
-`
+` */
 
 const getAllOrders = `SELECT * FROM orders`;
 
@@ -179,8 +179,51 @@ const setAppointmentDate = `
     UPDATE cart
     SET route_id = $1
     WHERE customer_id = $2;
-`
+`;
 
+const createOrder = `
+INSERT INTO orders (
+    date_created, 
+    customer_id, 
+    complete, 
+    date_scheduled, 
+    price, 
+    service_id, 
+    address, 
+    city, 
+    state,
+    zip,
+    first_name,
+    last_name,
+    route_id,
+    setup_total,
+    billing_amount,
+    billing_type
+  ) VALUES (
+    $1,
+    $2,
+    false,
+    $3,
+    $4,
+    $5,
+    $6,
+    $7,
+    $8,
+    $9,
+    $10,
+    $11,
+    $12,
+    $13,
+    $14,
+    $15
+  );
+`;
+
+const getRouteById = `
+    SELECT *
+    FROM routes 
+    WHERE route_id = $1;
+`
 
 module.exports = {
     createCustomer,
@@ -214,5 +257,6 @@ module.exports = {
     getAvailability,
     getAreaIdByCustomer,
     deleteDuplicateCartItems,
-    setAppointmentDate
+    setAppointmentDate,
+    getRouteById
 }
