@@ -191,6 +191,7 @@ const recievePayment = (request, response) => {
         const session = event.data.object;
         if(session.payment_status === 'paid') {
             fufillOrder(session);
+            res.status(200).end()
         }
     } else {
         res.status(400).end()

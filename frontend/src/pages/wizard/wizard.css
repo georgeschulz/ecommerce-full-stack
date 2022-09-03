@@ -50,18 +50,26 @@ h1.wizard-header {
     border: 1px solid #DDDDDD;
     box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 5px;
-    padding: 10px 80px;
+    padding: 50px 80px;
     margin: 30px 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.wide-info-box-left {
+    width: 75%;
 }
 
 .order-information-main-content {
     display: flex;
 }
 
-.information-box-wide h2 {
+.left-h2 {
     text-align: left;
     display: flex;
     align-items: center;
+    margin-top: 0px;
+    margin-bottom: 15px;
 }
 
 .order-information {
@@ -89,14 +97,45 @@ h1.wizard-header {
 .technician-tile {
     display: flex;
     justify-content: center;
-    width: 200px;
+    width: 15%;
     flex-wrap: wrap;
     font-weight: 700;
     font-size: 20px;
 }
 
 .tech-photo-large {
-    width: 200px;
+    width: 100%;
     border-radius: 100%;
     margin-bottom: 10px;
+}
+
+.box-row-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.medium-box {
+    border: 1px solid #DDDDDD;
+    box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    padding: 50px 80px;
+    width: 48%;
+    padding-bottom: 60px;
+    line-height: 1.4;
+}
+
+.item-details {
+    width: 100%;
+    background-color: #efefef;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 40px;
+    margin: 10px 15px;
+    border: 1px solid rgb(163, 163, 163);
+}
+
+.confirmed-check {
+    width: 20px;
 }
