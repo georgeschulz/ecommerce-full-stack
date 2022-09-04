@@ -5,12 +5,16 @@ import { useEffect, useState } from "react";
 import WizardTemplate from "./wizardTemplate";
 import { Link } from "react-router-dom";
 import { selectSelectedPest } from "../../features/wizardSlice";
+import { toggleSettingsModal } from "../../features/wizardSlice";
+import { selectShowSettingsModal } from "../../features/wizardSlice";
 
 //wizard two confirms the address information which is necessary for a proper calculation of a quote
 function WizardTwo() {
     //get the user's id from redux (maps to customer Id in the customer table)
     const customerId = useSelector(selectUserId);
     const skipPest = useSelector(selectSelectedPest);
+    const showModal = useSelector(selectShowSettingsModal)
+    const dispatch = useDispatch()
 
     //create the state information to store the results of the fetch request
     const [firstName, setfirstName] = useState('');
@@ -41,7 +45,7 @@ function WizardTwo() {
         }
 
         fetchInfo()
-    }, []);
+    }, [showModal]);
 
     //define the body that will present the user's information
 
@@ -84,7 +88,7 @@ function WizardTwo() {
                         </div>
                     </div>
                     <div className="multipane-button-container" style={{'width': '100%'}}>
-                        <Link to='/settings'><p className="button-medium button-color-secondary">Update</p></Link>
+                        <p onClick={() => dispatch(toggleSettingsModal())} className="button-medium button-color-secondary">Update</p>
                         <Link to={skipPest ? '/wizard/4' : '/wizard/3'}><p className="button-medium button-color-primary">Continue</p></Link>
                     </div>
                 </div>

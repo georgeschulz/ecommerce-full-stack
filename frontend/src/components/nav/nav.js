@@ -4,6 +4,8 @@ import './nav.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectIsAuth } from '../../features/auth';
 import { deauthorize } from '../../features/auth';
+import { toggleSettingsModal } from '../../features/wizardSlice';
+import SettingsModal from '../modal/settingsModal';
 
 function Nav(props) {
     const { homeNav, showSolution, showServices, showAccountSettings } = props;
@@ -28,6 +30,8 @@ function Nav(props) {
     }
 
     return (
+        <div>
+            <SettingsModal />
         <nav>
             <div className='nav-left-group'>
                 {homeNavElement}
@@ -46,8 +50,8 @@ function Nav(props) {
                     <li className={showAccountSettings && !isAuth ? 'nav-item' : 'hidden'}>
                         <Link to="/signup">Signup</Link>
                     </li>
-                    <li className={showAccountSettings && isAuth ? 'nav-item' : 'hidden'}>
-                        <Link to="/settings">Settings</Link>
+                    <li className={showAccountSettings && isAuth ? 'nav-item' : 'hidden'} onClick={() => dispatch(toggleSettingsModal())}>
+                        Settings
                     </li>
                     <li onClick={() => dispatch(deauthorize())}className={showAccountSettings && isAuth ? 'nav-item' : 'hidden'}>
                         <Link to="/login">Logout</Link>
@@ -55,6 +59,7 @@ function Nav(props) {
                 </ul>
             </div>
         </nav>
+        </div>
     )
 }
 

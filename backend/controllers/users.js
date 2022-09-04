@@ -57,8 +57,33 @@ const updateUserById = async (req, res, next) => {
     })
 }
 
+const updateUser = async (req, res) => {
+    const id = req.params.id;
+    const { firstName, lastName, address, city, state, zip, email, phone, squareFeet} = req.body; //get the parameters to update from the request
+
+    try {
+        db.query(queries.updateCustomer, [
+            firstName,
+            lastName,
+            address,
+            city,
+            state,
+            zip,
+            phone,
+            email,
+            squareFeet,
+            id
+        ])
+        res.status(200).send({msg: 'Successful update to the user'})
+    } catch (e) {
+        console.log(e)
+        res.status(400).send({msg: 'Error updating the account'})
+    }
+}
+
 module.exports = {
     getUsers,
     getUserById,
-    updateUserById
+    updateUserById,
+    updateUser
 }

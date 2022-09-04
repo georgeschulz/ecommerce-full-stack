@@ -4,6 +4,6 @@ const controllers = require('../controllers/users');
 
 router.get('/', controllers.getUsers);
 router.get('/:id', controllers.getUserById);
-router.put('/:id', controllers.updateUserById);
+router.put('/:id', controllers.updateUser);
 
 module.exports = router;

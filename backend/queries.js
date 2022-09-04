@@ -236,6 +236,21 @@ const getOrderByStripeSession = `
     ORDER BY orders.date_created DESC, orders.time_created DESC;
 `
 
+const updateCustomer = `
+    UPDATE customers
+        SET
+            first_name = $1,
+            last_name = $2,
+            address = $3,
+            city = $4,
+            state_abbreviation = $5,
+            zip = $6,
+            phone = $7,
+            email = $8,
+            square_feet = $9
+    WHERE customer_id = $10;
+`
+
 module.exports = {
     createCustomer,
     checkUserAuth,
@@ -272,5 +287,6 @@ module.exports = {
     getRouteById,
     getMostRecentOrderId,
     addItem,
-    getOrderByStripeSession
+    getOrderByStripeSession,
+    updateCustomer
 }

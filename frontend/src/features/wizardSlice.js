@@ -5,7 +5,8 @@ const wizardSlice = createSlice({
     initialState: {
         selectedPest: null,
         inWizardFlow: false,
-        redirectUrl: '/'
+        redirectUrl: '/',
+        showSettingsModal: false
     },
     reducers: {
         updateSelectedPest: (state, action) => {
@@ -20,6 +21,9 @@ const wizardSlice = createSlice({
         },
         setRedirectUrl: (state, action) => {
             state.redirectUrl = action.payload.url;
+        },
+        toggleSettingsModal: (state) => {
+            state.showSettingsModal = !state.showSettingsModal;
         }
     }
 })
@@ -27,5 +31,6 @@ const wizardSlice = createSlice({
 
 export const selectSelectedPest = state => state.wizard.selectedPest;
 export const selectIsWarrantyFlow = state => state.wizard.inWizardFlow;
-export const { updateSelectedPest, startWizardFlow, endWizardFlow, setRedirectUrl } = wizardSlice.actions;
+export const selectShowSettingsModal = state => state.wizard.showSettingsModal;
+export const { updateSelectedPest, startWizardFlow, endWizardFlow, setRedirectUrl, toggleSettingsModal } = wizardSlice.actions;
 export default wizardSlice.reducer;

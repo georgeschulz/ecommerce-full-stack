@@ -1,5 +1,10 @@
 .form-group-split {
     display: flex;
+    width: 100%;
+}
+
+.form-group-col {
+    width: 50%;
 }
 
 .form-group-split > .form-group-col + .form-group-col {
