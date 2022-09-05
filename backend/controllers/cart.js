@@ -8,7 +8,8 @@ const endpointSecret = process.env.WEBHOOKSECRET;
 //controller that adds a service to the cart
 const addServiceToCart = async (req, res) => {
     //extract parameters for api call from params (url) and request body
-    const { customer_id, service_id } = req.params;
+    const { service_id } = req.params;
+    const customer_id = req.user.customer_id;
     const { target } = req.body;
     
     if (target.length <= 0) {
@@ -34,7 +35,7 @@ const addServiceToCart = async (req, res) => {
 
 //Controller to return the cart contents of a specific user joined with more information about the service
 const getCartContents = (req, res) => {
-    const { customer_id } = req.params;
+    const customer_id = req.user.customer_id;
     db.query(queries.getUserCart, [customer_id], (err, results) => {
         if (err) {
             res.status(404).send('Error performing request. Please try again')
@@ -63,7 +64,7 @@ const deleteCartItem = (req, res) => {
 
 //controller to clear the cart of all contents for a specific user
 const clearCart = (req, res) => {
-    const { customer_id } = req.params;
+    const customer_id = req.user.customer_id;
     db.query(queries.clearCart, [customer_id], (err, result) => {
         if (err) {
             res.status(404).send(err);
@@ -75,16 +76,10 @@ const clearCart = (req, res) => {
 
 const createStripeSession = async (req, res) => {
     //get the contents of the customer's cart
-    const { customerId } = req.params;
-    const { date_scheduled } = req.body;
+    const customer_id = req.user.customer_id;
 
-    //get the customer so we can make an order with their correct contact/address
-    const customerQuery = await db.query(queries.getUserById, [customerId]);
-    const customer = customerQuery.rows[0];
-
-    const cartQuery = await db.query(queries.getUserCart, [customerId]);
+    const cartQuery = await db.query(queries.getUserCart, [customer_id]);
     const cart = cartQuery.rows;
-
 
     //structure the cart contents to prepare them for stripe's formatting
     const lineItems = await cart.map(item => {
@@ -106,8 +101,8 @@ const createStripeSession = async (req, res) => {
         mode: 'payment',
         success_url: `http://localhost:3000/order?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: 'http://localhost:3000/wizard/5',
-        automatic_tax: {enabled: false},
-        client_reference_id: customerId
+        automatic_tax: { enabled: false },
+        client_reference_id: customer_id
     });
 
     res.status(200).send(session.url);
@@ -159,8 +154,6 @@ const fufillOrder = async (session) => {
     const route = routeQuery.rows[0];
     //create the order with the parameters extracted from other tables
     const orderId = await createOrder(dateCreatedString, client_reference_id, route.route_date, customer.address, customer.city, customer.state_abbreviation, customer.zip, customer.first_name, customer.last_name, route.route_id, amount_total, payment_intent, id)
-    console.log(orderId)
-    console.log(session)
 
     await cart.forEach(item => {
         db.query(queries.addItem, [orderId, item.service_id, item.price, item.billing_amount, item.billing_type, item.setup_fee])
