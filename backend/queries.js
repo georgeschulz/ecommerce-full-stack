@@ -7,7 +7,8 @@ const checkUserAuth = `SELECT * FROM customers WHERE email = $1`;
 const getUsers = `SELECT * FROM customers`;
 
 const getUserById = `
-SELECT 
+SELECT
+    customer_id,
     first_name,
     last_name,
     address,

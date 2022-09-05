@@ -1,10 +1,9 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');//passport configuration that allows passport to lookup information in db and compare it to user submissions
 const db = require('../db');
 const queries = require('../queries');
 
-//create the passport local strategy
 passport.use(new LocalStrategy(function verify(username, password, cb) {
     //query the databse to find if a customer matches the submitted email, used as a username
     db.query(queries.checkUserAuth, [username], function (err, result) {
@@ -30,10 +29,12 @@ passport.use(new LocalStrategy(function verify(username, password, cb) {
 
 //serialize the user
 passport.serializeUser(function(user, done) {
-    done(null, user);
+    done(null, user.customerID);
 })
 
 //deserialize the user
-passport.deserializeUser(function(user, done) {
-    done(null, user);
+passport.deserializeUser(function(customerID, done) {
+    db.query(queries.getUserById, [customerID], (err, result) => {
+        done(null, result.rows[0])
+    })
 })

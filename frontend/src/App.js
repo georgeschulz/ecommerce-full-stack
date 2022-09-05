@@ -25,7 +25,7 @@ function App() {
           <Route path="/" element={<Home />} />
           
           <Route path="/catalog" element={<Catalog />} />
-          
+          <Route path="/wizard/2" element={<WizardTwo />} />
           <Route path="/wizard/1" element={<WizardOne />} />
           <Route element={<RestrictedRoutes />}>
             <Route path="/login" element={<Login user={user} setUser={setUser} />} />
@@ -33,7 +33,7 @@ function App() {
           </Route>
           <Route element={<PrivateRoutes />}>
             <Route path="/settings" element={<Settings />} />
-            <Route path="/wizard/2" element={<WizardTwo />} />
+            
             <Route path="/wizard/3" element={<WizardThree />} />
             <Route path="/wizard/4" element={<WizardFour />} />
             <Route path="/wizard/5" element={<WizardFive />} />

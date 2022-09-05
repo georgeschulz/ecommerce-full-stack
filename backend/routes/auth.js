@@ -11,8 +11,11 @@ registerRouter.post('/', controllers.registerUser);
 loginRouter.get('/', (req, res) => res.send('Login page'))
 
 //authenticate the user
-loginRouter.post('/', passport.authenticate('local', { 
-}), controllers.loginUser);
+loginRouter.post('/', passport.authenticate('local'), (req, res, next) => {
+    const customerId = req.user.customerID;
+    res.status(200).send({id: customerId});
+    next();
+}); 
 
 module.exports = {
     registerRouter,
