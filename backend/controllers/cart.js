@@ -38,10 +38,10 @@ const getCartContents = (req, res) => {
     const customer_id = req.user.customer_id;
     db.query(queries.getUserCart, [customer_id], (err, results) => {
         if (err) {
-            res.status(404).send('Error performing request. Please try again')
+            res.status(404).send([])
         } else if (results.rows.length <= 0) {
             //return an empty array if the customer_id had no corresponding contents
-            res.status(404).send([])
+            res.status(200).send([])
         } else {
             //send back the results if successful
             res.status(200).send(results.rows)

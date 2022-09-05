@@ -6,13 +6,14 @@ import { useSelector } from "react-redux";
 import { selectUserId } from "../../features/auth";
 import { useDispatch } from "react-redux";
 import MediumButton from "./mediumButton";
+import { updateMostRecentItem } from "../../features/cart";
 
 function AddToCartButton({serviceId, target}) {
     const customerId = useSelector(selectUserId);
     const dispatch = useDispatch();
     const handleClick = async () => {
         const response = await addToCartApi(serviceId, target, customerId);
-        dispatch(addToCart(response.data.data))
+        dispatch(updateMostRecentItem({mostRecentItem: "add-" + serviceId}))
     }
     
     return (

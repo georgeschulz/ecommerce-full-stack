@@ -6,11 +6,15 @@ import { selectIsAuth } from '../../features/auth';
 import { deauthorize } from '../../features/auth';
 import { toggleSettingsModal } from '../../features/wizardSlice';
 import SettingsModal from '../modal/settingsModal';
+import cartImg from '../../assets/icons/cart.png'
+import { toggleCartModal } from '../../features/cart';
+import CartModal from '../modal/cartModal';
 
 function Nav(props) {
     const { homeNav, showSolution, showServices, showAccountSettings } = props;
     let isAuth = useSelector(selectIsAuth)
     let homeNavElement;
+    let cart;
     const dispatch = useDispatch();
 
     //conditionally render what the home navigation should be - i.e. should it be the main site of company of store?
@@ -29,9 +33,21 @@ function Nav(props) {
             break;
     }
 
+    if(isAuth && showAccountSettings)  {
+        cart = (
+            <li className='nav-item cart-component' onClick={() => dispatch(toggleCartModal())}>
+                <img src={cartImg} className="cart-icon" />
+                Cart
+            </li>
+        );
+    } else {
+        cart = null;
+    }
+
     return (
         <div>
             <SettingsModal />
+            <CartModal />
         <nav>
             <div className='nav-left-group'>
                 {homeNavElement}
@@ -50,6 +66,7 @@ function Nav(props) {
                     <li className={showAccountSettings && !isAuth ? 'nav-item' : 'hidden'}>
                         <Link to="/signup">Signup</Link>
                     </li>
+                    {cart}
                     <li className={showAccountSettings && isAuth ? 'nav-item' : 'hidden'} onClick={() => dispatch(toggleSettingsModal())}>
                         Settings
                     </li>

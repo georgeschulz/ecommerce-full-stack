@@ -3,15 +3,27 @@ import { createSlice } from "@reduxjs/toolkit";
 const cartSlice = createSlice({
     name: 'cart',
     initialState: {
-        cart: []
+        cart: [],
+        showCartModal: false,
+        mostRecentItem: null
     },
     reducers: {
-        addToCart: (state, action) => {
-            state.cart.push(action.payload)
+        updateCart: (state, action) => {
+            state.cart = action.payload.cart;
+        },
+        toggleCartModal: (state) => {
+            state.showCartModal = !state.showCartModal;
+        },
+        updateMostRecentItem: (state, action) => {
+            state.mostRecentItem = action.payload.mostRecentItem;
         }
     }
 })
 
 export const selectCart = state => state.cart.cart;
-export const { addToCart } = cartSlice.actions;
+export const selectShowCartModal = state => state.cart.showCartModal;
+export const selectIsCartEmtpy = state => state.cart.cart.length === 0;
+export const selectNumCartItems = state => state.cart.cart.length;
+export const selectMostRecentItem = state => state.cart.mostRecentItem;
+export const { updateCart, toggleCartModal, updateMostRecentItem } = cartSlice.actions;
 export default cartSlice.reducer;

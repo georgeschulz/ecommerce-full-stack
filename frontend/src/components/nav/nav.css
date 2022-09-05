@@ -38,3 +38,12 @@ a {
 .nav-item {
     cursor: pointer;
 }
+
+.cart-icon {
+    width: 20px;
+}
+
+.cart-component {
+    display: flex;
+    align-items: center;
+}
