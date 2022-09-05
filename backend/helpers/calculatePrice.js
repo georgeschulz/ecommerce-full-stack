@@ -23,7 +23,7 @@ const calculatePrice = async (service, userId, target) => {
 
     service["price"] = cost;
     service["billing_amount"] = service.billing_type === 'month' 
-        ? cost * (frequency /12) 
+        ? Math.round(cost * (frequency /12) * 100) /100 
         : cost;
     
     return service;
