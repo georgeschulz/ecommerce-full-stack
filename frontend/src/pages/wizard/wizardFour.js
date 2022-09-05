@@ -44,7 +44,7 @@ function WizardFour() {
                                     benefits={service.benefits}
                                     serviceId={service.service_id}
                                     key={service.service_id}
-                                    width='460px'
+                                    width='520px'
                                     showImg={true}
                                     setupFee={service.setup_fee}
                                     buttons={[

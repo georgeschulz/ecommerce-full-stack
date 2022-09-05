@@ -13,6 +13,8 @@ import { selectIsCartEmtpy } from "../../features/cart";
 import CartItem from "../cartItem/cartItem";
 import { selectNumCartItems } from "../../features/cart";
 import { selectSetupTotal } from "../../features/cart";
+import ProceedToScheduleButton from "../buttons/proceedToScheduleButton";
+import ClearCartButton from "../buttons/clearCartButton";
 
 function CartModal() {
     const showModal = useSelector(selectShowCartModal);
@@ -64,6 +66,10 @@ function CartModal() {
                         <div className="summary-row-stats">
                             <p><b>Today Due Today: </b>${total}</p>
                             <p><b>Services in Cart: </b>{numItems}</p>
+                        </div>
+                        <div className="summary-row-buttons">
+                            <ClearCartButton />
+                            <ProceedToScheduleButton />
                         </div>
                     </div>
                   </div>)

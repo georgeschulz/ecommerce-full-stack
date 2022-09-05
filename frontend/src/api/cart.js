@@ -17,3 +17,7 @@ export const getCartContents = async () => {
 export const deleteCartItem = async(cartId) => {
     return await axios.delete(`${endpoint}/cart/${cartId}`);
 }
+
+export const clearCart = async (async) => {
+    return await axios.delete(`${endpoint}/cart/clear`)
+}
