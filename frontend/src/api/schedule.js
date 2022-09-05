@@ -1,5 +1,6 @@
 import axios from "axios";
 import { endpoint } from "./config";
+axios.defaults.withCredentials = true;
 
 export const getCities = async () => {
     return await axios.get(`${endpoint}/schedule/cities`);
