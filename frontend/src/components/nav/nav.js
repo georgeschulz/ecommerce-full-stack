@@ -9,10 +9,12 @@ import SettingsModal from '../modal/settingsModal';
 import cartImg from '../../assets/icons/cart.png'
 import { toggleCartModal } from '../../features/cart';
 import CartModal from '../modal/cartModal';
+import { selectNumCartItems } from '../../features/cart';
 
 function Nav(props) {
     const { homeNav, showSolution, showServices, showAccountSettings } = props;
     let isAuth = useSelector(selectIsAuth)
+    let numCartItems = useSelector(selectNumCartItems);
     let homeNavElement;
     let cart;
     const dispatch = useDispatch();
@@ -37,7 +39,7 @@ function Nav(props) {
         cart = (
             <li className='nav-item cart-component' onClick={() => dispatch(toggleCartModal())}>
                 <img src={cartImg} className="cart-icon" />
-                Cart
+                Cart ({numCartItems})
             </li>
         );
     } else {
