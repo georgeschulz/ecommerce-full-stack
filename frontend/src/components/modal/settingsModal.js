@@ -65,11 +65,11 @@ function SettingsModal() {
             <form className="update-form" onSubmit={(e) => handleSubmit(e)}>
                 <div className="form-group-split form-group">
                     <div className="form-group-col">
-                        <label for="firstName">First Name</label>
+                        <label htmlFor="firstName">First Name</label>
                         <input type="text" name="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
                     </div>
                     <div className="form-group-col">
-                        <label for="lastName">Last Name</label>
+                        <label htmlFor="lastName">Last Name</label>
                         <input type="text" name="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} />
                     </div>
                 </div>
@@ -82,29 +82,29 @@ function SettingsModal() {
                     <input type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                 </div>
                 <div className="form-group">
-                    <label for="address">Address</label>
+                    <label htmlFor="address">Address</label>
                     <input type="text" name="address" value={address} onChange={(e) => setAddress(e.target.value)} />
                 </div>
                 <div className="form-group form-group-split">
                     <div className="form-group-col">
-                        <label for="city">City</label>
+                        <label htmlFor="city">City</label>
                         <select name="city" value={city} onChange={(e) => setCity(e.target.value)}>
-                            {cityOptions.map(element => {
-                                return (<option value={element}>{element}</option>)
+                            {cityOptions.map((element, i) => {
+                                return (<option key={i} value={element}>{element}</option>)
                             })}
                         </select>
                     </div>
                     <div className="form-group-col">
-                        <label for="state">State</label>
+                        <label htmlFor="state">State</label>
                         <input type="text" name="state" value={state} onChange={(e) => setState(e.target.value)} />
                     </div>
                     <div className="form-group-col">
-                        <label for="zip">Zip Code</label>
+                        <label htmlFor="zip">Zip Code</label>
                         <input type="text" name="zip" value={zip} onChange={(e) => setZip(e.target.value)} />
                     </div>
                 </div>
                 <div className="form-group">
-                    <label for="squareFeet">Home Size in Square Feet</label>
+                    <label htmlFor="squareFeet">Home Size in Square Feet</label>
                     <input type="text" name="squareFeet" value={squareFeet} onChange={(e) => setSquareFeet(e.target.value)} />
                 </div>
                 <div className="button-row">
