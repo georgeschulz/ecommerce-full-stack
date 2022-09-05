@@ -12,7 +12,7 @@ const getAllServices = (req, res) => {
 
 //get a specific service by the service ID
 const getServiceById = (req, res) => {
-    const id = req.params.id;
+    const user = req.user.customer_id;
     db.query(queries.getServiceById, [id], (err, results) => {
         if (err) throw err;
         res.status(200).send(results.rows);
@@ -21,16 +21,13 @@ const getServiceById = (req, res) => {
 
 //route to get the information for the servicesTile component (calculate the price of the service and provide the details of the service like benefits and testimonials)
 const getServiceDetailedByTarget = async (req, res) => {
-    const user = req.params.id;
+    const user = req.user.customer_id;
+    let squareFeet = req.user.square_feet;
     const target = req.query.target;
     
     //get the services data
     let serviceQuery = await db.query(queries.getServiceByTarget, [target]);
     let services = serviceQuery.rows;
-    
-    //get squareFeet for the user
-    let squareFeetQuery = await db.query(queries.getSquareFeet, [user]);
-    let squareFeet = squareFeetQuery.rows[0].square_feet;
 
     //get pest tier
     let pestTierQuery = await db.query(queries.getPestTier, [target])
@@ -60,16 +57,13 @@ const getServiceDetailedByTarget = async (req, res) => {
 }
 
 const getDetailedServiceById = async (req, res) => {
-    const user = req.params.id;
+    const user = req.user.customer_id;
+    let squareFeet = req.user.square_feet;
     const serviceId = req.params.serviceId;
     const target = req.query.target;
 
     let serviceQuery = await db.query(queries.getServiceById, [serviceId]);
     let service = serviceQuery.rows;
-
-    //get squareFeet for the user
-    let squareFeetQuery = await db.query(queries.getSquareFeet, [user]);
-    let squareFeet = squareFeetQuery.rows[0].square_feet;
 
     //get pest tier
     let pestTierQuery = await db.query(queries.getPestTier, [target])

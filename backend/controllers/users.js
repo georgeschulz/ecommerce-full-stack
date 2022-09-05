@@ -18,7 +18,6 @@ const getUserById = (req, res) => {
         } else if (results.rows.length <= 0) {
             res.status(404).send({users: []}); //send an error when no customers are found for that ID
         } else {
-            console.log('success')
             res.send({users: results.rows});
         }
     })
