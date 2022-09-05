@@ -25,5 +25,6 @@ export const selectShowCartModal = state => state.cart.showCartModal;
 export const selectIsCartEmtpy = state => state.cart.cart.length === 0;
 export const selectNumCartItems = state => state.cart.cart.length;
 export const selectMostRecentItem = state => state.cart.mostRecentItem;
+export const selectSetupTotal = state => state.cart.cart.length > 0 ? state.cart.cart.map(item => Number(item.setup_fee)).reduce((prev, current) => prev + current, 0) : 0;
 export const { updateCart, toggleCartModal, updateMostRecentItem } = cartSlice.actions;
 export default cartSlice.reducer;

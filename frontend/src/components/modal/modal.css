@@ -62,3 +62,14 @@
     justify-content: center;
     padding: 20px;
 }
+
+.summary-row {
+    margin-top: 35px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.summary-row-stats {
+    font-size: 20px;
+    line-height: 1.9;
+}

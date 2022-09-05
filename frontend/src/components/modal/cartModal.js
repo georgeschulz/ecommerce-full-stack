@@ -11,6 +11,8 @@ import { getCartContents } from "../../api/cart";
 import { updateCart } from "../../features/cart";
 import { selectIsCartEmtpy } from "../../features/cart";
 import CartItem from "../cartItem/cartItem";
+import { selectNumCartItems } from "../../features/cart";
+import { selectSetupTotal } from "../../features/cart";
 
 function CartModal() {
     const showModal = useSelector(selectShowCartModal);
@@ -18,7 +20,9 @@ function CartModal() {
     const isCartEmpty = useSelector(selectIsCartEmtpy)
     //get the most recent item to force re-render of cart state from db anytime an item is added to the cart
     const mostRecentItem = useSelector(selectMostRecentItem);
+    const numItems = useSelector(selectNumCartItems);
     const dispatch = useDispatch();
+    const total = useSelector(selectSetupTotal)
 
     useEffect(() => {
         (async () => {
@@ -56,6 +60,12 @@ function CartModal() {
                             />
                         )
                     })}
+                    <div className="summary-row">
+                        <div className="summary-row-stats">
+                            <p><b>Today Due Today: </b>${total}</p>
+                            <p><b>Services in Cart: </b>{numItems}</p>
+                        </div>
+                    </div>
                   </div>)
             }
         </Modal>
