@@ -13,7 +13,7 @@ loginRouter.get('/', (req, res) => res.send('Login page'))
 //authenticate the user
 loginRouter.post('/', passport.authenticate('local'), (req, res, next) => {
     const customerId = req.user.customerID;
-    res.status(200).send({id: customerId});
+    res.status(200).send();
     next();
 }); 
 

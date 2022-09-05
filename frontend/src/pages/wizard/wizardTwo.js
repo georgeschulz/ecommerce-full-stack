@@ -1,4 +1,3 @@
-import { selectUserId } from "../../features/auth";
 import { getAccountInfo } from "../../api/getAccountInfo";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
@@ -11,7 +10,6 @@ import { selectShowSettingsModal } from "../../features/wizardSlice";
 //wizard two confirms the address information which is necessary for a proper calculation of a quote
 function WizardTwo() {
     //get the user's id from redux (maps to customer Id in the customer table)
-    const customerId = useSelector(selectUserId);
     const skipPest = useSelector(selectSelectedPest);
     const showModal = useSelector(selectShowSettingsModal)
     const dispatch = useDispatch()
@@ -31,7 +29,7 @@ function WizardTwo() {
     useEffect(() => {
         //naming an async request here because useEffect can not be passed an async fxn - that would force it to return a promise, whereas it requires a cleanup fxn to return
         const fetchInfo = async () => {
-            const response = await getAccountInfo(customerId);
+            const response = await getAccountInfo();
             const data = response.users[0];
             setfirstName(data.first_name);
             setLastName(data.last_name);

@@ -2,7 +2,7 @@ import { endpoint } from "./config";
 import axios from "axios";
 axios.defaults.withCredentials = true;
 
-export const getAccountInfo = async (customerId) => {
+export const getAccountInfo = async () => {
     const response = await fetch(`${endpoint}/users`,
         {credentials: 'include'}
     );
@@ -10,6 +10,6 @@ export const getAccountInfo = async (customerId) => {
     return data;
 }
 
-export const updateAccountInfo = async (customerId, data) => {
+export const updateAccountInfo = async (data) => {
     return await axios.put(`${endpoint}/users`, data);
 }

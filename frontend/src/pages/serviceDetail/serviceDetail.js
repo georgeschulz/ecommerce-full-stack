@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import { getDetailedServiceInfoByServiceId } from "../../api/getServices";
 import { useSelector } from 'react-redux';
 import { selectSelectedPest } from "../../features/wizardSlice";
-import { selectUserId } from "../../features/auth";
 import Nav from "../../components/nav/nav";
 import './serviceDetail.css'
 import MediumServiceBox from "../../components/mediumServiceBox/mediumServiceBox";
@@ -16,7 +15,6 @@ import Gallery from "../../components/gallery/gallery";
 
 function ServiceDetail() {
     const { serviceId } = useParams();
-    const userId = useSelector(selectUserId);
     const target = useSelector(selectSelectedPest);
     const [service, setService] = useState(defaultTesting);
 
@@ -24,7 +22,7 @@ function ServiceDetail() {
     useEffect(() => {
         (async () => {
             try {
-                const response = await getDetailedServiceInfoByServiceId(userId, target, serviceId);
+                const response = await getDetailedServiceInfoByServiceId(target, serviceId);
                 setService(response.data)
             } catch (e) {
                 console.log(e)

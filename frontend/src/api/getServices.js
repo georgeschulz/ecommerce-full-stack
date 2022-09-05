@@ -8,10 +8,10 @@ export const getServices = async (target, programType, warranty) => {
     return data;
 }
 
-export const getDetailedServiceInfo = async (customerId, target) => {
+export const getDetailedServiceInfo = async (target) => {
     return await axios.get(`${endpoint}/services/detail?target=${target}`);
 }
 
-export const getDetailedServiceInfoByServiceId = async (customerId, target, serviceId) => {
+export const getDetailedServiceInfoByServiceId = async (target, serviceId) => {
     return await axios.get(`${endpoint}/services/detail/${serviceId}?target=${target}`)
 }

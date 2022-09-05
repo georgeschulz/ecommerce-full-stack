@@ -5,10 +5,10 @@ export const getCities = async () => {
     return await axios.get(`${endpoint}/schedule/cities`);
 }
 
-export const getAvailability = async (customerId) => {
-    return await axios.get(`${endpoint}/schedule/availability/user/${customerId}`);
+export const getAvailability = async () => {
+    return await axios.get(`${endpoint}/schedule/availability`);
 }
 
-export const setAppointmentDate = async (routeId, customerId) => {
-    return await axios.put(`${endpoint}/schedule/user/${customerId}/route/${routeId}`);
+export const setAppointmentDate = async (routeId) => {
+    return await axios.put(`${endpoint}/schedule/route/${routeId}`);
 }

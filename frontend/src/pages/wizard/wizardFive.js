@@ -12,7 +12,7 @@ function WizardFive() {
     useEffect(() => {
         (async () => {
             try {
-                const response = await getAvailability(customerId);
+                const response = await getAvailability();
                 setAvailabilty(response.data);
             } catch (err) {
                 console.log(err)

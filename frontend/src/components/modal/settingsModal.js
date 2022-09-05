@@ -4,14 +4,11 @@ import { useSelector } from "react-redux";
 import { selectShowSettingsModal } from "../../features/wizardSlice";
 import { useEffect, useState } from "react";
 import { getAccountInfo } from "../../api/getAccountInfo";
-import { selectUserId } from "../../features/auth";
 import { useDispatch } from "react-redux";
 import { updateAccountInfo } from "../../api/getAccountInfo";
 
 function SettingsModal() {
     const showModal = useSelector(selectShowSettingsModal);
-    const userId = useSelector(selectUserId);
-    const [account, setAccount] = useState({});
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [phone, setPhone] = useState('');
@@ -29,7 +26,7 @@ function SettingsModal() {
         //load in the customer's contact information for them to update
         (async () => {
             try {
-                const response = await getAccountInfo(userId);
+                const response = await getAccountInfo();
                 const data = response.users[0];
                 setFirstName(data.first_name);
                 setLastName(data.last_name);
@@ -50,7 +47,7 @@ function SettingsModal() {
         e.preventDefault();
         dispatch(toggleSettingsModal());
         try {
-            await updateAccountInfo(userId, { firstName, lastName, phone, email, address, city, state, zip, squareFeet })
+            await updateAccountInfo({ firstName, lastName, phone, email, address, city, state, zip, squareFeet })
         } catch (e) {
             console.log(e)
         }

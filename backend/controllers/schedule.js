@@ -12,7 +12,7 @@ const getCities = async (req, res) => {
 
 const getAvailability = async (req, res) => {
     const today = new Date();
-    const { customerId } = req.params;
+    const customerId = req.user.customer_id;
 
     //start by getting the area ID of the customer
     const areaIdQuery = await db.query(queries.getAreaIdByCustomer, [customerId]);
@@ -28,7 +28,8 @@ const getAvailability = async (req, res) => {
 }
 
 const setAppointmentDate = async (req, res) => {
-    const { customerId, routeId } = req.params;
+    const { routeId } = req.params;
+    const customerId = req.user.customer_id;
 
     //update every cart item based on the customer Id by linking the record to a route listed in the route table
     const appointmentQuery = await db.query(queries.setAppointmentDate, [routeId, customerId]);
