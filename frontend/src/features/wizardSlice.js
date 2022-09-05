@@ -1,15 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const targetFromLocalStorage = () => {
+    const target = localStorage.getItem('target');
+    return target;
+}
+
 const wizardSlice = createSlice({
     name: 'wizard',
     initialState: {
-        selectedPest: null,
+        selectedPest: targetFromLocalStorage(),
         inWizardFlow: false,
         redirectUrl: '/',
         showSettingsModal: false
     },
     reducers: {
         updateSelectedPest: (state, action) => {
+            localStorage.setItem('target', action.payload.pest)
             state.selectedPest = action.payload.pest
         },
         startWizardFlow: (state, action) => {
