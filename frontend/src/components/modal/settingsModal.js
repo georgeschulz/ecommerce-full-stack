@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { getAccountInfo } from "../../api/getAccountInfo";
 import { useDispatch } from "react-redux";
 import { updateAccountInfo } from "../../api/getAccountInfo";
+import { getCities } from "../../api/schedule";
 
 function SettingsModal() {
     const showModal = useSelector(selectShowSettingsModal);
@@ -19,7 +20,7 @@ function SettingsModal() {
     const [zip, setZip] = useState('');
     const [squareFeet, setSquareFeet] = useState('');
     const [error, setError] = useState('');
-    const [cityOptions, setCityOptions] = useState(['test']);
+    const [cityOptions, setCityOptions] = useState(['Error']);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -42,6 +43,17 @@ function SettingsModal() {
             }
         })();
     }, [showModal]);
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const response = await getCities();
+                setCityOptions(response.data)
+            } catch (err) {
+                console.log(err)
+            }
+        })();
+    }, [])
 
     const handleSubmit = async (e) => {
         e.preventDefault();

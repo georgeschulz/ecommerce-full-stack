@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './pages/login';
 import Home from './pages/home/home';
 import Catalog from './pages/catalog/catalog';
-import Settings from './pages/settings/settings';
 import PrivateRoutes from './components/privateRoutes/privateRoutes';
 import RestrictedRoutes from './components/restrictedRoutes/restrictedRoutes';
 import SignupPage from './pages/signup/signup';
@@ -17,8 +16,6 @@ import ServiceDetail from './pages/serviceDetail/serviceDetail';
 import ConfirmationPage from './pages/wizard/confirmation';
 
 function App() {
-  const [user, setUser] = useState(null);
-
   return (
     <Router>
       <Routes>
@@ -27,11 +24,10 @@ function App() {
           <Route path="/catalog" element={<Catalog />} />
           <Route path="/wizard/1" element={<WizardOne />} />
           <Route element={<RestrictedRoutes />}>
-            <Route path="/login" element={<Login user={user} setUser={setUser} />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignupPage />} />
           </Route>
           <Route element={<PrivateRoutes />}>
-            <Route path="/settings" element={<Settings />} />
             <Route path="/wizard/2" element={<WizardTwo />} />
             <Route path="/wizard/3" element={<WizardThree />} />
             <Route path="/wizard/4" element={<WizardFour />} />

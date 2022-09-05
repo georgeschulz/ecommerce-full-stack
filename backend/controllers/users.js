@@ -26,9 +26,14 @@ const getUserById = (req, res) => {
 const updateUser = async (req, res) => {
     const id = req.user.customer_id;
     const { firstName, lastName, address, city, state, zip, email, phone, squareFeet} = req.body; //get the parameters to update from the request
+    let area_id = 1;
 
+    //get the area id to make sure scheduling works properly down the road
     try {
-        db.query(queries.updateCustomer, [
+        const areaIdQuery = await db.query(queries.getAreaId, [city]);
+        area_id = areaIdQuery.rows[0].area_id;
+
+        await db.query(queries.updateCustomer, [
             firstName,
             lastName,
             address,
@@ -38,13 +43,17 @@ const updateUser = async (req, res) => {
             phone,
             email,
             squareFeet,
+            area_id,
             id
         ])
-        res.status(200).send({msg: 'Successful update to the user'})
-    } catch (e) {
-        console.log(e)
-        res.status(400).send({msg: 'Error updating the account'})
+    } catch (err) {
+        console.log(err)
+        res.status(400).send({msg: 'Error updating the account'})   
+   
     }
+
+
+    res.status(200).send({msg: 'Successful update to the user'})
 }
 
 module.exports = {

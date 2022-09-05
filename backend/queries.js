@@ -248,8 +248,9 @@ const updateCustomer = `
             zip = $6,
             phone = $7,
             email = $8,
-            square_feet = $9
-    WHERE customer_id = $10;
+            square_feet = $9,
+            area_id = $10
+    WHERE customer_id = $11;
 `
 
 module.exports = {
