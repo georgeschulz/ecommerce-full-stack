@@ -20,7 +20,7 @@ function WizardFive() {
         })();
     }, [])
 
-    const availabilityContent = availability.map((slot, i) => {
+    const availabilityContent = availability.length === 0 ? 'Sorry. It looks like we are all booked up for now. Please give our office a call at 703-111-1111 to join our waitlist.' : availability.map((slot, i) => {
         return (
             <AvailabilityDetails
                 key={slot.route_id}

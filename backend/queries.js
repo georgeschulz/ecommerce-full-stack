@@ -165,6 +165,7 @@ INNER JOIN areas
     ON techs.tech_id = areas.tech_id
 WHERE area_id = $1
     AND route_date >= $2
+    AND slots_available > 0
 ORDER BY route_date ASC;`
 
 const getAreaIdByCustomer = `
