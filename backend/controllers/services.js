@@ -21,12 +21,8 @@ const getServiceById = (req, res) => {
 
 const getAllServicesDetails = async (req, res) => {
     try {
-        const user = req.user.customer_id;
-
         let serviceQuery = await db.query(queries.selectAllServices);
         let services = serviceQuery.rows;
-
-        
 
         for (const service in services) {
             let serviceToUpdate = services[service];

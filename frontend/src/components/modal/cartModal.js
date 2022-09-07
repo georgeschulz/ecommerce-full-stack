@@ -15,11 +15,13 @@ import { selectNumCartItems } from "../../features/cart";
 import { selectSetupTotal } from "../../features/cart";
 import ProceedToScheduleButton from "../buttons/proceedToScheduleButton";
 import ClearCartButton from "../buttons/clearCartButton";
+import { selectIsAuth } from "../../features/auth";
 
 function CartModal() {
     const showModal = useSelector(selectShowCartModal);
     const cart = useSelector(selectCart);
-    const isCartEmpty = useSelector(selectIsCartEmtpy)
+    const isCartEmpty = useSelector(selectIsCartEmtpy);
+    const isAuth = useSelector(selectIsAuth)
     //get the most recent item to force re-render of cart state from db anytime an item is added to the cart
     const mostRecentItem = useSelector(selectMostRecentItem);
     const numItems = useSelector(selectNumCartItems);
@@ -27,15 +29,18 @@ function CartModal() {
     const total = useSelector(selectSetupTotal)
 
     useEffect(() => {
-        (async () => {
-            try {
-                const response = await getCartContents();
-                dispatch(updateCart({cart: response.data}));
-            } catch (e) {
-                dispatch(updateCart({cart: []}))
-            }
-            
-        })();
+        //to avoid calling when the user is not authorized, check is auth, then load the cart's contents
+        if(isAuth) {
+            (async () => {
+                try {
+                    const response = await getCartContents();
+                    dispatch(updateCart({cart: response.data}));
+                } catch (e) {
+                    dispatch(updateCart({cart: []}))
+                }
+                
+            })();   
+        }
     }, [mostRecentItem]);
 
     return (

@@ -57,7 +57,7 @@ function Catalog() {
                 <h2 className="page-header">Our Offerings</h2>
                 <div className="filters">
                     <div className="filter-group">
-                        <label for="target">Pest Type</label>
+                        <label htmlFor="target">Pest Type</label>
                         <select name="target" className="filter" value={pestFilter} onChange={(e) => setPestFilter(e.target.value)}>
                             <option value="all"></option>
                             {pestList.map((pest, i) => {
@@ -68,7 +68,7 @@ function Catalog() {
                         </select>
                     </div>
                     <div className="filter-group">
-                        <label for="serviceType">Service Type</label>
+                        <label htmlFor="serviceType">Service Type</label>
                         <select name="serviceType" className="filter" value={recurringFilter} onChange={(e) => setRecurringFilter(e.target.value)}>
                             <option value="all"></option>
                             <option value="once">One Time</option>
@@ -76,7 +76,7 @@ function Catalog() {
                         </select>
                     </div>
                     <div className="filter-group">
-                        <label for="warranty">Includes Warranty?</label>
+                        <label htmlFor="warranty">Includes Warranty?</label>
                         <select name="warranty" className="filter" value={warrantyFilter} onChange={(e)=> setWarrantyFilter(e.target.value)}>
                             <option value="all"></option>
                             <option value="yes">Yes</option>

@@ -8,9 +8,12 @@ import { useDispatch } from "react-redux";
 import { updateAccountInfo } from "../../api/getAccountInfo";
 import { getCities } from "../../api/schedule";
 import { deauthorize } from "../../features/auth";
+import { selectIsAuth } from "../../features/auth";
 
 function SettingsModal() {
     const showModal = useSelector(selectShowSettingsModal);
+    const isAuth = useSelector(selectIsAuth);
+
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [phone, setPhone] = useState('');
@@ -25,25 +28,27 @@ function SettingsModal() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        //load in the customer's contact information for them to update
-        (async () => {
-            try {
-                const response = await getAccountInfo();
-                const data = response.users[0];
-                setFirstName(data.first_name);
-                setLastName(data.last_name);
-                setPhone(data.phone);
-                setEmail(data.email);
-                setAddress(data.address);
-                setCity(data.city);
-                setState(data.state_abbreviation);
-                setZip(data.zip);
-                setSquareFeet(data.square_feet);
-            } catch (e) {
-                console.log(e)
-                dispatch(deauthorize())
-            }
-        })();
+        //load in the customer's contact information for them to update if they are authorized
+        if(isAuth) {
+            (async () => {
+                try {
+                    const response = await getAccountInfo();
+                    const data = response.users[0];
+                    setFirstName(data.first_name);
+                    setLastName(data.last_name);
+                    setPhone(data.phone);
+                    setEmail(data.email);
+                    setAddress(data.address);
+                    setCity(data.city);
+                    setState(data.state_abbreviation);
+                    setZip(data.zip);
+                    setSquareFeet(data.square_feet);
+                } catch (e) {
+                    console.log(e)
+                    dispatch(deauthorize())
+                }
+            })();
+        }
     }, [showModal]);
 
     useEffect(() => {

@@ -54,7 +54,7 @@ const checkIsAuthenticated = (req, res, next) => {
 app.use('/register', express.json(), registerRouter);
 app.use('/login', express.json(), loginRouter);
 app.use('/users', express.json(), checkIsAuthenticated, usersRouter);
-app.use('/services', express.json(), checkIsAuthenticated, servicesRouter);
+app.use('/services', express.json(), servicesRouter);
 app.use('/cart', checkIsAuthenticated, cartRouter);
 app.use('/orders', checkIsAuthenticated, express.json(), ordersRouter);
 app.use('/target', express.json(), targetRouter);

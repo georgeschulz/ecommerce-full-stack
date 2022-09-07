@@ -22,9 +22,8 @@ function SmallServiceHighlightRow() {
     }, [])
 
     const serviceBoxes = services.map(service => {
-        console.log(service)
         const description = service.description != null ? service.description.slice(0, 100) : '';
-        const descriptionElement = <p>{description} <a className="link">... click to read more</a></p>
+        const descriptionElement = <span>{description} <span className="link">... click to read more</span></span>
 
         return (
             <SmallServiceBox
