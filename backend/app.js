@@ -57,7 +57,7 @@ app.use('/services', express.json(), checkIsAuthenticated, servicesRouter);
 app.use('/cart', checkIsAuthenticated, cartRouter);
 app.use('/orders', checkIsAuthenticated, express.json(), ordersRouter);
 app.use('/target', express.json(), targetRouter);
-app.use('/schedule',checkIsAuthenticated, express.json(),  scheduleRouter);
+app.use('/schedule', express.json(),  scheduleRouter);
 
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);

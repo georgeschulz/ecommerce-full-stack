@@ -1,8 +1,10 @@
 import MediumButton from "./mediumButton";
 
-function GetServiceInfoButton({ serviceId }) {
+function GetServiceInfoButton({ serviceId, showPricing }) {
     return (
-        <MediumButton redirect={`/service/${serviceId}`} level="secondary">
+        <MediumButton 
+            redirect={showPricing ? `/service/${serviceId}` : `/service/general/${serviceId}`} 
+            level={showPricing ? "secondary" : "primary"}>
             Learn More
         </MediumButton>
     );

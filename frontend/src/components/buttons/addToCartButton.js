@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import MediumButton from "./mediumButton";
 import { updateMostRecentItem } from "../../features/cart";
 
-function AddToCartButton({serviceId, target}) {
+function AddToCartButton({serviceId, target, show}) {
     const customerId = useSelector(selectUserId);
     const dispatch = useDispatch();
     const handleClick = async () => {
@@ -17,7 +17,7 @@ function AddToCartButton({serviceId, target}) {
     }
     
     return (
-        <div onClick={() => handleClick()}>
+        <div onClick={() => handleClick()} className={show ? null : 'hidden'}>
             <MediumButton redirect={'/wizard/5'} level='primary'>
                 Add to Cart
             </MediumButton>

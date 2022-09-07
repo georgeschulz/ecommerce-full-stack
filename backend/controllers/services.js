@@ -19,12 +19,78 @@ const getServiceById = (req, res) => {
     });
 }
 
+const getAllServicesDetails = async (req, res) => {
+    try {
+        const user = req.user.customer_id;
+
+        let serviceQuery = await db.query(queries.selectAllServices);
+        let services = serviceQuery.rows;
+
+        for (const service in services) {
+            let serviceToUpdate = services[service];
+            let serviceId = serviceToUpdate.service_id;
+            //get the benefits
+            let benefitsQuery = await db.query(queries.getBenefitsByServiceId, [serviceId])
+            serviceToUpdate['benefits'] = benefitsQuery.rows;
+            //get the testimonials
+            let testimonialQuery = await db.query(queries.getTestimonialByServiceId, [serviceId]);
+            serviceToUpdate['testimonials'] = testimonialQuery.rows;
+        }
+
+        res.status(200).send(services);
+    } catch (e) {
+        console.log(e);
+        res.status(404).send()
+    }
+}
+
+const getAllServicesDetailsById = async (req, res) => {
+    try {
+        console.log('hit')
+        const user = req.user.customer_id;
+        const serviceId = req.params.serviceId;
+
+        let serviceQuery = await db.query(queries.getServiceById, [serviceId]);
+        let services = serviceQuery.rows;
+
+        for (const service in services) {
+            let serviceToUpdate = services[service];
+            let serviceId = serviceToUpdate.service_id;
+            //get the benefits
+            let benefitsQuery = await db.query(queries.getBenefitsByServiceId, [serviceId])
+            serviceToUpdate['benefits'] = benefitsQuery.rows;
+            //get the testimonials
+            let testimonialQuery = await db.query(queries.getTestimonialByServiceId, [serviceId]);
+            serviceToUpdate['testimonials'] = testimonialQuery.rows;
+        }
+
+        //get a list of covered pests from the services_pests table
+        let pestsQuery = await db.query(queries.getCoveredPestsByServiceId, [serviceId]);
+        const coveredPests = pestsQuery.rows.map(pest => pest["pests"]);
+
+        //get supporting images for slideshow
+        const imageQuery = await db.query(queries.getServiceImages, [serviceId]);
+        const supportingImages = imageQuery.rows.filter(image => image.type === 'Supporting');
+        const bannerImg = imageQuery.rows.filter(image => image.type === 'Banner')[0];
+
+        res.status(200).send({
+            ...services[0],
+            bannerImg,
+            supportingImages,
+            coveredPests
+        });
+    } catch (e) {
+        console.log(e);
+        res.status(404).send()
+    }
+}
+
 //route to get the information for the servicesTile component (calculate the price of the service and provide the details of the service like benefits and testimonials)
 const getServiceDetailedByTarget = async (req, res) => {
     const user = req.user.customer_id;
     let squareFeet = req.user.square_feet;
     const target = req.query.target;
-    
+
     //get the services data
     let serviceQuery = await db.query(queries.getServiceByTarget, [target]);
     let services = serviceQuery.rows;
@@ -34,7 +100,7 @@ const getServiceDetailedByTarget = async (req, res) => {
     let tier = pestTierQuery.rows[0].tier;
 
     //loop through each of the services and benefits and testimonials to them
-    for(const service in services) {
+    for (const service in services) {
         let serviceToUpdate = services[service];
         let serviceId = serviceToUpdate.service_id;
         //get the benefits
@@ -48,12 +114,12 @@ const getServiceDetailedByTarget = async (req, res) => {
     const servicesWithPricing = [];
 
     //calculate pricing based on the completed detailed data object
-    for(let service in services) {
-        const serviceWithPrice = await calculatePrice(services[service], user, target); 
+    for (let service in services) {
+        const serviceWithPrice = await calculatePrice(services[service], user, target);
         servicesWithPricing.push(serviceWithPrice)
     }
 
-    res.status(200).send({services: servicesWithPricing})
+    res.status(200).send({ services: servicesWithPricing })
 }
 
 const getDetailedServiceById = async (req, res) => {
@@ -90,7 +156,7 @@ const getDetailedServiceById = async (req, res) => {
 
     //pull out the data to restructure for response
     const {
-        service_id, 
+        service_id,
         service_name,
         price_per_square_foot,
         billing_type,
@@ -105,9 +171,9 @@ const getDetailedServiceById = async (req, res) => {
         billing_amount,
         frequency
     } = await serviceWithPricing;
-    
+
     res.status(200).send({
-        service_id, 
+        service_id,
         service_name,
         price_per_square_foot,
         billing_type,
@@ -126,7 +192,7 @@ const getDetailedServiceById = async (req, res) => {
         coveredPests,
         supportingImages,
         bannerImg
-    } );
+    });
 }
 
 
@@ -135,5 +201,7 @@ module.exports = {
     getAllServices,
     getServiceById,
     getServiceDetailedByTarget,
-    getDetailedServiceById
+    getDetailedServiceById,
+    getAllServicesDetails,
+    getAllServicesDetailsById
 }

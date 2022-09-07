@@ -1,19 +1,25 @@
 import Nav from "../../components/nav/nav";
 import Footer from "../../components/footer/footer";
 import './catalog.css';
-import { getServices } from "../../api/getServices";
+import { getDetailedServiceInfoWithoutPricing } from "../../api/getServices";
 import { useEffect, useState } from "react";
+import MediumServiceBox from "../../components/mediumServiceBox/mediumServiceBox";
+import AddToCartButton from "../../components/buttons/addToCartButton";
+import GetServiceInfoButton from "../../components/buttons/getServiceInfoButton";
+import { selectIsAuth } from "../../features/auth";
+import { useSelector } from "react-redux";
+import { selectSelectedPest } from "../../features/wizardSlice";
 
 function Catalog(props) {
     const [services, setServices] = useState([]);
+    const isAuth = useSelector(selectIsAuth);
+    const isPestSelected = useSelector(selectSelectedPest) != false;
 
     useEffect(() => {
-        const fetchServices = async () => {
-            const result = await getServices(1,2,3);
-            setServices(result);
-        }
-
-        fetchServices(); 
+        (async () => {
+            const response = await getDetailedServiceInfoWithoutPricing();
+            setServices(response.data);
+        })(); 
     }, [])
 
     return (
@@ -50,6 +56,39 @@ function Catalog(props) {
                     </div>
                 </div>
             </header>
+            <div className="services-container">
+                {services.length === 0
+                    ? ''
+                    : services.map(service => {
+                        return (
+                            <MediumServiceBox
+                                    includePricing={false}
+                                    isPestSelected={isPestSelected}
+                                    serviceName={service.service_name}
+                                    billingType={service.billing_type}
+                                    billingAmount={service.billing_amount}
+                                    frequency={service.frequency}
+                                    benefits={service.benefits}
+                                    serviceId={service.service_id}
+                                    key={service.service_id}
+                                    width='520px'
+                                    showImg={true}
+                                    setupFee={service.setup_fee}
+                                    startsAt={service.base_price}
+                                    path={service.img_path}
+                                    buttons={[
+                                        <AddToCartButton
+                                            serviceId={service.service_id}
+                                            show={isPestSelected && isAuth}
+                                        />, 
+                                        <GetServiceInfoButton serviceId={service.service_id} showPricing={isPestSelected & isAuth} />
+                                    ]}
+                                />
+                        )
+                    })
+                }
+            </div>
+
             <Footer />
         </div>
     )

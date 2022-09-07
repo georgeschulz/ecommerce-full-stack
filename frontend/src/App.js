@@ -14,13 +14,15 @@ import WizardFour from './pages/wizard/wizardFour';
 import WizardFive from './pages/wizard/wizardFive';
 import ServiceDetail from './pages/serviceDetail/serviceDetail';
 import ConfirmationPage from './pages/wizard/confirmation';
+import ServiceDetailNoPricing from './pages/serviceDetail/serviceDetailNoPricing';
 
 function App() {
   return (
     <Router>
       <Routes>
           <Route path="/" element={<Home />} />
-          
+          <Route path="/service/:serviceId" element={<ServiceDetail />} />
+          <Route path="/service/general/:serviceId" element={<ServiceDetailNoPricing />} />
           <Route path="/catalog" element={<Catalog />} />
           <Route path="/wizard/1" element={<WizardOne />} />
           <Route element={<RestrictedRoutes />}>
@@ -32,7 +34,6 @@ function App() {
             <Route path="/wizard/3" element={<WizardThree />} />
             <Route path="/wizard/4" element={<WizardFour />} />
             <Route path="/wizard/5" element={<WizardFive />} />
-            <Route path="/service/:serviceId" element={<ServiceDetail />} />
             <Route path="/order" element={<ConfirmationPage />} />
           </Route>
 

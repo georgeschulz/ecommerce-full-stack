@@ -37,6 +37,7 @@ function WizardFour() {
                         {servicesFound.length > 0 ? servicesFound.map(service => {
                             return (
                                 <MediumServiceBox
+                                    includePricing={true}
                                     serviceName={service.service_name}
                                     billingType={service.billing_type}
                                     billingAmount={service.billing_amount}
@@ -47,12 +48,16 @@ function WizardFour() {
                                     width='520px'
                                     showImg={true}
                                     setupFee={service.setup_fee}
+                                    path={service.img_path}
                                     buttons={[
                                         <AddToCartButton
                                             serviceId={service.service_id}
                                             target={target}
                                         />, 
-                                        <GetServiceInfoButton serviceId={service.service_id} />
+                                        <GetServiceInfoButton 
+                                            serviceId={service.service_id} 
+                                            showPricing={false}
+                                        />
                                     ]}
                                 />)
                         }) : ''}

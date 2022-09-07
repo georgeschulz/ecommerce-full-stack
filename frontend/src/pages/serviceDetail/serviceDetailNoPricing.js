@@ -12,31 +12,27 @@ import CoveredPests from "../../components/coveredPests/coveredPests";
 import Footer from "../../components/footer/footer";
 import TestimonialBlock from "../../components/testimonialBlock/testimonialBlock";
 import Gallery from "../../components/gallery/gallery";
-import { useNavigate } from "react-router-dom";
+import { getDetailedServiceInfoWithoutPricingById } from "../../api/getServices";
 import { selectIsAuth } from "../../features/auth";
 
-function ServiceDetail() {
+function ServiceDetailNoPricing() {
     const { serviceId } = useParams();
     const target = useSelector(selectSelectedPest);
     const [service, setService] = useState(defaultTesting);
-    const isAuth = useSelector(selectIsAuth)
-
-    const navigate = useNavigate();
+    const isPestSelected = useSelector(selectSelectedPest) != false;
+    const isAuth = useSelector(selectIsAuth);
 
     useEffect(() => {
         (async () => {
             try {
-                if(!isAuth || !target) {
-                    throw new Error('Please log into receive detailed pricing data');
-                }
-                const response = await getDetailedServiceInfoByServiceId(target, serviceId);
+                const response = await getDetailedServiceInfoWithoutPricingById(serviceId);
                 setService(response.data)
             } catch (e) {
                 console.log(e)
-                navigate('/service/general/' + serviceId)
+                setService(defaultTesting)
             }
         })();
-    }, [isAuth])
+    }, [isPestSelected, isAuth])
 
     return (
         <div>
@@ -54,6 +50,8 @@ function ServiceDetail() {
             </div>
             <div className="service-highlights">
                 <MediumServiceBox
+                    includePricing={isAuth && isPestSelected}
+                    startsAt={service.base_price}
                     serviceName="Highlights"
                     billingType={service.billing_type}
                     billingAmount={service.billing_amount}
@@ -103,4 +101,4 @@ function ServiceDetail() {
     )
 }
 
-export default ServiceDetail;
+export default ServiceDetailNoPricing;

@@ -11,7 +11,8 @@ const wizardSlice = createSlice({
         selectedPest: targetFromLocalStorage(),
         inWizardFlow: false,
         redirectUrl: '/',
-        showSettingsModal: false
+        showSettingsModal: false,
+        referringServiceId: null
     },
     reducers: {
         updateSelectedPest: (state, action) => {
@@ -30,6 +31,9 @@ const wizardSlice = createSlice({
         },
         toggleSettingsModal: (state) => {
             state.showSettingsModal = !state.showSettingsModal;
+        },
+        setReferringServiceId: (state, action) => {
+            state.referringServiceId = action.payload.referringServiceId;
         }
     }
 })
@@ -38,5 +42,6 @@ const wizardSlice = createSlice({
 export const selectSelectedPest = state => state.wizard.selectedPest;
 export const selectIsWarrantyFlow = state => state.wizard.inWizardFlow;
 export const selectShowSettingsModal = state => state.wizard.showSettingsModal;
-export const { updateSelectedPest, startWizardFlow, endWizardFlow, setRedirectUrl, toggleSettingsModal } = wizardSlice.actions;
+export const selectReferringServiceId = state => state.wizard.referringServiceId;
+export const { updateSelectedPest, startWizardFlow, endWizardFlow, setRedirectUrl, toggleSettingsModal, setReferringServiceId } = wizardSlice.actions;
 export default wizardSlice.reducer;
