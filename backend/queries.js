@@ -251,7 +251,9 @@ const updateCustomer = `
             square_feet = $9,
             area_id = $10
     WHERE customer_id = $11;
-`
+`;
+
+const getFeaturedServices = `SELECT * FROM services WHERE featured = true LIMIT 4`;
 
 module.exports = {
     createCustomer,
@@ -290,5 +292,6 @@ module.exports = {
     getMostRecentOrderId,
     addItem,
     getOrderByStripeSession,
-    updateCustomer
+    updateCustomer,
+    getFeaturedServices
 }

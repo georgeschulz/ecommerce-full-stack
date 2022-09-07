@@ -1,55 +1,38 @@
 import SmallServiceBox from "../smallServiceBox/smallServiceBox";
-import lawnshield from '../../assets/lawnshield.JPG';
-import rodentStation from '../../assets/rodentbait.JPG';
-import sentricon from '../../assets/sentricon.jpeg';
-import deweb from '../../assets/deweb.JPG';
 import { selectIsAuth } from "../../features/auth";
 import { selectSelectedPest } from "../../features/wizardSlice";
 import { useSelector } from "react-redux";
+import { useState, useEffect } from "react";
+import { getFeaturedServices } from "../../api/getServices";
 
 function SmallServiceHighlightRow() {
     const isPestSelected = useSelector(selectSelectedPest);
     const isAuth = useSelector(selectIsAuth);
-
-    const services = [
-        { 
-            id: 'all',
-            name: 'All in One',
-            subtext: 'Covers 33 common pests, termites, rodents',
-            img: rodentStation,
-            link: 1
-        },
-        {
-            id: 'ls',
-            name: 'LawnShield',
-            subtext: 'Covers mosquitoes and ticks during summer',
-            img: lawnshield,
-            link: 5
-        },
-        {
-            id: 'sentricon',
-            name: 'Sentricon Baiting',
-            subtext: 'Year-round active termite baiting',
-            img: sentricon,
-            link: 7
-        },
-        {
-            id: 'castle',
-            name: 'Castle Program',
-            subtext: 'Covers rodents, pests and an annual termite inspection',
-            img: deweb,
-            link: 2
-        }
-    ];
+    const [services, setServices] = useState([]);
+   
+    useEffect(() => {
+        (async () => {
+            try {
+                const response = await getFeaturedServices();
+                setServices(response.data)
+            } catch (e) {
+                console.log(e)
+            }
+        })()
+    }, [])
 
     const serviceBoxes = services.map(service => {
+        console.log(service)
+        const description = service.description != null ? service.description.slice(0, 100) : '';
+        const descriptionElement = <p>{description} <a className="link">... click to read more</a></p>
+
         return (
             <SmallServiceBox
-                key={service.id}
-                name={service.name}
-                subtext={service.subtext}
-                img={service.img}
-                link={isAuth && isPestSelected ? `/service/${service.link}` : `/service/general/${service.link}`}
+                key={service.service_id}
+                name={service.service_name}
+                subtext={descriptionElement}
+                img={`/images/services/${service.img_path}`}
+                link={isAuth && isPestSelected ? `/service/${service.service_id}` : `/service/general/${service.service_id}`}
             />
         )
     })

@@ -195,6 +195,19 @@ const getDetailedServiceById = async (req, res) => {
     });
 }
 
+const getFeaturedServices = async (req, res) => {
+    try {
+        const featuredServiceQuery = await db.query(queries.getFeaturedServices);
+        console.log(featuredServiceQuery)
+        const featuredServices = featuredServiceQuery.rows;
+
+        res.status(200).send(featuredServices)
+    } catch (e) {
+        console.log(e);
+        res.status(404).send({msg: 'No featured services were found'});
+    }
+    
+}
 
 
 module.exports = {
@@ -203,5 +216,6 @@ module.exports = {
     getServiceDetailedByTarget,
     getDetailedServiceById,
     getAllServicesDetails,
-    getAllServicesDetailsById
+    getAllServicesDetailsById,
+    getFeaturedServices
 }

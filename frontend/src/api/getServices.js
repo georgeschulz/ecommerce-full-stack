@@ -23,3 +23,7 @@ export const getDetailedServiceInfoWithoutPricing = async () => {
 export const getDetailedServiceInfoWithoutPricingById = async (serviceId) => {
     return await axios.get(`${endpoint}/services/${serviceId}`)
 }
+
+export const getFeaturedServices = async () => {
+    return await axios.get(`${endpoint}/services/featured`);
+}
