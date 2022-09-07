@@ -17,6 +17,7 @@ const session = require('express-session'); //creates a session
 var cors = require('cors');  
 const passport = require('passport');
 const store = require('./services/session');
+const checkIsAuthenticated = require('./helpers/checkIsAuthenticated');
 
 app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 app.use(require('cookie-parser')()); // this middleware parses cookies sent with HTTP requests
@@ -42,20 +43,14 @@ app.use(passport.session());
 
 require('./services/passport'); //add in passport confirguation
 
-//protect routes where the user is not authorized
-const checkIsAuthenticated = (req, res, next) => {
-    if(req.isAuthenticated()) {
-        return next();
-    }
-    res.status(401).send({msg: 'User is an authorized to access this resource', link: '/login'});
-}
+
 
 //add routes as middleware
 app.use('/register', express.json(), registerRouter);
 app.use('/login', express.json(), loginRouter);
 app.use('/users', express.json(), checkIsAuthenticated, usersRouter);
 app.use('/services', express.json(), servicesRouter);
-app.use('/cart', checkIsAuthenticated, cartRouter);
+app.use('/cart', cartRouter);
 app.use('/orders', checkIsAuthenticated, express.json(), ordersRouter);
 app.use('/target', express.json(), targetRouter);
 app.use('/schedule', express.json(),  scheduleRouter);

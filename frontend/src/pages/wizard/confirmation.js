@@ -21,12 +21,6 @@ function ConfirmationPage() {
 
     return (
         <div>
-            <Nav
-                homeNav="store"
-                showSolution={true}
-                showServices={true}
-                showAccountSettings={true}
-            />
             <div className="wizard-content-container">
                 <h1>Your Order Has Been Placed</h1>
                 <p>A copy of your receipt has been sent to your email at {order.email}.</p>

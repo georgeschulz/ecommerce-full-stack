@@ -174,7 +174,6 @@ const fufillOrder = async (session) => {
 
 const recievePayment = (request, response) => {
     let event = request.body;
-
     if(endpointSecret) {
         const signature = request.headers['stripe-signature'];
         try {
@@ -193,10 +192,10 @@ const recievePayment = (request, response) => {
         const session = event.data.object;
         if(session.payment_status === 'paid') {
             fufillOrder(session);
-            res.status(200).end()
+            response.status(200).end()
         }
     } else {
-        res.status(400).end()
+        response.status(400).end()
     }
 }
 
