@@ -2,6 +2,7 @@ const express = require('express');
 const passport = require('passport');
 const registerRouter = express.Router();
 const loginRouter = express.Router();
+const logoutRouter = express.Router();
 const controllers = require('../controllers/auth');
 
 //creates a new user
@@ -17,7 +18,15 @@ loginRouter.post('/', passport.authenticate('local'), (req, res, next) => {
     next();
 }); 
 
+logoutRouter.post('/', (req, res, next) => {
+    req.logout((err) => {
+        if(err) next(err);
+        next();
+    })
+})
+
 module.exports = {
     registerRouter,
-    loginRouter
+    loginRouter,
+    logoutRouter
 };

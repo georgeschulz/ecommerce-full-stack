@@ -7,6 +7,7 @@ import { getAccountInfo } from "../../api/getAccountInfo";
 import { useDispatch } from "react-redux";
 import { updateAccountInfo } from "../../api/getAccountInfo";
 import { getCities } from "../../api/schedule";
+import { deauthorize } from "../../features/auth";
 
 function SettingsModal() {
     const showModal = useSelector(selectShowSettingsModal);
@@ -40,6 +41,7 @@ function SettingsModal() {
                 setSquareFeet(data.square_feet);
             } catch (e) {
                 console.log(e)
+                dispatch(deauthorize())
             }
         })();
     }, [showModal]);

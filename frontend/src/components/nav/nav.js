@@ -13,6 +13,7 @@ import { selectNumCartItems } from '../../features/cart';
 import { startWizardFlow } from '../../features/wizardSlice';
 import { setReferringServiceId } from '../../features/wizardSlice';
 import { useNavigate } from 'react-router-dom';
+import { onLogout } from '../../api/login';
 
 function Nav(props) {
     const { homeNav, showSolution, showServices, showAccountSettings } = props;
@@ -43,6 +44,15 @@ function Nav(props) {
         dispatch(setReferringServiceId({referringServiceId: null}));
         dispatch(startWizardFlow());
         navigate(isAuth ? 'wizard/2' : 'wizard/1')
+    }
+
+    const handleLogout = async () => {
+        try {
+            dispatch(deauthorize())
+            await onLogout();
+        } catch (e) {
+            console.log('Could not deauthorize: ', e)
+        }
     }
 
     if(isAuth && showAccountSettings)  {
@@ -82,7 +92,7 @@ function Nav(props) {
                     <li className={showAccountSettings && isAuth ? 'nav-item' : 'hidden'} onClick={() => dispatch(toggleSettingsModal())}>
                         Settings
                     </li>
-                    <li onClick={() => dispatch(deauthorize())}className={showAccountSettings && isAuth ? 'nav-item' : 'hidden'}>
+                    <li onClick={() => handleLogout()} className={showAccountSettings && isAuth ? 'nav-item' : 'hidden'}>
                         <Link to="/login">Logout</Link>
                     </li>
                 </ul>

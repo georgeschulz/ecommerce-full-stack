@@ -54,7 +54,6 @@ const getAllServicesDetails = async (req, res) => {
 
 const getAllServicesDetailsById = async (req, res) => {
     try {
-        console.log('hit')
         const user = req.user.customer_id;
         const serviceId = req.params.serviceId;
 
@@ -206,7 +205,6 @@ const getDetailedServiceById = async (req, res) => {
 const getFeaturedServices = async (req, res) => {
     try {
         const featuredServiceQuery = await db.query(queries.getFeaturedServices);
-        console.log(featuredServiceQuery)
         const featuredServices = featuredServiceQuery.rows;
 
         res.status(200).send(featuredServices)
