@@ -1,4 +1,3 @@
-import Nav from "../../components/nav/nav";
 import Footer from "../../components/footer/footer";
 import './catalog.css';
 import { getDetailedServiceInfoWithoutPricing } from "../../api/getServices";
@@ -9,51 +8,87 @@ import GetServiceInfoButton from "../../components/buttons/getServiceInfoButton"
 import { selectIsAuth } from "../../features/auth";
 import { useSelector } from "react-redux";
 import { selectSelectedPest } from "../../features/wizardSlice";
+import { getPestList } from "../../api/getTargets";
 
-function Catalog(props) {
+function Catalog() {
     const [services, setServices] = useState([]);
+    const [pestList, setPestList] = useState([]);
+    const [pestFilter, setPestFilter] = useState("all");
+    const [recurringFilter, setRecurringFilter] = useState("all");
+    const [warrantyFilter, setWarrantyFilter] = useState("all")
     const isAuth = useSelector(selectIsAuth);
     const isPestSelected = useSelector(selectSelectedPest) != false;
+
+    const filteredServices = 
+        services
+            .map(service => {
+                return {
+                    ...service,
+                    isRecurring: [service.isRecurring ? "recurring" : "once", "all"],
+                    includesWarranty: [service.includesWarranty ? "yes" : "no", "all"],
+                    covered_pests: [...service.covered_pests, "all"]
+                }
+            })
+            .filter(service => service.covered_pests.includes(pestFilter))
+            .filter(service => service.isRecurring.includes(recurringFilter))
+            .filter(service => service.includesWarranty.includes(warrantyFilter));
 
     useEffect(() => {
         (async () => {
             const response = await getDetailedServiceInfoWithoutPricing();
             setServices(response.data);
         })(); 
+    }, []);
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const response = await getPestList();
+                setPestList(response.data);
+            } catch (e) {
+                console.log(e);
+            }
+        })();
     }, [])
 
     return (
         <div>
-            <header>
+            <header className="filters">
                 <h2 className="page-header">Our Offerings</h2>
                 <div className="filters">
                     <div className="filter-group">
                         <label for="target">Pest Type</label>
-                        <select name="target" className="filter">
-                            <option value="ants">Ants</option>
-                            <option value="rodents">Rodents</option>
+                        <select name="target" className="filter" value={pestFilter} onChange={(e) => setPestFilter(e.target.value)}>
+                            <option value="all"></option>
+                            {pestList.map((pest, i) => {
+                                return (
+                                    <option key={i} value={pest.value}>{pest.text}</option>
+                                )
+                            })}
                         </select>
                     </div>
                     <div className="filter-group">
                         <label for="serviceType">Service Type</label>
-                        <select name="serviceType" className="filter">
-                            <option value="One Time">One Time</option>
-                            <option value="Recurring">Ongoing Program</option>
+                        <select name="serviceType" className="filter" value={recurringFilter} onChange={(e) => setRecurringFilter(e.target.value)}>
+                            <option value="all"></option>
+                            <option value="once">One Time</option>
+                            <option value="recurring">Ongoing Program</option>
                         </select>
                     </div>
                     <div className="filter-group">
                         <label for="warranty">Includes Warranty?</label>
-                        <select name="warranty" className="filter">
+                        <select name="warranty" className="filter" value={warrantyFilter} onChange={(e)=> setWarrantyFilter(e.target.value)}>
+                            <option value="all"></option>
                             <option value="yes">Yes</option>
-                            <option value="No">No</option>
+                            <option value="no">No</option>
                         </select>
                     </div>
                 </div>
             </header>
             <div className="services-container">
-                {services.length === 0
-                    ? ''
-                    : services.map(service => {
+                {filteredServices.length === 0
+                    ? <p>Sorry, looks like there are no services with these parameters.</p>
+                    : filteredServices.map(service => {
                         return (
                             <MediumServiceBox
                                     includePricing={false}

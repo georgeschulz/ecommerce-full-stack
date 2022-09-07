@@ -9,3 +9,7 @@ export const getHomeTargets = async () => {
 export const getWizardTargets = async () => {
     return await axios.get(`${endpoint}/target/wizard`);
 }
+
+export const getPestList = async () => {
+    return await axios.get(`${endpoint}/target/select`);
+}

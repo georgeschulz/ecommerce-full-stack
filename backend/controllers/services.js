@@ -26,6 +26,8 @@ const getAllServicesDetails = async (req, res) => {
         let serviceQuery = await db.query(queries.selectAllServices);
         let services = serviceQuery.rows;
 
+        
+
         for (const service in services) {
             let serviceToUpdate = services[service];
             let serviceId = serviceToUpdate.service_id;
@@ -35,7 +37,13 @@ const getAllServicesDetails = async (req, res) => {
             //get the testimonials
             let testimonialQuery = await db.query(queries.getTestimonialByServiceId, [serviceId]);
             serviceToUpdate['testimonials'] = testimonialQuery.rows;
+
+            //get a list of covered pests from the services_pests table
+            let pestsQuery = await db.query(queries.getCoveredPestsByServiceId, [serviceId]);
+            const coveredPests = pestsQuery.rows.map(pest => pest["pests"]);
+            serviceToUpdate['covered_pests'] = coveredPests;
         }
+
 
         res.status(200).send(services);
     } catch (e) {

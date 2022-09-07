@@ -1,7 +1,8 @@
-header {
+header.filters {
     display: flex;
     justify-content: space-between;
     padding: 0px 40px;
+    width: 100%;
 }
 
 h2.page-header {
@@ -11,8 +12,6 @@ h2.page-header {
 .filters {
     display: flex;
     justify-content: space-between;
-    width: 50%;
-    min-width: 700px;
     padding: 15px;
 }
 

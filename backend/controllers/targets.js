@@ -15,7 +15,20 @@ const getTargetsForWizardPage = async (req, res) => {
     res.status(200).send(result)
 }
 
+const getPestList = async (req, res) => {
+    try {
+        const pestListQuery = await db.query(queries.getPestList);
+        const pestList = pestListQuery.rows.map(pest => {
+            return {"text": pest.pest_name, "value": pest.pest_name}
+        });
+        res.status(200).send(pestList)
+    } catch (e) {
+        res.status(404).send({msg: 'Error loading pest list', data: [{text: "", value: null}]})
+    }
+}
+
 module.exports = {
     getTargetsForHomePage,
-    getTargetsForWizardPage
+    getTargetsForWizardPage,
+    getPestList
 }

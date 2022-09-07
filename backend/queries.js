@@ -255,6 +255,8 @@ const updateCustomer = `
 
 const getFeaturedServices = `SELECT * FROM services WHERE featured = true LIMIT 4`;
 
+const getPestList = `SELECT pest_name FROM pests;`
+
 module.exports = {
     createCustomer,
     checkUserAuth,
@@ -293,5 +295,6 @@ module.exports = {
     addItem,
     getOrderByStripeSession,
     updateCustomer,
-    getFeaturedServices
+    getFeaturedServices,
+    getPestList
 }
