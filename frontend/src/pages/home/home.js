@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './home.css';
 import logo from '../../assets/better-logo.jpeg';
-import Nav from '../../components/nav/nav';
 import explainer from '../../assets/Howitworks.png';
 import PestButtonRowSmall from '../../components/pestButtonRowSmall/pestButtonRowSmall';
 import SmallServiceHighlightRow from '../../components/smallServiceHighlightRow/smallServiceHighlightRow';
@@ -11,27 +10,24 @@ import { useEffect } from 'react';
 import { endWizardFlow } from '../../features/wizardSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectIsAuth } from '../../features/auth';
+import { setReferringServiceId } from '../../features/wizardSlice';
+import StartWizardButton from '../../components/buttons/startWizardButton';
 
 function Home() {
     const dispatch = useDispatch();
     const isAuth = useSelector(selectIsAuth)
     useEffect(() => {
         dispatch(endWizardFlow())
+        dispatch(setReferringServiceId({referringServiceId: null}))
     }, [])
 
     return (
         <div>
-            <Nav
-                homeNav="main"
-                showSolution={true}
-                showServices={true}
-                showAccountSettings={true}
-            />
             <section id="hero">
                 <img src={logo} />
                 <h1>Solve Your Pest Problem How You Want To</h1>
                 <p className='subheader'>No pushy salespeople. Get your custom quote and schedule without ever having to call. Take the time you need to compare your options how YOU like to buy.</p>
-                <Link to={isAuth ? '/wizard/2' : '/wizard/1'} className='button-large'>Get My Quote</Link>
+                <StartWizardButton />
             </section>
             <section id="issues">
                 <h2>Browse by Issue</h2>

@@ -14,6 +14,7 @@ import TestimonialBlock from "../../components/testimonialBlock/testimonialBlock
 import Gallery from "../../components/gallery/gallery";
 import { getDetailedServiceInfoWithoutPricingById } from "../../api/getServices";
 import { selectIsAuth } from "../../features/auth";
+import GetQuoteButton from "../../components/buttons/getQuoteButton";
 
 function ServiceDetailNoPricing() {
     const { serviceId } = useParams();
@@ -36,12 +37,6 @@ function ServiceDetailNoPricing() {
 
     return (
         <div>
-            <Nav
-                homeNav="results"
-                showSolution={false}
-                showServices={true}
-                showAccountSettings={true}
-            />
             <div className="banner-img">
             <img src={`/images/services/${service.bannerImg.path}.${service.bannerImg.file_type}`} />
             </div>
@@ -62,9 +57,9 @@ function ServiceDetailNoPricing() {
                     width='480px'
                     showImg={false}
                     buttons={[
-                        <AddToCartButton
+                        <GetQuoteButton 
                             serviceId={serviceId}
-                            target={target}
+                            show={true}
                         />
                     ]}
                 />
@@ -90,9 +85,9 @@ function ServiceDetailNoPricing() {
             <div className="cta">
                 <h4>Sign Up Today</h4>
                 <p>Set up your {service.service_name} today - totally online in 3 minutes or less.</p>
-                <AddToCartButton
+                <GetQuoteButton 
                     serviceId={serviceId}
-                    target={target}
+                    show={true}
                 />
             </div>
             <Footer />

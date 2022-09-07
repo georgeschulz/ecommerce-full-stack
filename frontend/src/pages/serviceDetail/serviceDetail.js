@@ -40,12 +40,6 @@ function ServiceDetail() {
 
     return (
         <div>
-            <Nav
-                homeNav="results"
-                showSolution={false}
-                showServices={true}
-                showAccountSettings={true}
-            />
             <div className="banner-img">
             <img src={`/images/services/${service.bannerImg.path}.${service.bannerImg.file_type}`} />
             </div>
@@ -63,10 +57,12 @@ function ServiceDetail() {
                     setupFee={service.setup_fee}
                     width='480px'
                     showImg={false}
+                    includePricing={true}
                     buttons={[
                         <AddToCartButton
                             serviceId={serviceId}
                             target={target}
+                            show={true}
                         />
                     ]}
                 />
@@ -95,6 +91,7 @@ function ServiceDetail() {
                 <AddToCartButton
                     serviceId={serviceId}
                     target={target}
+                    show={true}
                 />
             </div>
             <Footer />

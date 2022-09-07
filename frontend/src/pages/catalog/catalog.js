@@ -24,12 +24,6 @@ function Catalog(props) {
 
     return (
         <div>
-            <Nav
-                homeNav="store"
-                showSolution={true}
-                showServices={false}
-                showAccountSettings={true}
-            />
             <header>
                 <h2 className="page-header">Our Offerings</h2>
                 <div className="filters">

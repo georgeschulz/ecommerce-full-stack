@@ -53,10 +53,11 @@ function WizardFour() {
                                         <AddToCartButton
                                             serviceId={service.service_id}
                                             target={target}
+                                            show={true}
                                         />, 
                                         <GetServiceInfoButton 
                                             serviceId={service.service_id} 
-                                            showPricing={false}
+                                            showPricing={true}
                                         />
                                     ]}
                                 />)

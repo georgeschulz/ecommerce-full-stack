@@ -36,6 +36,7 @@ h2 {
   background-color: #003506;
   padding: 15px 60px;
   border-radius: 10px;
+  width: 250px !important;
 }
 
 .button-medium {

@@ -10,6 +10,9 @@ import cartImg from '../../assets/icons/cart.png'
 import { toggleCartModal } from '../../features/cart';
 import CartModal from '../modal/cartModal';
 import { selectNumCartItems } from '../../features/cart';
+import { startWizardFlow } from '../../features/wizardSlice';
+import { setReferringServiceId } from '../../features/wizardSlice';
+import { useNavigate } from 'react-router-dom';
 
 function Nav(props) {
     const { homeNav, showSolution, showServices, showAccountSettings } = props;
@@ -18,6 +21,7 @@ function Nav(props) {
     let homeNavElement;
     let cart;
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     //conditionally render what the home navigation should be - i.e. should it be the main site of company of store?
     switch (homeNav) {
@@ -33,6 +37,12 @@ function Nav(props) {
         default:
             homeNavElement = "";
             break;
+    }
+
+    const startWizard = () => {
+        dispatch(setReferringServiceId({referringServiceId: null}));
+        dispatch(startWizardFlow());
+        navigate(isAuth ? 'wizard/2' : 'wizard/1')
     }
 
     if(isAuth && showAccountSettings)  {
@@ -56,8 +66,8 @@ function Nav(props) {
             </div>
             <div className='nav-right-group'>
                 <ul className='nav-list'>
-                    <li className={showSolution ? 'nav-item' : 'hidden'}>
-                        <Link to={isAuth ? '/wizard/2' : '/wizard/1'}>Find a Solution</Link>
+                    <li className={showSolution ? 'nav-item' : 'hidden'} onClick={() => startWizard()}>
+                        Find a Solution
                     </li>
                     <li className={showServices ? 'nav-item' : 'hidden'}>
                         <Link to="/catalog">View Services Catalog</Link>
