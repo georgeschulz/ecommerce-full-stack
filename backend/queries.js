@@ -257,6 +257,11 @@ const getFeaturedServices = `SELECT * FROM services WHERE featured = true LIMIT 
 
 const getPestList = `SELECT pest_name FROM pests;`
 
+const decrementRouteAvailability = `
+    UPDATE routes
+    SET slots_available = slots_available - 1
+    WHERE route_id = $1;`
+
 module.exports = {
     createCustomer,
     checkUserAuth,
@@ -296,5 +301,6 @@ module.exports = {
     getOrderByStripeSession,
     updateCustomer,
     getFeaturedServices,
-    getPestList
+    getPestList,
+    decrementRouteAvailability
 }

@@ -155,9 +155,18 @@ const fufillOrder = async (session) => {
     //create the order with the parameters extracted from other tables
     const orderId = await createOrder(dateCreatedString, client_reference_id, route.route_date, customer.address, customer.city, customer.state_abbreviation, customer.zip, customer.first_name, customer.last_name, route.route_id, amount_total, payment_intent, id)
 
+    //add the cart items
     await cart.forEach(item => {
         db.query(queries.addItem, [orderId, item.service_id, item.price, item.billing_amount, item.billing_type, item.setup_fee])
     })
+
+    //decrement the availability on that day by 1 so the technician isn't overbooked
+    try {
+        await db.query(queries.decrementRouteAvailability, [route.route_id]);
+    } catch (e) {
+        console.log('Error decrementing route availability')
+    }
+    
 
     //clear the user's cart once their orders have been generated
     await db.query(queries.clearCart, [client_reference_id])
