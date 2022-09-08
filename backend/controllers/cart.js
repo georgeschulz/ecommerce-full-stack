@@ -1,7 +1,7 @@
 const queries = require('../queries');
 const db = require('../db');
 const calculatePrice = require('../helpers/calculatePrice');
-const { application, response } = require('express');
+const { application, response, Router } = require('express');
 const stripe = require('stripe')(process.env.STRIPEKEY);
 const endpointSecret = process.env.WEBHOOKSECRET;
 
@@ -139,39 +139,56 @@ const createOrder = async (dateCreated, customerId, dateScheduled, address, city
 }
 
 const fufillOrder = async (session) => {
-    const { amount_total, client_reference_id, payment_intent, id } = session;
-    const today = new Date();
-    const dateCreatedString = today.toISOString().split('T')[0];
-
-    //get the customer's personal information
-    const customerQuery = await db.query(queries.getUserById, [client_reference_id]);
-    const customer = customerQuery.rows[0];
-
-    //get the customer's cart contents
-    const cartQuery = await db.query(queries.getUserCart, [client_reference_id]);
-    const cart = cartQuery.rows;
-
-    //get the route data
-    const routeQuery = await db.query(queries.getRouteById, [cart[0].route_id]);
-    const route = routeQuery.rows[0];
-    //create the order with the parameters extracted from other tables
-    const orderId = await createOrder(dateCreatedString, client_reference_id, route.route_date, customer.address, customer.city, customer.state_abbreviation, customer.zip, customer.first_name, customer.last_name, route.route_id, amount_total, payment_intent, id)
-
-    //add the cart items
-    await cart.forEach(item => {
-        db.query(queries.addItem, [orderId, item.service_id, item.price, item.billing_amount, item.billing_type, item.setup_fee])
-    })
-
-    //decrement the availability on that day by 1 so the technician isn't overbooked
     try {
+        const { amount_total, client_reference_id, payment_intent, id } = session;
+        const today = new Date();
+        const dateCreatedString = today.toISOString().split('T')[0];
+
+        //get the customer's personal information
+        const customerQuery = await db.query(queries.getUserById, [client_reference_id]);
+        const customer = customerQuery.rows[0];
+
+        if(!customer) {
+            throw new Error('We could not find your account to place your order.');
+        }
+
+        //get the customer's cart contents
+        const cartQuery = await db.query(queries.getUserCart, [client_reference_id]);
+        const cart = cartQuery.rows;
+
+        if(cart.length <= 0) {
+            throw new Error('It looks like your cart was empty. Please add items to you cart and try again');
+        }
+
+        //get the route data
+        const routeQuery = await db.query(queries.getRouteById, [cart[0].route_id]);
+        const route = routeQuery.rows[0];
+
+        if(!route) {
+            throw new Error('The appointment could not be found. Pleasea try again.')
+        }
+
+        //create the order with the parameters extracted from other tables
+        const orderId = await createOrder(dateCreatedString, client_reference_id, route.route_date, customer.address, customer.city, customer.state_abbreviation, customer.zip, customer.first_name, customer.last_name, route.route_id, amount_total, payment_intent, id)
+        if(!orderId) {
+            throw new Error('There was an unknown error creating your order');
+        }
+
+        //add the cart items
+        await cart.forEach(item => {
+            db.query(queries.addItem, [orderId, item.service_id, item.price, item.billing_amount, item.billing_type, item.setup_fee])
+        })
+
+        //decrement the availability on that day by 1 so the technician isn't overbooked
         await db.query(queries.decrementRouteAvailability, [route.route_id]);
-    } catch (e) {
-        console.log('Error decrementing route availability')
+        
+        //clear the user's cart once their orders have been generated
+        await db.query(queries.clearCart, [client_reference_id])
+    } catch (err) {
+        console.log(err)
+        res.status(404).send(err.message)
     }
     
-
-    //clear the user's cart once their orders have been generated
-    await db.query(queries.clearCart, [client_reference_id])
 }
 
 const recievePayment = (request, response) => {
