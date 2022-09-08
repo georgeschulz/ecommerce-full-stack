@@ -2,17 +2,27 @@ const db = require('../db');
 const queries = require('../queries');
 
 const getTargetsForHomePage = async (req, res) => {
-    const targetQuery = await db.query(queries.getTargetsForHomePage);
-    const result = targetQuery.rows;
+    try {
+        const targetQuery = await db.query(queries.getTargetsForHomePage);
+        const result = targetQuery.rows;
 
-    res.status(200).send(result)
+        res.status(200).send(result)
+    } catch (err) {
+        res.status(404).send('There was an error getting the pest list for the home page');
+    }
+    
 }
 
 const getTargetsForWizardPage = async (req, res) => {
-    const targetQuery = await db.query(queries.getTargetsForWizardPage);
-    const result = targetQuery.rows;
+    try {
+        const targetQuery = await db.query(queries.getTargetsForWizardPage);
+        const result = targetQuery.rows;
 
-    res.status(200).send(result)
+        res.status(200).send(result)
+    } catch (err) {
+        console.log(err);
+        res.status(404).send('There was an error retrieving the pest list for the wizard page');
+    }
 }
 
 const getPestList = async (req, res) => {
