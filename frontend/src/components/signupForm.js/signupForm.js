@@ -14,7 +14,7 @@ function SignupForm() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [address, setAddress] = useState('');
-    const [city, setCity] = useState('');
+    const [city, setCity] = useState('Alexandria');
     const [state, setState] = useState('');
     const [zip, setZip] = useState('');
     const [squareFeet, setSquareFeet] = useState('');
@@ -29,7 +29,8 @@ function SignupForm() {
             await onSignup({firstName, lastName, address, city, state, zip, email, phone, password, squareFeet})
             navigate('/login');
         } catch (err) {
-            setError(error.message);
+            alert(err.response.data)
+            console.log(err.response.data)
         }
     }
 
@@ -75,12 +76,12 @@ function SignupForm() {
     const pageTwo = (
         <div id="pageTwo">
             <div className="form-group">
-                <label for="address">Address</label>
+                <label htmlFor="address">Address</label>
                 <input type="text" name="address" value={address} onChange={(e) => setAddress(e.target.value)} />
             </div>
             <div className="form-group form-group-split">
                 <div className="form-group-col">
-                    <label for="city">City</label>
+                    <label htmlFor="city">City</label>
                     <select name="city" value={city} onChange={(e) => setCity(e.target.value)}>
                         {cityOptions.map(element => {
                             return (<option value={element}>{element}</option>)
@@ -88,16 +89,16 @@ function SignupForm() {
                     </select>
                 </div>
                 <div className="form-group-col">
-                    <label for="state">State</label>
+                    <label htmlFor="state">State</label>
                     <input type="text" name="state" value={state} onChange={(e) => setState(e.target.value)} />
                 </div>
                 <div className="form-group-col">
-                    <label for="zip">Zip Code</label>
+                    <label htmlFor="zip">Zip Code</label>
                     <input type="text" name="zip" value={zip} onChange={(e) => setZip(e.target.value)} />
                 </div>
             </div>
             <div className="form-group">
-                <label for="squareFeet">Home Size in Square Feet</label>
+                <label htmlFor="squareFeet">Home Size in Square Feet</label>
                 <input type="text" name="squareFeet" value={squareFeet} onChange={(e) => setSquareFeet(e.target.value)} />
             </div> 
         </div>
