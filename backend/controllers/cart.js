@@ -7,71 +7,73 @@ const endpointSecret = process.env.WEBHOOKSECRET;
 
 //controller that adds a service to the cart
 const addServiceToCart = async (req, res) => {
-    //extract parameters for api call from params (url) and request body
-    const { service_id } = req.params;
-    const customer_id = req.user.customer_id;
-    const { target } = req.body;
-    
-    if (target.length <= 0) {
-         //handle cases where the user forgets to add a body to their request
-        res.status(404).send('Please include a body for your request with a property, target, containing a list of string names of pests');
-        throw new Error('Please add a target')
+    try {
+         //extract parameters for api call from params (url) and request body
+        const { service_id } = req.params;
+        const customer_id = req.user.customer_id;
+        const { target } = req.body;
+        
+        if (target.length <= 0) {
+            //handle cases where the user forgets to add a body to their request
+            throw new Error('Please add a target')
+        }
+
+        //get the service parameters to calculate pricing correctly
+        const serviceParameterQuery = await db.query(queries.getServiceById, [service_id]);
+        const service = serviceParameterQuery.rows[0];
+
+        //update the service object to have the cost information in it
+        const serviceWithPricing = await calculatePrice(service, customer_id, target);
+        const { price, setup_fee, billing_amount, billing_type } = serviceWithPricing;
+
+        //delete any duplicate cart items (there is only ever the most recent instance of a service in the cart)
+        await db.query(queries.deleteDuplicateCartItems, [customer_id, service_id])
+
+        //Add the service to the cart
+        const addServiceToCartQuery = await db.query(queries.addServiceToCart, [customer_id, service_id, price, setup_fee, billing_amount, billing_type]);
+        res.status(201).send({message: 'Success', data: serviceWithPricing});
+    } catch (e) {
+        res.status(404).send('Error: Missing either service or selected target.');
     }
-
-    //get the service parameters to calculate pricing correctly
-    const serviceParameterQuery = await db.query(queries.getServiceById, [service_id]);
-    const service = serviceParameterQuery.rows[0];
-    //update the service object to have the cost information in it
-    const serviceWithPricing = await calculatePrice(service, customer_id, target);
-    const { price, setup_fee, billing_amount, billing_type } = serviceWithPricing;
-
-    //delete any duplicate cart items (there is only ever the most recent instance of a service in the cart)
-    await db.query(queries.deleteDuplicateCartItems, [customer_id, service_id])
-
-    //Add the service to the cart
-    const addServiceToCartQuery = await db.query(queries.addServiceToCart, [customer_id, service_id, price, setup_fee, billing_amount, billing_type]);
-    res.status(201).send({message: 'Success', data: serviceWithPricing});
+   
 }
 
 //Controller to return the cart contents of a specific user joined with more information about the service
-const getCartContents = (req, res) => {
-    const customer_id = req.user.customer_id;
-    db.query(queries.getUserCart, [customer_id], (err, results) => {
-        if (err) {
-            res.status(404).send([])
-        } else if (results.rows.length <= 0) {
-            //return an empty array if the customer_id had no corresponding contents
-            res.status(200).send([])
-        } else {
-            //send back the results if successful
-            res.status(200).send(results.rows)
-        }
-    })
+const getCartContents = async (req, res) => {
+    try {
+        const customer_id = req.user.customer_id;
+        const userCartQuery = await db.query(queries.getUserCart, [customer_id]);
+        const userCart = userCartQuery.rows;
+
+        res.status(200).send(userCart)
+    } catch (e) {
+        //send an empty cart if the cart can't be found or is empty
+        res.status(404).send([])
+    }
 }
 
 //controller to delte a specific cart item by the item's id
-const deleteCartItem = (req, res) => {
-    const { cart_id } = req.params;
-    //query and handle results
-    db.query(queries.deleteCartItem, [cart_id], (err, result) => {
-        if (err) {
-            res.status(404).send('Error removing item from cart');
-        } else {
-            res.status(204).send('Cart with id ' + cart_id + ' deleted');
-        }
-    })
+const deleteCartItem = async (req, res) => {
+    try {
+        const { cart_id } = req.params;
+        await db.query(queries.deleteCartItem, [cart_id]);
+        res.status(200).send();
+    } catch (err) {
+        res.status(404).send('Error removing item from cart');
+        console.log(err)
+    }
 }
 
 //controller to clear the cart of all contents for a specific user
-const clearCart = (req, res) => {
-    const customer_id = req.user.customer_id;
-    db.query(queries.clearCart, [customer_id], (err, result) => {
-        if (err) {
-            res.status(404).send(err);
-        } else {
-            res.status(200).send('Cart successfully cleared');
-        }
-    })
+const clearCart = async (req, res) => {
+    try {
+        const customer_id = req.user.customer_id;
+        await db.query(queries.clearCart, [customer_id]);
+        res.status(200).send()
+    } catch (err) {
+        console.log(err);
+        res.status(404).send('Could not clear user cart')
+    }
 }
 
 const createStripeSession = async (req, res) => {
