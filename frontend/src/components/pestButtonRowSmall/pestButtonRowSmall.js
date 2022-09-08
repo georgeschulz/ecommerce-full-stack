@@ -33,7 +33,7 @@ function PestButtonRowSmall(props) {
     })
 
     return (
-        <div className="row row-center">
+        <div className="row row-center" id="issue-button-row">
             {buttons}
         </div>
     )

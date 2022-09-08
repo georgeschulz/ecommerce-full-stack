@@ -7,6 +7,12 @@
     align-content: flex-start;
 }
 
+@media screen and (max-width: 850px) {
+    #hero {
+        min-height: 45vh;
+    }
+}
+
 #hero img {
     margin-top: 10px;
     margin-bottom: 40px;
@@ -26,3 +32,14 @@
 #explainer-img {
     width: 60%;
 }
+
+@media screen and (max-width: 840px) {
+    #explainer-img {
+        width: 100%;
+    }
+}
+
+#small-service-highlight-row, #issue-button-row {
+    flex-wrap: wrap;
+}
+

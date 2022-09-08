@@ -36,7 +36,7 @@ h2 {
   background-color: #003506;
   padding: 15px 60px;
   border-radius: 10px;
-  width: 250px !important;
+  width: 250px;
 }
 
 .button-medium {
@@ -128,3 +128,40 @@ label {
   width: 100%;
   justify-content: center;
 }
+
+/** Media Queries for tablets and lower */
+@media screen and (max-width: 850px) {
+    h1 {
+      font-size: 30px;
+    }
+  
+    h2 {
+      font-size: 35px;
+    }
+
+    .subheader {
+      font-size: 18px;
+      padding: 0px 5% !important;
+    }
+
+    section {
+      margin: 20px 0px;
+    };
+
+    #hero {
+      min-height: 50vh !important;
+    }
+
+    #hero img {
+      margin-top: 0px;
+      width: 75px;
+    }
+
+    .button-large {
+      width: 350px;
+      padding: 20px 0px;
+      font-size: 18px;
+    }
+}
+
+/** Media Queries for mobile */

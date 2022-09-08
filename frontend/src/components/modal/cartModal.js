@@ -37,8 +37,7 @@ function CartModal() {
                     dispatch(updateCart({cart: response.data}));
                 } catch (e) {
                     dispatch(updateCart({cart: []}))
-                }
-                
+                } 
             })();   
         }
     }, [mostRecentItem]);
@@ -57,6 +56,7 @@ function CartModal() {
                     {cart.map((item, i) => {
                         return (
                             <CartItem
+                                key={i}
                                 serviceName={item.service_name}
                                 billingType={item.billing_type}
                                 billingAmount={item.billing_amount}

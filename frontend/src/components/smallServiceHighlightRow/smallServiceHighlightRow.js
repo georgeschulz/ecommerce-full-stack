@@ -37,7 +37,7 @@ function SmallServiceHighlightRow() {
     })
 
     return (
-        <div className="row row-center">
+        <div className="row row-center" id="small-service-highlight-row">
             {serviceBoxes}
         </div>
     )

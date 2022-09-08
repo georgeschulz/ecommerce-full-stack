@@ -30,7 +30,7 @@ function Nav(props) {
             homeNavElement = <a href="https://bettertermite.com">{'<< Back to Main Site'}</a>
             break;
         case "store":
-            homeNavElement = <Link to="/">{'<< Back to Store Home'}</Link>
+            homeNavElement = <Link to="/">{'Back to Store Home'}</Link>
             break;
         case "results":
             homeNavElement = <Link to="/wizard/4">{'<< Back to Service Results'}</Link>
