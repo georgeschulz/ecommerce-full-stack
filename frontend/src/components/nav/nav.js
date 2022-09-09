@@ -18,6 +18,7 @@ import hamburger from '../../assets/icons/hamburger.png'
 import logo from '../../assets/better-logo.jpeg'
 import { selectShowNav } from '../../features/wizardSlice';
 import { toggleNav } from '../../features/wizardSlice';
+import x from '../../assets/icons/x-white.png'
 
 function Nav(props) {
     const { showSolution, showServices, showAccountSettings } = props;
@@ -88,13 +89,14 @@ function Nav(props) {
             <nav>
                 <div className='nav-left-group'>
                     <span className='hidden-tablet-and-below'>{homeNavElement}</span>
-                    <img className='hidden-desktop nav-logo' src={logo} />
+                    <Link to="/"><img className='hidden-desktop nav-logo' src={logo} /></Link>
                 </div>
                 <div className='nav-right-group'>
                     <div className='nav-desktop hidden-tablet-and-below'>
                         {navElements}
                     </div>
-                    <img className='hidden-desktop menu-button' src={hamburger} onClick={() => dispatch(toggleNav())} />
+                    <span className='hidden-desktop nav-icon-mobile'>{cart}</span>
+                    <img className='hidden-desktop menu-button nav-icon-mobile' src={showNav? x : hamburger} onClick={() => dispatch(toggleNav())} />
                 </div>
             </nav>
             <div className={showNav ? 'mobile-menu-dropdown hidden-desktop' : 'hidden'}>

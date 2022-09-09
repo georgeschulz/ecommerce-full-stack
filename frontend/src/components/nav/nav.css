@@ -64,8 +64,9 @@ a {
 @media screen and (max-width: 840px) {
     nav {
         padding: 10px;
-        font-size: 20px;
+        font-size: 16px;
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
     }
 }
@@ -88,6 +89,14 @@ a {
     justify-content: center;
     text-decoration: underline;
     border-bottom: 0.25px solid rgb(147, 147, 147);
+}
+
+.nav-right-group {
+    display: flex;
+}
+
+.nav-icon-mobile {
+    margin-left: 40px;
 }
 
 .mobile-menu-dropdown ul.nav-list > li + li {
