@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './nav.css';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,40 +14,31 @@ import { startWizardFlow } from '../../features/wizardSlice';
 import { setReferringServiceId } from '../../features/wizardSlice';
 import { useNavigate } from 'react-router-dom';
 import { onLogout } from '../../api/login';
+import hamburger from '../../assets/icons/hamburger.png'
+import logo from '../../assets/better-logo.jpeg'
+import { selectShowNav } from '../../features/wizardSlice';
+import { toggleNav } from '../../features/wizardSlice';
 
 function Nav(props) {
-    const { homeNav, showSolution, showServices, showAccountSettings } = props;
+    const { showSolution, showServices, showAccountSettings } = props;
     let isAuth = useSelector(selectIsAuth)
     let numCartItems = useSelector(selectNumCartItems);
-    let homeNavElement;
+    let showNav = useSelector(selectShowNav);
+    let homeNavElement = <Link to="/">{'Home'}</Link>;
     let cart;
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    //conditionally render what the home navigation should be - i.e. should it be the main site of company of store?
-    switch (homeNav) {
-        case "main":
-            homeNavElement = <a href="https://bettertermite.com">{'<< Back to Main Site'}</a>
-            break;
-        case "store":
-            homeNavElement = <Link to="/">{'Back to Store Home'}</Link>
-            break;
-        case "results":
-            homeNavElement = <Link to="/wizard/4">{'<< Back to Service Results'}</Link>
-            break;
-        default:
-            homeNavElement = "";
-            break;
-    }
-
     const startWizard = () => {
-        dispatch(setReferringServiceId({referringServiceId: null}));
+        dispatch(toggleNav());
+        dispatch(setReferringServiceId({ referringServiceId: null }));
         dispatch(startWizardFlow());
         navigate(isAuth ? 'wizard/2' : 'wizard/1')
     }
 
     const handleLogout = async () => {
         try {
+            dispatch(toggleNav());
             dispatch(deauthorize())
             await onLogout();
         } catch (e) {
@@ -55,7 +46,7 @@ function Nav(props) {
         }
     }
 
-    if(isAuth && showAccountSettings)  {
+    if (isAuth && showAccountSettings) {
         cart = (
             <li className='nav-item cart-component' onClick={() => dispatch(toggleCartModal())}>
                 <img src={cartImg} className="cart-icon" />
@@ -66,38 +57,49 @@ function Nav(props) {
         cart = null;
     }
 
+    const navElements = (
+        <ul className='nav-list'>
+            <li className={showSolution ? 'nav-item' : 'hidden'} onClick={() => startWizard()}>
+                Find a Solution
+            </li>
+            <li className={showServices ? 'nav-item' : 'hidden'}>
+                <Link onClick={() => dispatch(toggleNav())} to="/catalog">View Services Catalog</Link>
+            </li>
+            <li className={showAccountSettings && !isAuth ? 'nav-item' : 'hidden'}>
+                <Link onClick={() => dispatch(toggleNav())} to="/login">Login</Link>
+            </li>
+            <li className={showAccountSettings && !isAuth ? 'nav-item' : 'hidden'}>
+                <Link onClick={() => dispatch(toggleNav())} to="/signup">Signup</Link>
+            </li>
+            {cart}
+            <li onClick={() => dispatch(toggleSettingsModal())} className={showAccountSettings && isAuth ? 'nav-item' : 'hidden'}>
+                Settings
+            </li>
+            <li onClick={() => handleLogout()} className={showAccountSettings && isAuth ? 'nav-item' : 'hidden'}>
+                <Link to="/login">Logout</Link>
+            </li>
+        </ul>
+    );
+
     return (
         <div>
             <SettingsModal />
             <CartModal />
-        <nav>
-            <div className='nav-left-group'>
-                {homeNavElement}
+            <nav>
+                <div className='nav-left-group'>
+                    <span className='hidden-tablet-and-below'>{homeNavElement}</span>
+                    <img className='hidden-desktop nav-logo' src={logo} />
+                </div>
+                <div className='nav-right-group'>
+                    <div className='nav-desktop hidden-tablet-and-below'>
+                        {navElements}
+                    </div>
+                    <img className='hidden-desktop menu-button' src={hamburger} onClick={() => dispatch(toggleNav())} />
+                </div>
+            </nav>
+            <div className={showNav ? 'mobile-menu-dropdown hidden-desktop' : 'hidden'}>
+                {navElements}
             </div>
-            <div className='nav-right-group'>
-                <ul className='nav-list'>
-                    <li className={showSolution ? 'nav-item' : 'hidden'} onClick={() => startWizard()}>
-                        Find a Solution
-                    </li>
-                    <li className={showServices ? 'nav-item' : 'hidden'}>
-                        <Link to="/catalog">View Services Catalog</Link>
-                    </li>
-                    <li className={showAccountSettings && !isAuth ? 'nav-item' : 'hidden'}>
-                        <Link to="/login">Login</Link>
-                    </li>
-                    <li className={showAccountSettings && !isAuth ? 'nav-item' : 'hidden'}>
-                        <Link to="/signup">Signup</Link>
-                    </li>
-                    {cart}
-                    <li className={showAccountSettings && isAuth ? 'nav-item' : 'hidden'} onClick={() => dispatch(toggleSettingsModal())}>
-                        Settings
-                    </li>
-                    <li onClick={() => handleLogout()} className={showAccountSettings && isAuth ? 'nav-item' : 'hidden'}>
-                        <Link to="/login">Logout</Link>
-                    </li>
-                </ul>
-            </div>
-        </nav>
         </div>
     )
 }

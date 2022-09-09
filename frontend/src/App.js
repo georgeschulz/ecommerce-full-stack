@@ -16,8 +16,19 @@ import ServiceDetail from './pages/serviceDetail/serviceDetail';
 import ConfirmationPage from './pages/wizard/confirmation';
 import ServiceDetailNoPricing from './pages/serviceDetail/serviceDetailNoPricing';
 import Nav from './components/nav/nav';
+import { useDispatch } from 'react-redux';
+import { closeNav } from './features/wizardSlice';
+import { useSelector } from 'react-redux';
+import { selectShowNav } from './features/wizardSlice';
 
 function App() {
+  const dispatch = useDispatch();
+  const showNav = useSelector(selectShowNav);
+
+  const handleMenuClickOff = () => {
+    dispatch(closeNav())
+  }
+
   return (
     <Router>
       <Nav
@@ -26,26 +37,28 @@ function App() {
         showServices={true}
         showAccountSettings={true}
       />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/service/:serviceId" element={<ServiceDetail />} />
-        <Route path="/service/general/:serviceId" element={<ServiceDetailNoPricing />} />
-        <Route path="/catalog" element={<Catalog />} />
-        <Route path="/wizard/1" element={<WizardOne />} />
-        <Route element={<RestrictedRoutes />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignupPage />} />
-        </Route>
-        <Route element={<PrivateRoutes />}>
-          <Route path="/wizard/2" element={<WizardTwo />} />
-          <Route path="/wizard/3" element={<WizardThree />} />
-          <Route path="/wizard/4" element={<WizardFour />} />
-          <Route path="/wizard/5" element={<WizardFive />} />
-          <Route path="/order" element={<ConfirmationPage />} />
-        </Route>
+      <div onClick={showNav ? () => handleMenuClickOff() : null}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/service/:serviceId" element={<ServiceDetail />} />
+          <Route path="/service/general/:serviceId" element={<ServiceDetailNoPricing />} />
+          <Route path="/catalog" element={<Catalog />} />
+          <Route path="/wizard/1" element={<WizardOne />} />
+          <Route element={<RestrictedRoutes />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignupPage />} />
+          </Route>
+          <Route element={<PrivateRoutes />}>
+            <Route path="/wizard/2" element={<WizardTwo />} />
+            <Route path="/wizard/3" element={<WizardThree />} />
+            <Route path="/wizard/4" element={<WizardFour />} />
+            <Route path="/wizard/5" element={<WizardFive />} />
+            <Route path="/order" element={<ConfirmationPage />} />
+          </Route>
 
-        <Route path="*" element={<p>404 Not found</p>} />
-      </Routes>
+          <Route path="*" element={<p>404 Not found</p>} />
+        </Routes>
+      </div>
     </Router>
   );
 }

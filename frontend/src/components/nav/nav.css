@@ -47,3 +47,55 @@ a {
     display: flex;
     align-items: center;
 }
+
+.menu-button {
+    width: 30px;
+}
+
+.menu-button:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+.nav-logo {
+    height: 40px;
+}
+
+@media screen and (max-width: 840px) {
+    nav {
+        padding: 10px;
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+    }
+}
+
+.mobile-menu-dropdown {
+    background-color: #505050;
+}
+
+.mobile-menu-dropdown .nav-list {
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.mobile-menu-dropdown ul li {
+    display: flex;
+    width: 100%;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    justify-content: center;
+    text-decoration: underline;
+    border-bottom: 0.25px solid rgb(147, 147, 147);
+}
+
+.mobile-menu-dropdown ul.nav-list > li + li {
+    border-left: 0px solid white;
+    margin-left: 0px;
+    padding-left: 0px;
+}
+
+.mobile-menu-dropdown ul li:hover {
+    transform: scale(1.1);
+}

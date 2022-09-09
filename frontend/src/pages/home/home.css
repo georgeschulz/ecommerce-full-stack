@@ -10,6 +10,7 @@
 @media screen and (max-width: 850px) {
     #hero {
         min-height: 45vh;
+        margin-top: 100px;
     }
 }
 

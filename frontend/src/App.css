@@ -129,6 +129,13 @@ label {
   justify-content: center;
 }
 
+/** Meida queries for full size windows */
+@media screen and (min-width: 850px) {
+  .hidden-desktop {
+    display: none;
+  }
+}
+
 /** Media Queries for tablets and lower */
 @media screen and (max-width: 850px) {
     h1 {
@@ -162,6 +169,10 @@ label {
       padding: 20px 0px;
       font-size: 18px;
     }
+
+    .hidden-tablet-and-below {
+      display: none !important;
+    };
 }
 
 /** Media Queries for mobile */

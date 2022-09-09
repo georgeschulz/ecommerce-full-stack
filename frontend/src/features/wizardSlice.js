@@ -12,7 +12,8 @@ const wizardSlice = createSlice({
         inWizardFlow: false,
         redirectUrl: '/',
         showSettingsModal: false,
-        referringServiceId: null
+        referringServiceId: null,
+        showNav: false
     },
     reducers: {
         updateSelectedPest: (state, action) => {
@@ -34,7 +35,13 @@ const wizardSlice = createSlice({
         },
         setReferringServiceId: (state, action) => {
             state.referringServiceId = action.payload.referringServiceId;
-        }
+        },
+        toggleNav: (state) => {
+            state.showNav = !state.showNav;
+        },
+        closeNav: (state) => {
+            state.showNav = false;
+        },
     }
 })
 
@@ -43,5 +50,6 @@ export const selectSelectedPest = state => state.wizard.selectedPest;
 export const selectIsWarrantyFlow = state => state.wizard.inWizardFlow;
 export const selectShowSettingsModal = state => state.wizard.showSettingsModal;
 export const selectReferringServiceId = state => state.wizard.referringServiceId;
-export const { updateSelectedPest, startWizardFlow, endWizardFlow, setRedirectUrl, toggleSettingsModal, setReferringServiceId } = wizardSlice.actions;
+export const selectShowNav = state => state.wizard.showNav;
+export const { updateSelectedPest, closeNav, startWizardFlow, endWizardFlow, setRedirectUrl, toggleSettingsModal, setReferringServiceId, toggleNav } = wizardSlice.actions;
 export default wizardSlice.reducer;
