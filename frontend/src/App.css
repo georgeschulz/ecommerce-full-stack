@@ -165,3 +165,8 @@ label {
 }
 
 /** Media Queries for mobile */
+@media screen and (max-width: 440px) {
+  .hidden-mobile {
+    display: none;
+  }
+}

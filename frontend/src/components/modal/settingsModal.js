@@ -73,11 +73,7 @@ function SettingsModal() {
     }  
 
     return (
-        <Modal
-            toggleModal={toggleSettingsModal}
-            show={showModal}
-        >
-            <h2>Update Account Settings</h2>
+        <Modal toggleModal={toggleSettingsModal} show={showModal} title="Account Settings">
             <form className="update-form" onSubmit={(e) => handleSubmit(e)}>
                 <div className="form-group-split form-group">
                     <div className="form-group-col">

@@ -43,11 +43,7 @@ function CartModal() {
     }, [mostRecentItem]);
 
     return (
-        <Modal
-            show={showModal}
-            toggleModal={toggleCartModal}
-        >
-            <h2>My Cart</h2>
+        <Modal show={showModal} toggleModal={toggleCartModal} title="My Cart">
             {isCartEmpty
                 ? (<div className="cart-contents-container">
                     <div className="error-box">It looks like your cart is empty right now.</div>

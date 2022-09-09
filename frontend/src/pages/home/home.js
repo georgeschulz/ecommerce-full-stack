@@ -40,7 +40,7 @@ function Home() {
                     <SmallServiceHighlightRow />
                 </div>
             </section>
-            <section id="explainer">
+            <section id="explainer" className='hidden-mobile'>
                 <h2>How It Works</h2>
                 <div className='row row-center'>
                     <img src={explainer} id="explainer-img" />
