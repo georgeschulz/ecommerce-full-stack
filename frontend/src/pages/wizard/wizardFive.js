@@ -44,9 +44,7 @@ function WizardFive() {
             percent='80'
             headline='Select Your Date'
             instruction='Please choose the date for your next service based on the days, we’ll have a technician in your area. Your technician will provide you with a two hour time window the morning of your service.'
-            body={
-                availabilityContent
-            }
+            body={<div className="availabilty-container">{availabilityContent}</div>}
         />
     )
 }

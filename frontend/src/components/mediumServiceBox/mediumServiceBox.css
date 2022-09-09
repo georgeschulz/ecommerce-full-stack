@@ -61,3 +61,22 @@
 .medium-service-box-button-container > div + div {
     margin-left: 10px !important;
 }
+
+@media screen and (max-width: 840px) {
+    .services-container {
+        padding: 0px;
+    }
+    
+    .medium-service-box {
+        margin: 20px 0px;
+    }
+
+    .medium-service-box-button-container {
+        justify-content: center;
+    }
+
+    .medium-service-box-button-container > div + div {
+        margin-top: 15px;
+    }
+
+}
