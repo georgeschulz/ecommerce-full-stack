@@ -7,7 +7,7 @@ function WizardTemplate({ num, maxNum, headline, percent, instructions, body }) 
             <div className="wizard-content-container">
                 <h1 className="wizard-header">Step {num} / {maxNum}: {headline}</h1>
                 <ProgressBar percent={percent} />
-                <p>{instructions}</p>
+                <p className="instructions">{instructions}</p>
                 <div className="wizard-body">
                     {body}
                 </div>
