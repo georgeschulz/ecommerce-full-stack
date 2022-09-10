@@ -125,6 +125,13 @@ h1.wizard-header {
     flex-wrap: wrap;
 }
 
+#medium-box-options-row {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+}
+
 .medium-box {
     border: 1px solid #DDDDDD;
     box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.25);
