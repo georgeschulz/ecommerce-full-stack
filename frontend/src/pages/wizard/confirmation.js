@@ -22,9 +22,9 @@ function ConfirmationPage() {
     return (
         <div>
             <div className="wizard-content-container">
-                <h1>Your Order Has Been Placed</h1>
-                <p>A copy of your receipt has been sent to your email at {order.email}.</p>
-                <div className="information-box-wide">
+                <h1  style={{"marginTop": "10px"}}>Your Order Has Been Placed</h1>
+                <p  style={{"marginTop": "10px"}}>A copy of your receipt has been sent to your email at {order.email}.</p>
+                <div className="information-box-wide hidden-tablet-and-below">
                     <div className="wide-info-box-left">
                         <h2 className="left-h2">{date} <span className="confirmed">Confirmed</span></h2>
                         <div className="order-information-main-content">
@@ -61,6 +61,55 @@ function ConfirmationPage() {
                         <p>{order.tech_first_name} {order.tech_last_name}</p>
                     </div>
                 </div>
+                <div className="row row-center">
+                <div className="medium-box hidden-desktop" style={{'marginTop': '20px'}}>
+                    <div className="information-box-mobile-group">
+                        <img src={`/images/techs/${order.tech_profile_pic}`} className='tech-photo-medium' />
+                    </div>
+                    <div className="information-box-mobile-group">
+                        <p>{order.tech_first_name} {order.tech_last_name}</p>
+                    </div>
+                    <div className="information-box-mobile-group">
+                        <b>{date}</b>
+                    </div>
+                    <br></br>
+                    <b>Your Order Details</b>
+                    <div className="information-box-mobile-group">
+                        <ul className="order-details-list">
+                            <li>Name: {order.first_name} {order.last_name}</li>
+                            <li>Location: {order.address}</li>
+                            <li>City: {order.city}, {order.state}</li>
+                            <li>Zip Code: {order.zip}</li>
+                            <li>Email: {order.email}</li>
+                            <li>Phone: {order.phone}</li>
+                            <li>Paid Today: ${order.amount_paid / 100} </li>
+                        </ul>
+                    </div>
+                    <div className="information-box-mobile-group">
+                        <table className="order-information">
+                            <thead>
+                                <tr>
+                                    <th>Service</th>
+                                    <th>Frequency</th>
+                                    <th>Monthly Fee</th>
+                                    <th className="hidden-mobile">Setup Fee</th>
+                                </tr>
+                                {order.items.map(item => {
+                                    return (
+                                        <tr>
+                                            <td>{item.service_name}</td>
+                                            <td>{item.frequency}x/year</td>
+                                            <td>${item.billing_amount}/{item.billing_type}</td>
+                                            <td className="hidden-mobile">Setup Paid</td>
+                                        </tr>
+                                    )
+                                })}
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+                </div>
+                
                 <div className="box-row-container">
                     <div className="medium-box">
                         <h2 className="left-h2">Need to Reschedule?</h2>

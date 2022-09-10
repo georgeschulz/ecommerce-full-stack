@@ -106,6 +106,7 @@ h1.wizard-header {
     display: flex;
     justify-content: center;
     width: 15%;
+    height: fit-content;
     flex-wrap: wrap;
     font-weight: 700;
     font-size: 20px;
@@ -121,6 +122,7 @@ h1.wizard-header {
     display: flex;
     justify-content: space-between;
     padding: 10px;
+    flex-wrap: wrap;
 }
 
 .medium-box {
@@ -131,6 +133,65 @@ h1.wizard-header {
     width: 48%;
     padding-bottom: 60px;
     line-height: 1.4;
+}
+
+@media screen and (max-width: 840px) {
+    .medium-box {
+        width: 96%;
+        padding: 25px 40px;
+        margin-bottom: 20px;
+    }
+
+    .box-row-container {
+        justify-content: center;
+    }
+
+    .left-h2 {
+        font-size: 24px;
+    }
+    
+    .information-box-mobile-group {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .tech-photo-medium {
+        width: 100px;
+        border-radius: 100%;
+    }
+
+    .order-details-list {
+        margin-left: 20px;
+    }
+
+    .order-information {
+        border-collapse: collapse;
+        font-size: 12px;
+        padding: 0px;
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    tbody, thead, tr {
+        width: 100%;
+    }
+
+    th {
+        font-weight: bold;
+        background-color: #003506;
+        color: white;
+    }
+
+    th, td, tr {
+        border: 1px solid #494949;
+        width: 25%;
+        border-collapse: collapse;
+        text-align: center;
+    }
+    td {
+        padding: 2px;
+    }
 }
 
 .item-details {
@@ -161,5 +222,36 @@ h1.wizard-header {
 
     .large-button-container {
         width: 100%;
+    }
+}
+
+/**Media query for tablets only*/
+@media screen and (max-width: 840px) and (min-width: 440px) {
+    .order-details-list {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .order-details-list li {
+        width: 50%;
+    }
+
+    td, th {
+        padding: 10px 30px;
+    }
+}
+
+/**Media query for phones */
+@media screen and (max-width: 440px) {
+    th {
+        padding: 10px 0px;
+    }
+
+    .order-details-list li {
+        font-size: 14px;
+    }
+
+    .wizard-content-container h1 {
+        font-size: 22px;
     }
 }
