@@ -15,18 +15,18 @@ function SignupForm() {
     const [password, setPassword] = useState('');
     const [address, setAddress] = useState('');
     const [city, setCity] = useState('Alexandria');
-    const [state, setState] = useState('');
+    const [state, setState] = useState('VA');
     const [zip, setZip] = useState('');
-    const [squareFeet, setSquareFeet] = useState('');
+    const [squareFeet, setSquareFeet] = useState(0);
     const [error, setError] = useState('');
-    const [cityOptions, setCityOptions] = useState(['test']);
+    const [cityOptions, setCityOptions] = useState(['']);
 
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await onSignup({firstName, lastName, address, city, state, zip, email, phone, password, squareFeet})
+            await onSignup({ firstName, lastName, address, city, state, zip, email, phone, password, squareFeet })
             navigate('/login');
         } catch (err) {
             alert(err.response.data)
@@ -39,10 +39,9 @@ function SignupForm() {
             try {
                 const response = await getCities();
                 setCityOptions(response.data);
-            } catch(err) {
+            } catch (err) {
                 console.log(err)
             }
-
         })();
     }, [])
 
@@ -51,16 +50,16 @@ function SignupForm() {
             <div className="form-group form-group-split">
                 <div className="form-group-col">
                     <label htmlFor="firstName">First Name</label>
-                    <input type="text" name="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+                    <input type="text" name="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)} maxLength="30" minLength="1" />
                 </div>
                 <div className="form-group-col">
                     <label htmlFor="lastName">Last Name</label>
-                    <input type="text" name="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                    <input type="text" name="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} maxLength="30" minLength="1" />
                 </div>
             </div>
             <div className="form-group">
                 <label htmlFor="phone">Phone</label>
-                <input type="text" name="phone" value={phone} onChange={(e) => setPhone(e.target.value)} />    
+                <input type="text" name="phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
             </div>
             <div className="form-group">
                 <label htmlFor="email">Email</label>
@@ -68,7 +67,7 @@ function SignupForm() {
             </div>
             <div className="form-group">
                 <label htmlFor="password">Password</label>
-                <input type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <input type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} maxLength="20" />
             </div>
         </div>
     );
@@ -99,22 +98,75 @@ function SignupForm() {
             </div>
             <div className="form-group">
                 <label htmlFor="squareFeet">Home Size in Square Feet</label>
-                <input type="text" name="squareFeet" value={squareFeet} onChange={(e) => setSquareFeet(e.target.value)} />
-            </div> 
+                <input type="number" min="100" max="20000" name="squareFeet" value={squareFeet} onChange={(e) => setSquareFeet(e.target.value)} />
+            </div>
         </div>
     )
     const submit = <button type="submit" className="button-medium button-color-primary">Submit</button>
 
     return (
-        <form id="signup-form" onSubmit={handleSubmit}>
-            <MultipaneForm
-                title='Signup Form'
-                panes={[pageOne, pageTwo]}
-                submit={submit}
-            />
-        </form>
+        <div>
+            <h2>Signup</h2>
+            <div className="signup-form-container">
+                <form id="signup-form" onSubmit={handleSubmit}>
+                    <div className="form-group form-group-split">
+                        <div className="form-group-col">
+                            <label htmlFor="firstName">First Name</label>
+                            <input type="text" name="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)} maxLength="30" minLength="1" required />
+                        </div>
+                        <div className="form-group-col">
+                            <label htmlFor="lastName">Last Name</label>
+                            <input type="text" name="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} maxLength="30" minLength="1" required />
+                        </div>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="phone">Phone</label> (ex. 101-111-1111)
+                        <input type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" name="phone" value={phone} onChange={(e) => setPhone(e.target.value)} required />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="email">Email</label>
+                        <input type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="password">Password</label> (your password must be between 7 and 20 characters)
+                        <input type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} minLength="7" maxLength="20" required />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="address">Address</label>
+                        <input type="text" name="address" value={address} onChange={(e) => setAddress(e.target.value)} required />
+                    </div>
+                    <div className="form-group form-group-split">
+                        <div className="form-group-col">
+                            <label htmlFor="city">City</label>
+                            <select name="city" value={city} onChange={(e) => setCity(e.target.value)} required>
+                                {cityOptions.map(element => {
+                                    return (<option value={element}>{element}</option>)
+                                })}
+                            </select>
+                        </div>
+                        <div className="form-group-col">
+                            <label htmlFor="state">State</label>
+                            <select name="state" value={state} onChange={(e) => setState(e.target.value)} required>
+                                <option value="DC">Washington DC</option>
+                                <option value="VA">Virginia</option>
+                                <option value="MD">Maryland</option>
+                            </select>
+                        </div>
+                        <div className="form-group-col">
+                            <label htmlFor="zip">Zip Code</label> (5 Digits)
+                            <input type="text" minLength="5" maxLength="5" name="zip" value={zip} onChange={(e) => setZip(e.target.value)} required />
+                        </div>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="squareFeet">Home Size in Square Feet</label>
+                        <input type="number" min="100" max="30000" name="squareFeet" value={squareFeet} onChange={(e) => setSquareFeet(e.target.value)} required />
+                    </div>
+                    <button type="submit" className="button-medium button-color-primary">Submit</button>
+                </form>
+            </div>
+        </div>
     )
-    
+
 }
 
 export default SignupForm;

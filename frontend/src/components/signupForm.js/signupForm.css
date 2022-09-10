@@ -10,3 +10,14 @@
 .form-group-split > .form-group-col + .form-group-col {
     margin-left: 20px;
 }
+
+.signup-form-container {
+    margin-top: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#signup-form {
+    width: 60%;
+}

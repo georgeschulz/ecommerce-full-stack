@@ -18,7 +18,6 @@ var cors = require('cors');
 const passport = require('passport');
 const store = require('./services/session');
 const checkIsAuthenticated = require('./helpers/checkIsAuthenticated');
-const csurf = require('csurf');
 
 app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 app.use(require('cookie-parser')()); // this middleware parses cookies sent with HTTP requests
@@ -44,7 +43,7 @@ app.use(passport.session());
 
 require('./services/passport'); //add in passport confirguation
 
-//add backend part of csrf tokens
+
 
 //add routes as middleware
 app.use('/register', express.json(), registerRouter);

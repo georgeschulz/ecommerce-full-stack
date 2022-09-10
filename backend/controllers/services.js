@@ -40,7 +40,6 @@ const getAllServicesDetails = async (req, res) => {
             serviceToUpdate['covered_pests'] = coveredPests;
         }
 
-
         res.status(200).send(services);
     } catch (e) {
         console.log(e);
