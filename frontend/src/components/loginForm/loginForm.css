@@ -7,3 +7,15 @@
 #login-form-container form {
     width: 35%;
 }
+
+@media screen and (max-width: 840px) and (min-width: 440px) {
+    #login-form-container form {
+        width: 55%;
+    }
+}
+
+@media screen and (max-width: 440px) {
+    #login-form-container form {
+        width: 90%;
+    }
+}

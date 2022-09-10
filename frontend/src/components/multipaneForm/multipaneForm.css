@@ -19,3 +19,9 @@
 .multipane-button-container p {
     margin: 0px 10px;
 }
+
+@media screen and (max-width: 440px) {
+    .multipane-button-container > p + button {
+        margin-top: 10px;
+    } 
+}

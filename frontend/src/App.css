@@ -139,15 +139,16 @@ label {
 /** Media Queries for tablets and lower */
 @media screen and (max-width: 850px) {
     h1 {
-      font-size: 30px;
+      font-size: 28px;
+      padding: 0px 10px;
     }
   
     h2 {
-      font-size: 35px;
+      font-size: 25x;
     }
 
     .subheader {
-      font-size: 18px;
+      font-size: 16px;
       padding: 0px 5% !important;
     }
 

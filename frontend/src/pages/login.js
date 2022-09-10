@@ -7,7 +7,7 @@ function Login() {
     return (
         <div>
             <div className="row row-center">
-                <img src={logo} />
+                <img className="hidden-tablet-and-below" src={logo} />
             </div>
             <LoginForm />
         </div>
