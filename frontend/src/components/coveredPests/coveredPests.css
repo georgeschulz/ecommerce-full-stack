@@ -11,6 +11,12 @@
     margin: 5px 0px;
 }
 
+@media screen and (max-width: 440px) {
+    .covered-pests-list div {
+        width: 100%;
+    }
+}
+
 .covered-pests-list li {
     font-size: 18px;
 }

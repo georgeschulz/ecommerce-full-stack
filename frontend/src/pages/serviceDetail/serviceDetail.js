@@ -43,8 +43,9 @@ function ServiceDetail() {
             <div className="banner-img">
             <img src={`/images/services/${service.bannerImg.path}.${service.bannerImg.file_type}`} />
             </div>
-            <div className="row">
+            <div className="service-header">
                 <h2>{service.service_name}</h2>
+                <p>{service.description}</p>
             </div>
             <div className="service-highlights">
                 <MediumServiceBox

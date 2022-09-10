@@ -50,7 +50,6 @@ const getAllServicesDetails = async (req, res) => {
 
 const getAllServicesDetailsById = async (req, res) => {
     try {
-        const user = req.user.customer_id;
         const serviceId = req.params.serviceId;
 
         let serviceQuery = await db.query(queries.getServiceById, [serviceId]);
@@ -178,7 +177,8 @@ const getDetailedServiceById = async (req, res) => {
             testimonials,
             price,
             billing_amount,
-            frequency
+            frequency,
+            description
         } = await serviceWithPricing;
 
         res.status(200).send({
@@ -200,7 +200,8 @@ const getDetailedServiceById = async (req, res) => {
             testimonials,
             coveredPests,
             supportingImages,
-            bannerImg
+            bannerImg,
+            description
         });
     } catch (err) {
         console.log(err);

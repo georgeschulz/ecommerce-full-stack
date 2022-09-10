@@ -19,7 +19,7 @@ import GetQuoteButton from "../../components/buttons/getQuoteButton";
 function ServiceDetailNoPricing() {
     const { serviceId } = useParams();
     const target = useSelector(selectSelectedPest);
-    const [service, setService] = useState(defaultTesting);
+    const [service, setService] = useState(defaultTesting);  
     const isPestSelected = useSelector(selectSelectedPest) != false;
     const isAuth = useSelector(selectIsAuth);
 
@@ -40,10 +40,11 @@ function ServiceDetailNoPricing() {
             <div className="banner-img">
             <img src={`/images/services/${service.bannerImg.path}.${service.bannerImg.file_type}`} />
             </div>
-            <div className="row">
+            <div className="service-header">
                 <h2>{service.service_name}</h2>
+                <p>{service.description}</p>
             </div>
-            <div className="service-highlights">
+            <div className="service-highlights hidden-tablet">
                 <MediumServiceBox
                     includePricing={isAuth && isPestSelected}
                     startsAt={service.base_price}
