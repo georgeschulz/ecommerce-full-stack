@@ -19,6 +19,7 @@ import logo from '../../assets/better-logo.jpeg'
 import { selectShowNav } from '../../features/wizardSlice';
 import { toggleNav } from '../../features/wizardSlice';
 import x from '../../assets/icons/x-white.png'
+import home from '../../assets/icons/home.png'
 
 function Nav(props) {
     const { showSolution, showServices, showAccountSettings } = props;
@@ -88,7 +89,10 @@ function Nav(props) {
             <CartModal />
             <nav>
                 <div className='nav-left-group'>
-                    <span className='hidden-tablet-and-below'>{homeNavElement}</span>
+                    <Link to="/">
+                        <img src={home} className="home-icon" />
+                        <span className='hidden-tablet-and-below'>{homeNavElement}</span>
+                    </Link>
                     <Link to="/"><img className='hidden-desktop nav-logo' src={logo} /></Link>
                 </div>
                 <div className='nav-right-group'>

@@ -132,7 +132,7 @@ label {
 /** Meida queries for full size windows */
 @media screen and (min-width: 850px) {
   .hidden-desktop {
-    display: none;
+    display: none !important;
   }
 }
 

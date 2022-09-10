@@ -9,6 +9,7 @@ import { updateAccountInfo } from "../../api/getAccountInfo";
 import { getCities } from "../../api/schedule";
 import { deauthorize } from "../../features/auth";
 import { selectIsAuth } from "../../features/auth";
+import { getCSRFToken } from "../../api/security";
 
 function SettingsModal() {
     const showModal = useSelector(selectShowSettingsModal);
@@ -66,7 +67,8 @@ function SettingsModal() {
         e.preventDefault();
         dispatch(toggleSettingsModal());
         try {
-            await updateAccountInfo({ firstName, lastName, phone, email, address, city, state, zip, squareFeet })
+            await getCSRFToken();
+            await updateAccountInfo({ firstName, lastName, phone, email, address, city, state, zip, squareFeet });
         } catch (e) {
             console.log(e)
         }

@@ -16,14 +16,15 @@ ul.nav-list > li + li {
     padding-left: 10px;
 }
 
-.nav-left-group {
-    text-decoration: underline;
-}
-
 .nav-list {
     display: flex;
     justify-content: right;
     list-style: none;
+}
+
+.nav-left-group a {
+    display: flex;
+    align-items: center;
 }
 
 .hidden {
@@ -39,8 +40,13 @@ a {
     cursor: pointer;
 }
 
+.home-icon {
+    height: 20px;
+    margin-right: 5px;
+}
+
 .cart-icon {
-    width: 20px;
+    height: 20px;
 }
 
 .cart-component {
