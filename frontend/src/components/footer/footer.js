@@ -15,7 +15,7 @@ function Footer() {
                     <p>Alexandria, VA 22314</p>
                     <p>{'(703) 683-2000'}</p>
                     <br />
-                    <p>Copyright 2022. All Rights Reserved</p>
+                    <p className='hidden-mobile'>Copyright 2022. All Rights Reserved</p>
                 </div>
                 <div className="column">
                     <b>Navigation</b>

@@ -27,3 +27,21 @@ footer .column p, footer.column b {
     margin-left: 15%;
     min-width: 500px;
 }
+
+@media screen and (max-width: 440px) {
+    footer {
+        padding: 60px 20px;
+        text-align: center;
+        justify-content: center;
+    }
+    
+    .nav-group {
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+        width: 100%;
+        margin: 0px;
+    }
+    .column {
+        width: 100%;
+    }
+}
