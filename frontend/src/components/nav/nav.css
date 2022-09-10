@@ -27,7 +27,7 @@ ul.nav-list > li + li {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 a {

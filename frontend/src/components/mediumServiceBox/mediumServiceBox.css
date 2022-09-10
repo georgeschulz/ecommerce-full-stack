@@ -66,6 +66,7 @@
 @media screen and (max-width: 840px) {
     .services-container {
         padding: 0px;
+        justify-content: center;
     }
     
     .medium-service-box {
@@ -75,9 +76,11 @@
     .medium-service-box-button-container {
         justify-content: center;
     }
+}
 
+@media screen and (max-width: 440px) {
     .medium-service-box-button-container > div + div {
         margin-top: 15px;
+        margin-left: 0px !important;
     }
-
 }
