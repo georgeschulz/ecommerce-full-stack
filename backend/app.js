@@ -21,7 +21,8 @@ const store = require('./services/session');
 const checkIsAuthenticated = require('./helpers/checkIsAuthenticated');
 const toobusy = require('toobusy-js');
 const logger = require('./logger');
-const bouncer = require('express-bouncer')(500, 10000, 20);
+const bouncer = require('express-bouncer')(500, 900000, 20);
+const hpp = require('hpp')
 
 app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 app.use(require('cookie-parser')()); // this middleware parses cookies sent with HTTP requests
@@ -37,6 +38,9 @@ app.use((req, res, next) => {
         next();
     }
 })
+
+//prevent http parameter pollution
+app.use(hpp());
 
 //setup an express session
 app.use(
