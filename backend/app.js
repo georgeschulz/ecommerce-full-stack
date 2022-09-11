@@ -19,11 +19,22 @@ var cors = require('cors');
 const passport = require('passport');
 const store = require('./services/session');
 const checkIsAuthenticated = require('./helpers/checkIsAuthenticated');
+const toobusy = require('toobusy-js');
 const logger = require('./logger');
 
 app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 app.use(require('cookie-parser')()); // this middleware parses cookies sent with HTTP requests
-app.use(morgan('dev'))
+app.use(morgan('dev'));
+
+//implement too-busy per OSWAP to protect against DDOS attacks
+app.use((req, res, next) => {
+    if(toobusy()) {
+        logger.error("Server is overloaded. Possible DDOS attack");
+        res.status(503).send('Server too busy');
+    } else {
+        next();
+    }
+})
 
 //setup an express session
 app.use(
