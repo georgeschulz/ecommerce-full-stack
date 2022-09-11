@@ -1,12 +1,9 @@
 import WizardTemplate from "./wizardTemplate";
-import { useSelector } from "react-redux";
-import { selectUserId } from "../../features/auth";
 import { useEffect, useState } from "react";
 import { getAvailability } from "../../api/schedule";
 import AvailabilityDetails from "../../components/availabilityDetails/availabilityDetails";
 
 function WizardFive() {
-    const customerId = useSelector(selectUserId);
     const [availability, setAvailabilty] = useState([]);
 
     useEffect(() => {

@@ -3,12 +3,10 @@ import PestButton from "../pestButton/pestButton";
 import { useState, useEffect } from "react";
 import { getWizardTargets } from "../../api/getTargets";
 import { useSelector } from "react-redux";
-import { selectIsAuth } from "../../features/auth";
 import { selectReferringServiceId } from "../../features/wizardSlice";
 
 
 function PestButtonRowLarge(props) {
-    const isAuth = useSelector(selectIsAuth);
     const referringServiceId = useSelector(selectReferringServiceId);
     let [pest, setPest] = useState([]);
     

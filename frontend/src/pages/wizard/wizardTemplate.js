@@ -1,4 +1,3 @@
-import Nav from "../../components/nav/nav";
 import ProgressBar from "../../components/progressBar/progressBar";
 
 function WizardTemplate({ num, maxNum, headline, percent, instructions, body }) {

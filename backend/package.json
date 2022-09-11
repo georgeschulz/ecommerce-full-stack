@@ -13,6 +13,8 @@
     "express-promise-router": "^4.1.1",
     "express-session": "^1.17.3",
     "express-validator": "^6.14.2",
+    "helmet": "^6.0.0",
+    "helmet-csp": "^3.4.0",
     "hpp": "^0.2.3",
     "morgan": "^1.10.0",
     "passport": "^0.6.0",
@@ -27,6 +29,8 @@
     "start": "clear; nodemon app.js"
   },
   "devDependencies": {
+    "eslint": "^8.23.0",
+    "eslint-plugin-react": "^7.31.8",
     "nodemon": "^2.0.19"
   }
 }

@@ -11,15 +11,6 @@ const getAllServices = (req, res) => {
     })
 }
 
-//get a specific service by the service ID
-const getServiceById = (req, res) => {
-    const user = req.user.customer_id;
-    db.query(queries.getServiceById, [id], (err, results) => {
-        if (err) throw err;
-        res.status(200).send(results.rows);
-    });
-}
-
 const getAllServicesDetails = async (req, res) => {
     try {
         let serviceQuery = await db.query(queries.selectAllServices);
@@ -91,16 +82,11 @@ const getAllServicesDetailsById = async (req, res) => {
 const getServiceDetailedByTarget = async (req, res) => {
     try {
         const user = req.user.customer_id;
-        let squareFeet = req.user.square_feet;
         const target = req.query.target;
 
         //get the services data
         let serviceQuery = await db.query(queries.getServiceByTarget, [target]);
         let services = serviceQuery.rows;
-
-        //get pest tier
-        let pestTierQuery = await db.query(queries.getPestTier, [target])
-        let tier = pestTierQuery.rows[0].tier;
 
         //loop through each of the services and benefits and testimonials to them
         for (const service in services) {
@@ -224,7 +210,6 @@ const getFeaturedServices = async (req, res) => {
 
 module.exports = {
     getAllServices,
-    getServiceById,
     getServiceDetailedByTarget,
     getDetailedServiceById,
     getAllServicesDetails,

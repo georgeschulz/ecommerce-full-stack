@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const queries = require('../queries'); 
 const logger = require('../logger');
 
-const registerUser = async (req, res, next) => {
+const registerUser = async (req, res) => {
     //extract the form information from the request body, created at the signup form
     const { firstName, lastName, address, city, state, zip, email, phone, password, squareFeet } = req.body;
 
@@ -34,7 +34,6 @@ const registerUser = async (req, res, next) => {
             res.status(401).send('Error: An account with this email already exists. Please log into your current account of create an accont with a different email');
         } else {
             logger.error(err.message)
-            if(err.message = 'Can not create customer because we don not have a valid area ID')
             res.status(401).send('It looks like we did not recognize the city you entered. Please try another city name that we might recognize in the drop down box for city.');
         }
     }

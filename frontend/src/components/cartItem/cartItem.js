@@ -22,7 +22,7 @@ function CartItem({serviceName, serviceDescription, billingType, setupFee, billi
                 <h4>{serviceName}</h4>
                 <div className='delete-button' onClick={() => handleClick()}>
                     <span className='hidden-mobile'>Delete from Cart</span>
-                    <img src={trash} className="trash-icon" />
+                    <img src={trash} className="trash-icon" alt="delete" />
                 </div>
             </div>
             <p>

@@ -1,4 +1,3 @@
-import deweb from '../../assets/deweb.JPG';
 import './mediumServiceBox.css';
 import BenefitList from '../benefitsList/benefitsList';
 import { Link } from 'react-router-dom';
@@ -18,7 +17,7 @@ function MediumServiceBox({ path, serviceName, billingType, billingAmount, frequ
     return (
         <div className="medium-service-box" style={{'width': width}}>
             <div className={showImg ? 'medium-service-box-banner' : 'hidden'}>
-                <img src={`/images/services/${path}`} />
+                <img src={`/images/services/${path}`} alt="service" />
             </div>
             <div className='medium-service-box-content'>
                 <h2>{serviceName}</h2>

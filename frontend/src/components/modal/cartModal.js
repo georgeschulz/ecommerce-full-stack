@@ -5,7 +5,6 @@ import { toggleCartModal } from "../../features/cart";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { selectCart } from "../../features/cart";
-import { updateMostRecentItem } from "../../features/cart";
 import { selectMostRecentItem } from "../../features/cart";
 import { getCartContents } from "../../api/cart";
 import { updateCart } from "../../features/cart";
@@ -40,7 +39,7 @@ function CartModal() {
                 } 
             })();   
         }
-    }, [mostRecentItem]);
+    }, [mostRecentItem, dispatch, isAuth]);
 
     return (
         <Modal show={showModal} toggleModal={toggleCartModal} title="My Cart">

@@ -1,5 +1,3 @@
-import Nav from "../../components/nav/nav";
-import ProgressBar from "../../components/progressBar/progressBar";
 import './wizard.css'
 import MediumInfoBox from "../../components/mediumInfoBox/mediumInfoBox";
 import { Link } from "react-router-dom";
@@ -25,7 +23,7 @@ function WizardOne() {
             navigate('/wizard/2');
         }
 
-    }, [])
+    }, [dispatch, isAuth, navigate])
 
     const loginButton = (
         <Link to="/login">

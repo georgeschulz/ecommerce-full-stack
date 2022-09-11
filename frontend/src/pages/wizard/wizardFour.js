@@ -10,7 +10,6 @@ import GetServiceInfoButton from "../../components/buttons/getServiceInfoButton"
 function WizardFour() {
     const [servicesFound, setServicesFound] = useState([]);
     const target = useSelector(selectSelectedPest);
-    let body;
 
     useEffect(() => {
         const getData = async () => {
@@ -22,7 +21,7 @@ function WizardFour() {
             }
         }
         getData();
-    }, []);
+    }, [target]);
 
     return (
         <WizardTemplate

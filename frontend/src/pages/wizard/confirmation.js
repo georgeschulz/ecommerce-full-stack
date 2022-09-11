@@ -1,4 +1,3 @@
-import Nav from "../../components/nav/nav";
 import { useEffect, useState } from "react";
 import { getOrderByStripeSession } from "../../api/order";
 import { useSearchParams } from "react-router-dom";
@@ -17,7 +16,7 @@ function ConfirmationPage() {
             const dateScheduled = new Date(response.data.date_scheduled);
             setDate(dateScheduled.toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }));
         })();
-    }, [])
+    }, [session_id])
 
     return (
         <div>
@@ -57,14 +56,14 @@ function ConfirmationPage() {
                             })}
                     </div>
                     <div className="technician-tile">
-                        <img src={`/images/techs/${order.tech_profile_pic}`} className='tech-photo-large' />
+                        <img src={`/images/techs/${order.tech_profile_pic}`} className='tech-photo-large' alt="technician" />
                         <p>{order.tech_first_name} {order.tech_last_name}</p>
                     </div>
                 </div>
                 <div className="row row-center">
                 <div className="medium-box hidden-desktop" style={{'marginTop': '20px'}}>
                     <div className="information-box-mobile-group">
-                        <img src={`/images/techs/${order.tech_profile_pic}`} className='tech-photo-medium' />
+                        <img src={`/images/techs/${order.tech_profile_pic}`} className='tech-photo-medium' alt="technician" />
                     </div>
                     <div className="information-box-mobile-group">
                         <p>{order.tech_first_name} {order.tech_last_name}</p>

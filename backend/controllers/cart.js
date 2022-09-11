@@ -1,7 +1,6 @@
 const queries = require('../queries');
 const db = require('../db');
 const calculatePrice = require('../helpers/calculatePrice');
-const { application, response, Router } = require('express');
 const logger = require('../logger');
 const stripe = require('stripe')(process.env.STRIPEKEY);
 const endpointSecret = process.env.WEBHOOKSECRET;
@@ -31,7 +30,7 @@ const addServiceToCart = async (req, res) => {
         await db.query(queries.deleteDuplicateCartItems, [customer_id, service_id])
 
         //Add the service to the cart
-        const addServiceToCartQuery = await db.query(queries.addServiceToCart, [customer_id, service_id, price, setup_fee, billing_amount, billing_type]);
+        await db.query(queries.addServiceToCart, [customer_id, service_id, price, setup_fee, billing_amount, billing_type]);
         res.status(201).send({message: 'Success', data: serviceWithPricing});
     } catch (e) {
         res.status(404).send('Error: Missing either service or selected target.');
@@ -113,7 +112,7 @@ const createStripeSession = async (req, res) => {
 
 const createOrder = async (dateCreated, customerId, dateScheduled, address, city, state, zip, firstName, lastName, routeId, amountPaid, stripePayment, stripeSession) => {
     try {
-        const response = await db.query(queries.createOrder, [
+        await db.query(queries.createOrder, [
             dateCreated,
             customerId,
             dateScheduled,
@@ -187,7 +186,6 @@ const fufillOrder = async (session) => {
         await db.query(queries.clearCart, [client_reference_id])
     } catch (err) {
         logger.error(err)
-        res.status(404).send(err.message)
     }
     
 }
@@ -208,7 +206,7 @@ const recievePayment = (request, response) => {
         }
     }
 
-    if(event.type = 'checkout.session.completed') {
+    if(event.type === 'checkout.session.completed') {
         const session = event.data.object;
         if(session.payment_status === 'paid') {
             fufillOrder(session);

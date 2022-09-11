@@ -45,25 +45,6 @@ function WizardTwo() {
         fetchInfo()
     }, [showModal]);
 
-    //define the body that will present the user's information
-
-    const mainContent = (
-        <div className="large-box-container">
-            <div className="large-box">
-                <div className="large-box-group">
-                    <p><b>Name: </b>{firstName} {lastName}</p>
-                    <p><b>Email: </b>{email}</p>
-                    <p><b>Phone: </b> {phone}</p>
-                </div>
-                <div className="large-box-group">
-                    <p><b>Address:</b> {address} {city}, {stateAbbreviation} {zip}</p>
-                    <p><b>Square Feet: </b> {squareFeet}</p>
-                </div>
-            </div>
-        </div>
-
-    );
-
     return (
         <WizardTemplate
             num='1'
@@ -85,7 +66,7 @@ function WizardTwo() {
                             <p><b>Square Feet: </b> {squareFeet}</p>
                         </div>
                     </div>
-                    <div className="multipane-button-container" style={{'width': '100%'}}>
+                    <div className="wizard-button-container" style={{'width': '100%'}}>
                         <p onClick={() => dispatch(toggleSettingsModal())} className="button-medium button-color-secondary">Update</p>
                         <Link to={skipPest ? '/wizard/4' : '/wizard/3'}><p className="button-medium button-color-primary">Continue</p></Link>
                     </div>

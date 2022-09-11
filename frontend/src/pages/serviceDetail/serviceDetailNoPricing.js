@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getDetailedServiceInfoByServiceId } from "../../api/getServices";
 import { useSelector } from 'react-redux';
 import { selectSelectedPest } from "../../features/wizardSlice";
-import Nav from "../../components/nav/nav";
 import './serviceDetail.css'
 import MediumServiceBox from "../../components/mediumServiceBox/mediumServiceBox";
 import { defaultTesting } from "./defaultTesting";
-import AddToCartButton from "../../components/buttons/addToCartButton";
 import CoveredPests from "../../components/coveredPests/coveredPests";
 import Footer from "../../components/footer/footer";
 import TestimonialBlock from "../../components/testimonialBlock/testimonialBlock";
@@ -18,9 +15,8 @@ import GetQuoteButton from "../../components/buttons/getQuoteButton";
 
 function ServiceDetailNoPricing() {
     const { serviceId } = useParams();
-    const target = useSelector(selectSelectedPest);
     const [service, setService] = useState(defaultTesting);  
-    const isPestSelected = useSelector(selectSelectedPest) != false;
+    const isPestSelected = useSelector(selectSelectedPest) !== false;
     const isAuth = useSelector(selectIsAuth);
 
     useEffect(() => {
@@ -33,12 +29,12 @@ function ServiceDetailNoPricing() {
                 setService(defaultTesting)
             }
         })();
-    }, [isPestSelected, isAuth])
+    }, [isPestSelected, isAuth, serviceId])
 
     return (
         <div>
             <div className="banner-img">
-            <img src={`/images/services/${service.bannerImg.path}.${service.bannerImg.file_type}`} />
+            <img src={`/images/services/${service.bannerImg.path}.${service.bannerImg.file_type}`} alt="" />
             </div>
             <div className="service-header">
                 <h2>{service.service_name}</h2>

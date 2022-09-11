@@ -26,7 +26,7 @@ function Gallery({ images }) {
             {images.map((image, i) => {
                 return (
                     <div className={i === slide ? "gallery-image" : 'hidden'} key={i}>
-                        <img src={`/images/services/${image.path}.${image.file_type}`} />
+                        <img src={`/images/services/${image.path}.${image.file_type}`} alt="service" />
                     </div> 
                 )
                 
@@ -37,12 +37,12 @@ function Gallery({ images }) {
                 </div>
                 <div className="gallery-controls-right">
                     <div className="back-group">
-                        <img src={previous} onClick={() => back()} className={'gallery-icon'}/>
+                        <img src={previous} onClick={() => back()} className={'gallery-icon'} alt="back" />
                         <p onClick={() => back()}>Back</p>
                     </div>
                     <div className="forward-group">
                         <p onClick={() => next()}>Next</p>
-                        <img className={'gallery-icon'} src={nextImg} onClick={() => next()}/>
+                        <img className={'gallery-icon'} src={nextImg} onClick={() => next()} alt="next" />
                     </div>
                 </div>
             </div>

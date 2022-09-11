@@ -9,7 +9,7 @@ function MultipaneForm({title, panes, submit}) {
     const back = () => setPaneIndex(paneIndex - 1);
 
     const handleKeyPress = (e) => {
-        if(e.keyCode == 13 && paneIndex != max) {
+        if(e.keyCode === 13 && paneIndex !== max) {
             e.preventDefault();
             next();
         }

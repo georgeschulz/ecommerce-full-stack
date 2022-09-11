@@ -1,4 +1,3 @@
-import Nav from "../../components/nav/nav";
 import SignupForm from "../../components/signupForm.js/signupForm";
 
 function SignupPage() {

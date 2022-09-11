@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import { getDetailedServiceInfoByServiceId } from "../../api/getServices";
 import { useSelector } from 'react-redux';
 import { selectSelectedPest } from "../../features/wizardSlice";
-import Nav from "../../components/nav/nav";
 import './serviceDetail.css'
 import MediumServiceBox from "../../components/mediumServiceBox/mediumServiceBox";
 import { defaultTesting } from "./defaultTesting";
@@ -36,12 +35,12 @@ function ServiceDetail() {
                 navigate('/service/general/' + serviceId)
             }
         })();
-    }, [isAuth])
+    }, [isAuth, navigate, serviceId, target])
 
     return (
         <div>
             <div className="banner-img">
-            <img src={`/images/services/${service.bannerImg.path}.${service.bannerImg.file_type}`} />
+            <img src={`/images/services/${service.bannerImg.path}.${service.bannerImg.file_type}`} alt="" />
             </div>
             <div className="service-header">
                 <h2>{service.service_name}</h2>

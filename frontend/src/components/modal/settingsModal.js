@@ -24,7 +24,6 @@ function SettingsModal() {
     const [state, setState] = useState('');
     const [zip, setZip] = useState('');
     const [squareFeet, setSquareFeet] = useState('');
-    const [error, setError] = useState('');
     const [cityOptions, setCityOptions] = useState(['Error']);
     const dispatch = useDispatch();
 
@@ -50,7 +49,7 @@ function SettingsModal() {
                 }
             })();
         }
-    }, [showModal]);
+    }, [showModal, dispatch, isAuth]);
 
     useEffect(() => {
         (async () => {

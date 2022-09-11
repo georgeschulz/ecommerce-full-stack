@@ -13,7 +13,7 @@ function AvailabilityDetails({ routeId, routeDate, areaId, techId, slotsAvailabi
                 </div>
                 <div className="availability-details-group">
                     <p>{techFirstName} {techLastName}</p>
-                    <img src={`/images/techs/${techProfilePic}`} className='tech-photo' />
+                    <img src={`/images/techs/${techProfilePic}`} className='tech-photo' alt="tech" />
                 </div>
                 <div className="availability-details-group">
                     <p className={slotsAvailabile <= 3 ? 'red' : 'green'}>{slotsAvailabile} Spots Remaining</p>
@@ -25,7 +25,7 @@ function AvailabilityDetails({ routeId, routeDate, areaId, techId, slotsAvailabi
 
             <div className='availability-details-box availability-details-box-mobile hidden-desktop'>
                 <div className="availability-details-group">
-                    <img src={`/images/techs/${techProfilePic}`} className='tech-photo' />
+                    <img src={`/images/techs/${techProfilePic}`} className='tech-photo' alt="tech" />
                 </div>
                 <div className='availability-details-group'>
                     <p>{techFirstName} {techLastName}</p>

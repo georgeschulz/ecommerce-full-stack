@@ -17,7 +17,7 @@ function Catalog() {
     const [recurringFilter, setRecurringFilter] = useState("all");
     const [warrantyFilter, setWarrantyFilter] = useState("all")
     const isAuth = useSelector(selectIsAuth);
-    const isPestSelected = useSelector(selectSelectedPest) != false;
+    const isPestSelected = useSelector(selectSelectedPest) !== false;
 
     const filteredServices = 
         services

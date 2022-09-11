@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import './nav.css';
 import { useDispatch, useSelector } from 'react-redux';
@@ -51,7 +51,7 @@ function Nav(props) {
     if (isAuth && showAccountSettings) {
         cart = (
             <li className='nav-item cart-component' onClick={() => dispatch(toggleCartModal())}>
-                <img src={cartImg} className="cart-icon" />
+                <img src={cartImg} className="cart-icon" alt="cart-menu" />
                 Cart ({numCartItems})
             </li>
         );
@@ -90,17 +90,17 @@ function Nav(props) {
             <nav>
                 <div className='nav-left-group'>
                     <Link to="/">
-                        <img src={home} className="home-icon" />
+                        <img src={home} className="home-icon" alt="home-icon" />
                         <span className='hidden-tablet-and-below'>{homeNavElement}</span>
                     </Link>
-                    <Link to="/"><img className='hidden-desktop nav-logo' src={logo} /></Link>
+                    <Link to="/"><img className='hidden-desktop nav-logo' src={logo} alt="logo" /></Link>
                 </div>
                 <div className='nav-right-group'>
                     <div className='nav-desktop hidden-tablet-and-below'>
                         {navElements}
                     </div>
                     <span className='hidden-desktop nav-icon-mobile'>{cart}</span>
-                    <img className='hidden-desktop menu-button nav-icon-mobile' src={showNav? x : hamburger} onClick={() => dispatch(toggleNav())} />
+                    <img className='hidden-desktop menu-button nav-icon-mobile' alt="menu button" src={showNav? x : hamburger} onClick={() => dispatch(toggleNav())} />
                 </div>
             </nav>
             <div className={showNav ? 'mobile-menu-dropdown hidden-desktop' : 'hidden'}>

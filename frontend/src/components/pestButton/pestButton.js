@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import ant from '../../assets/pest icons/ants.png';
 import './pestButton.css';
 import { useDispatch } from 'react-redux';
 import { updateSelectedPest } from '../../features/wizardSlice';
@@ -15,7 +14,7 @@ function PestButton(props) {
 
     return (
         <Link to={redirect}>
-            <img src={img} className="pest-button" onClick={handleClick} />
+            <img src={img} className="pest-button" onClick={handleClick} alt={name} />
         </Link>
     );
 }

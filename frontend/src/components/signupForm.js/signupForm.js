@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { authorize } from "../../features/auth";
-import MultipaneForm from "../multipaneForm/multipaneForm";
 import './signupForm.css'
 import { onSignup } from "../../api/signup";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +15,6 @@ function SignupForm() {
     const [state, setState] = useState('VA');
     const [zip, setZip] = useState('');
     const [squareFeet, setSquareFeet] = useState(0);
-    const [error, setError] = useState('');
     const [cityOptions, setCityOptions] = useState(['']);
 
     const navigate = useNavigate();

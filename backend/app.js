@@ -23,6 +23,7 @@ const toobusy = require('toobusy-js');
 const logger = require('./logger');
 const bouncer = require('express-bouncer')(500, 900000, 20);
 const hpp = require('hpp')
+const helmet = require('helmet');
 
 app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 app.use(require('cookie-parser')()); // this middleware parses cookies sent with HTTP requests
@@ -34,6 +35,22 @@ process.on("uncaughtException", (err) => {
     process.exit();
 })
 
+//using helmet to configure security settings in http headers
+app.use(helmet.frameguard({ action: 'deny' })); //stops clickjacking attacks via iframes
+app.use(helmet.xssFilter()); //helps with xss protection
+app.use(helmet.noSniff()) //prevents meddling with content-type header
+app.use(helmet.ieNoOpen()) //this prevents internet explorer from executing downloads
+app.use(helmet.hidePoweredBy()) //this one prevents the header's including info about the backend tech stack
+
+const csp = require('helmet-csp')
+app.use(csp({
+   directives: {
+       defaultSrc: ["'self'"],  // default value for all directives that are absent
+       scriptSrc: ["'self'"],   // helps prevent XSS attacks
+       frameAncestors: ["'none'"],  // helps prevent Clickjacking attacks
+       styleSrc: ["'none'"]
+    }
+}))
 
 //implement too-busy per OSWAP to protect against DDOS attacks
 app.use((req, res, next) => {

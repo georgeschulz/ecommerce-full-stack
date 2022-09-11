@@ -1,6 +1,3 @@
-import { Link } from "react-router-dom";
-import { useEffect } from "react";
-import { addToCart } from "../../features/cart";
 import { addToCartApi } from "../../api/cart";
 import { useSelector } from "react-redux";
 import { selectUserId } from "../../features/auth";
@@ -12,7 +9,7 @@ function AddToCartButton({serviceId, target, show}) {
     const customerId = useSelector(selectUserId);
     const dispatch = useDispatch();
     const handleClick = async () => {
-        const response = await addToCartApi(serviceId, target, customerId);
+        await addToCartApi(serviceId, target, customerId);
         dispatch(updateMostRecentItem({mostRecentItem: "add-" + serviceId}))
     }
     
