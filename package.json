@@ -1,0 +1,21 @@
+{
+  "name": "pest-control-ecommerce-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cd server && npm install && node index.js",
+    "heroku-postbuild": "cd client && npm install && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/georgeschulz/ecommerce-full-stack.git"
+  },
+  "author": "G Schulz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/georgeschulz/ecommerce-full-stack/issues"
+  },
+  "homepage": "https://github.com/georgeschulz/ecommerce-full-stack#readme"
+}
