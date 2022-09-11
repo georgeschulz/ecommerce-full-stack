@@ -28,6 +28,12 @@ app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 app.use(require('cookie-parser')()); // this middleware parses cookies sent with HTTP requests
 app.use(morgan('dev'));
 
+//handle uncaught exceptions that cause the app to be in an unknown state
+process.on("uncaughtException", (err) => {
+    logger.error("Uncaught exception: ", err);
+    process.exit();
+})
+
 
 //implement too-busy per OSWAP to protect against DDOS attacks
 app.use((req, res, next) => {
@@ -48,7 +54,9 @@ app.use(
         store: store,
         secret: process.env.SESSIONSECRET,
         cookie: { 
-            maxAge: 172000000
+            maxAge: 172000000,
+            httpOnly: true,
+            sameSite: true
         },
         saveUninitialized: true,
         resave: false,
