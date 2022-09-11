@@ -21,10 +21,12 @@ const store = require('./services/session');
 const checkIsAuthenticated = require('./helpers/checkIsAuthenticated');
 const toobusy = require('toobusy-js');
 const logger = require('./logger');
+const bouncer = require('express-bouncer')(500, 10000, 20);
 
 app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 app.use(require('cookie-parser')()); // this middleware parses cookies sent with HTTP requests
 app.use(morgan('dev'));
+
 
 //implement too-busy per OSWAP to protect against DDOS attacks
 app.use((req, res, next) => {
@@ -59,7 +61,7 @@ require('./services/passport'); //add in passport confirguation
 
 //add routes as middleware
 app.use('/register', express.json(), registerRouter);
-app.use('/login', express.json(), loginRouter);
+app.use('/login', bouncer.block, express.json(), loginRouter);
 app.use('/users', express.json(), checkIsAuthenticated, usersRouter);
 app.use('/services', express.json(), servicesRouter);
 app.use('/cart', cartRouter);
