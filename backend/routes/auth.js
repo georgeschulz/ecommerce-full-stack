@@ -4,15 +4,17 @@ const registerRouter = express.Router();
 const loginRouter = express.Router();
 const logoutRouter = express.Router();
 const controllers = require('../controllers/auth');
+const validateUserInfo = require('../helpers/validateUserInfo');
+const validateUserLogin = require('../helpers/validateUserLogin');
 
 //creates a new user
-registerRouter.post('/', controllers.registerUser);
+registerRouter.post('/', validateUserInfo, controllers.registerUser);
 
 //sends you to a login page; currently being used only for testing purposes
 loginRouter.get('/', (req, res) => res.send('Login page'))
 
 //authenticate the user
-loginRouter.post('/', passport.authenticate('local'), (req, res, next) => {
+loginRouter.post('/', validateUserLogin, passport.authenticate('local'), (req, res, next) => {
     const customerId = req.user.customerID;
     res.status(200).send();
     next();

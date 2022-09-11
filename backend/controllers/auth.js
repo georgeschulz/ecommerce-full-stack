@@ -1,6 +1,6 @@
 const db = require('../db');
 const bcrypt = require('bcrypt');
-const queries = require('../queries');
+const queries = require('../queries'); 
 
 const registerUser = async (req, res, next) => {
     //extract the form information from the request body, created at the signup form
@@ -37,8 +37,9 @@ const registerUser = async (req, res, next) => {
             res.status(401).send('It looks like we did not recognize the city you entered. Please try another city name that we might recognize in the drop down box for city.');
         }
     }
-    
 }
+
+
 
 module.exports = {
     registerUser

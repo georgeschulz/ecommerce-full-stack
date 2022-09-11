@@ -38,6 +38,7 @@ function App() {
         showAccountSettings={true}
       />
       <div onClick={showNav ? () => handleMenuClickOff() : null}>
+        
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/service/:serviceId" element={<ServiceDetail />} />

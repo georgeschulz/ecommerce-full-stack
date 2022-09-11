@@ -45,65 +45,6 @@ function SignupForm() {
         })();
     }, [])
 
-    const pageOne = (
-        <div id="pageOne">
-            <div className="form-group form-group-split">
-                <div className="form-group-col">
-                    <label htmlFor="firstName">First Name</label>
-                    <input type="text" name="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)} maxLength="30" minLength="1" />
-                </div>
-                <div className="form-group-col">
-                    <label htmlFor="lastName">Last Name</label>
-                    <input type="text" name="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} maxLength="30" minLength="1" />
-                </div>
-            </div>
-            <div className="form-group">
-                <label htmlFor="phone">Phone</label>
-                <input type="text" name="phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
-            </div>
-            <div className="form-group">
-                <label htmlFor="email">Email</label>
-                <input type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-            </div>
-            <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <input type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} maxLength="20" />
-            </div>
-        </div>
-    );
-
-    const pageTwo = (
-        <div id="pageTwo">
-            <div className="form-group">
-                <label htmlFor="address">Address</label>
-                <input type="text" name="address" value={address} onChange={(e) => setAddress(e.target.value)} />
-            </div>
-            <div className="form-group form-group-split">
-                <div className="form-group-col">
-                    <label htmlFor="city">City</label>
-                    <select name="city" value={city} onChange={(e) => setCity(e.target.value)}>
-                        {cityOptions.map(element => {
-                            return (<option value={element}>{element}</option>)
-                        })}
-                    </select>
-                </div>
-                <div className="form-group-col">
-                    <label htmlFor="state">State</label>
-                    <input type="text" name="state" value={state} onChange={(e) => setState(e.target.value)} />
-                </div>
-                <div className="form-group-col">
-                    <label htmlFor="zip">Zip Code</label>
-                    <input type="text" name="zip" value={zip} onChange={(e) => setZip(e.target.value)} />
-                </div>
-            </div>
-            <div className="form-group">
-                <label htmlFor="squareFeet">Home Size in Square Feet</label>
-                <input type="number" min="100" max="20000" name="squareFeet" value={squareFeet} onChange={(e) => setSquareFeet(e.target.value)} />
-            </div>
-        </div>
-    )
-    const submit = <button type="submit" className="button-medium button-color-primary">Submit</button>
-
     return (
         <div>
             <h2>Signup</h2>
@@ -112,16 +53,16 @@ function SignupForm() {
                     <div className="form-group form-group-split">
                         <div className="form-group-col">
                             <label htmlFor="firstName">First Name</label>
-                            <input type="text" name="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)} maxLength="30" minLength="1" required />
+                            <input type="text" name="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)} maxLength="50" minLength="1" required />
                         </div>
                         <div className="form-group-col">
                             <label htmlFor="lastName">Last Name</label>
-                            <input type="text" name="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} maxLength="30" minLength="1" required />
+                            <input type="text" name="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} maxLength="50" minLength="1" required />
                         </div>
                     </div>
                     <div className="form-group">
                         <label htmlFor="phone">Phone</label> (ex. 101-111-1111)
-                        <input type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" name="phone" value={phone} onChange={(e) => setPhone(e.target.value)} required />
+                        <input type="tel" name="phone" value={phone} onChange={(e) => setPhone(e.target.value)} required />
                     </div>
                     <div className="form-group">
                         <label htmlFor="email">Email</label>
@@ -133,7 +74,7 @@ function SignupForm() {
                     </div>
                     <div className="form-group">
                         <label htmlFor="address">Address</label>
-                        <input type="text" name="address" value={address} onChange={(e) => setAddress(e.target.value)} required />
+                        <input minLength="5" maxLength="100" type="text" name="address" value={address} onChange={(e) => setAddress(e.target.value)} required />
                     </div>
                     <div className="form-group form-group-split">
                         <div className="form-group-col">

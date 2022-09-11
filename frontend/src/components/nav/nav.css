@@ -40,6 +40,10 @@ a {
     cursor: pointer;
 }
 
+.nav-item:hover, .nav-left-group a:hover {
+    transform: scale(1.03);
+}
+
 .home-icon {
     height: 20px;
     margin-right: 5px;

@@ -22,7 +22,7 @@ function LoginForm(props) {
             localStorage.setItem('isAuth', 'true');
             localStorage.setItem('userId', customerId);
         } catch (err) {
-            setError(err.message);
+            setError(err.response.data);
         }
     }
 

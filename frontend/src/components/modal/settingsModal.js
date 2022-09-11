@@ -30,7 +30,7 @@ function SettingsModal() {
 
     useEffect(() => {
         //load in the customer's contact information for them to update if they are authorized
-        if(isAuth) {
+        if (isAuth) {
             (async () => {
                 try {
                     const response = await getAccountInfo();
@@ -65,14 +65,15 @@ function SettingsModal() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        dispatch(toggleSettingsModal());
         try {
             await getCSRFToken();
             await updateAccountInfo({ firstName, lastName, phone, email, address, city, state, zip, squareFeet });
+            dispatch(toggleSettingsModal());
         } catch (e) {
+            alert(e.response.data)
             console.log(e)
         }
-    }  
+    }
 
     return (
         <Modal toggleModal={toggleSettingsModal} show={showModal} title="Account Settings">
@@ -80,24 +81,24 @@ function SettingsModal() {
                 <div className="form-group-split form-group">
                     <div className="form-group-col">
                         <label htmlFor="firstName">First Name</label>
-                        <input type="text" name="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+                        <input type="text" name="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)} minLength="1" maxLength="30" required />
                     </div>
                     <div className="form-group-col">
                         <label htmlFor="lastName">Last Name</label>
-                        <input type="text" name="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                        <input type="text" name="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} minLength="1" maxLength="30" required />
                     </div>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="phone">Phone</label>
-                    <input type="text" name="phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                    <label htmlFor="phone">Phone</label> (ex. 101-111-1111)
+                    <input type="text" name="phone" value={phone} onChange={(e) => setPhone(e.target.value)} required />
                 </div>
                 <div className="form-group">
                     <label htmlFor="email">Email</label>
-                    <input type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                    <input required type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                 </div>
                 <div className="form-group">
                     <label htmlFor="address">Address</label>
-                    <input type="text" name="address" value={address} onChange={(e) => setAddress(e.target.value)} />
+                    <input required minLength="5" type="text" name="address" value={address} onChange={(e) => setAddress(e.target.value)} />
                 </div>
                 <div className="form-group form-group-split">
                     <div className="form-group-col">
@@ -110,23 +111,26 @@ function SettingsModal() {
                     </div>
                     <div className="form-group-col">
                         <label htmlFor="state">State</label>
-                        <input type="text" name="state" value={state} onChange={(e) => setState(e.target.value)} />
-                    </div>
+                        <select name="state" value={state} onChange={(e) => setState(e.target.value)} required>
+                            <option value="DC">Washington DC</option>
+                            <option value="VA">Virginia</option>
+                            <option value="MD">Maryland</option>
+                        </select>                    </div>
                     <div className="form-group-col">
-                        <label htmlFor="zip">Zip Code</label>
-                        <input type="text" name="zip" value={zip} onChange={(e) => setZip(e.target.value)} />
+                        <label htmlFor="zip">Zip Code</label> (5 Digits)
+                        <input type="text" minLength="5" maxLength="5" name="zip" value={zip} onChange={(e) => setZip(e.target.value)} required />
                     </div>
                 </div>
                 <div className="form-group">
                     <label htmlFor="squareFeet">Home Size in Square Feet</label>
-                    <input type="text" name="squareFeet" value={squareFeet} onChange={(e) => setSquareFeet(e.target.value)} />
+                    <input type="number" name="squareFeet" value={squareFeet} onChange={(e) => setSquareFeet(e.target.value)} required min="100" max="30000"/>
                 </div>
                 <div className="button-row">
                     <button className="button-medium button-color-primary" type="submit">
                         Save
                     </button>
                 </div>
-                
+
             </form>
         </Modal>
     )
