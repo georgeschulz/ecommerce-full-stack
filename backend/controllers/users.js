@@ -1,5 +1,6 @@
 const queries = require('../queries');
 const db = require('../db');
+const logger = require('../logger');
 
 //get all of the users
 const getUsers = async (req, res) => {
@@ -8,7 +9,7 @@ const getUsers = async (req, res) => {
         const users = usersQuery.rows;
         res.status(200).send(users);
     } catch (err) {
-        console.log(err);
+        logger.error(err);
         res.status(404).send('There was an error getting a list of users');
     }
 }
@@ -22,7 +23,7 @@ const getUserById = async (req, res) => {
         res.status(200).send({users: user})
 
     } catch (err) {
-        console.log(err);
+        logger.error(err);
         res.status(404).send('There was an error finding the user');
     }
 }
@@ -51,7 +52,7 @@ const updateUser = async (req, res) => {
         ]);
         res.status(200).send({msg: 'Successful update to the user'})
     } catch (err) {
-        console.log(err)
+        logger.error(err);
         res.status(400).send({msg: 'Error updating the account'})   
     }
 }

@@ -1,4 +1,5 @@
 const { check, validationResult } = require('express-validator');
+const logger = require('../logger');
 
 //create a middleware to check user detail inputs to prevent dangerous or unclean user inputs from entering the database
 const validateUserInfo = [
@@ -99,7 +100,7 @@ const validateUserInfo = [
     (req, res, next) => {
         const errors = validationResult(req);
         if(!errors.isEmpty()) {
-            console.log("Input validation error for user:", errors)
+            logger.error('Input validation error: ', errors.errors)
             res.status(422).json(errors.errors[0].msg)
         } else {
             next();

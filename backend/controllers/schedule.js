@@ -1,4 +1,5 @@
 const db = require('../db');
+const logger = require('../logger');
 const queries = require('../queries');
 
 const getCities = async (req, res) => {
@@ -9,7 +10,7 @@ const getCities = async (req, res) => {
 
         res.status(200).send(response);
     } catch (err) {
-        console.log(err);
+        logger.error(err);
         res.status(404).send('There was a problem loading the cities we service.')
     }
     
@@ -33,7 +34,7 @@ const getAvailability = async (req, res) => {
 
         res.status(200).send(availability);
     } catch (err) {
-        console.log(err)
+        logger.error(err);
         res.status(404).send('There was an error finding availability')
     }
 }
@@ -47,7 +48,7 @@ const setAppointmentDate = async (req, res) => {
         await db.query(queries.setAppointmentDate, [routeId, customerId]);
         res.status(200).send();
     } catch (err) {
-        console.log(err);
+        logger.error(err);
         res.status(404).send('There was an issue scheduling the services in the cart');
     }
 }

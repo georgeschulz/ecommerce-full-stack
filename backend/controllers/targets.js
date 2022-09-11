@@ -1,4 +1,5 @@
 const db = require('../db');
+const logger = require('../logger');
 const queries = require('../queries');
 
 const getTargetsForHomePage = async (req, res) => {
@@ -20,7 +21,7 @@ const getTargetsForWizardPage = async (req, res) => {
 
         res.status(200).send(result)
     } catch (err) {
-        console.log(err);
+        logger.error(err);
         res.status(404).send('There was an error retrieving the pest list for the wizard page');
     }
 }

@@ -2,6 +2,7 @@ const queries = require('../queries');
 const db = require('../db');
 const calculatePrice = require('../helpers/calculatePrice');
 const { application, response, Router } = require('express');
+const logger = require('../logger');
 const stripe = require('stripe')(process.env.STRIPEKEY);
 const endpointSecret = process.env.WEBHOOKSECRET;
 
@@ -60,7 +61,7 @@ const deleteCartItem = async (req, res) => {
         res.status(200).send();
     } catch (err) {
         res.status(404).send('Error removing item from cart');
-        console.log(err)
+        logger.error(err);
     }
 }
 
@@ -71,7 +72,7 @@ const clearCart = async (req, res) => {
         await db.query(queries.clearCart, [customer_id]);
         res.status(200).send()
     } catch (err) {
-        console.log(err);
+        logger.error(err);
         res.status(404).send('Could not clear user cart')
     }
 }
@@ -132,8 +133,8 @@ const createOrder = async (dateCreated, customerId, dateScheduled, address, city
         
         const orderId = await db.query(queries.getMostRecentOrderId, [customerId]);
         return orderId.rows[0].order_id;
-    } catch(e) {
-        console.log(e);
+    } catch(err) {
+        logger.error(err);
         return false;
     }
 }
@@ -185,7 +186,7 @@ const fufillOrder = async (session) => {
         //clear the user's cart once their orders have been generated
         await db.query(queries.clearCart, [client_reference_id])
     } catch (err) {
-        console.log(err)
+        logger.error(err)
         res.status(404).send(err.message)
     }
     
@@ -202,7 +203,7 @@ const recievePayment = (request, response) => {
                 endpointSecret
             );
         } catch (err) {
-            console.log(err.message)
+            logger.error(err)
             return response.status(400).send();
         }
     }

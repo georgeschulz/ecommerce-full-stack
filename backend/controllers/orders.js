@@ -1,5 +1,6 @@
 const queries = require('../queries');
 const db = require('../db');
+const logger = require('../logger');
 
 //controller to get all of the orders in the order table for admin purposes
 const getAllOrders = async (req, res) => {
@@ -7,7 +8,7 @@ const getAllOrders = async (req, res) => {
         const ordersQuery = await db.query(queries.getAllOrders);
         res.status(200).send(ordersQuery.rows);
     } catch (err) {
-        console.log(err)
+        logger.error(err)
         res.status(404).send('There was an error getting the orders')
     }
 }
@@ -19,7 +20,7 @@ const getOrderById = async (req, res) => {
         const ordersQuery = await db.query(queries.getOrderById, [order_id]);
         res.status(200).send(ordersQuery.rows[0])
     } catch (err) {
-        console.log(err);
+        logger.error(err);
         res.status(404).send('There was an error finding your order');
     }
 }
@@ -78,7 +79,7 @@ const getOrderByStripeSession = async (req, res) => {
         }
         res.status(200).send(orderResponse)
     } catch (err) {
-        console.log(err);
+        logger.error(err)
         res.status(404).send('There was an error retrieving your order')
     }
 }

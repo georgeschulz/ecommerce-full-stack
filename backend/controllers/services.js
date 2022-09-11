@@ -1,6 +1,7 @@
 const queries = require('../queries');
 const db = require('../db');
 const calculatePrice = require('../helpers/calculatePrice');
+const logger = require('../logger');
 
 //get all services as an array of objects, each object representing a service
 const getAllServices = (req, res) => {
@@ -41,8 +42,8 @@ const getAllServicesDetails = async (req, res) => {
         }
 
         res.status(200).send(services);
-    } catch (e) {
-        console.log(e);
+    } catch (err) {
+        logger.error(err)
         res.status(404).send('There was an issue retrieving the services')
     }
 }
@@ -80,8 +81,8 @@ const getAllServicesDetailsById = async (req, res) => {
             supportingImages,
             coveredPests
         });
-    } catch (e) {
-        console.log(e);
+    } catch (err) {
+        logger.error(err)
         res.status(404).send('There was an issue retrieving the services')
     }
 }
@@ -123,7 +124,7 @@ const getServiceDetailedByTarget = async (req, res) => {
 
         res.status(200).send({ services: servicesWithPricing })
     } catch (err) {
-        console.log(err);
+        logger.error(err)
         res.status(404).send('There was an error retrieving the service');
     }
 }
@@ -203,7 +204,7 @@ const getDetailedServiceById = async (req, res) => {
             description
         });
     } catch (err) {
-        console.log(err);
+        logger.error(err);
         res.status(404).send('There was an error retriving the service');
     }
 }
@@ -214,8 +215,8 @@ const getFeaturedServices = async (req, res) => {
         const featuredServices = featuredServiceQuery.rows;
 
         res.status(200).send(featuredServices)
-    } catch (e) {
-        console.log(e);
+    } catch (err) {
+        logger.error(err)
         res.status(404).send({ msg: 'No featured services were found' });
     }
 }
