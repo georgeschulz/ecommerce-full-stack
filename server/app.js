@@ -89,6 +89,16 @@ app.use(passport.session());
 
 require('./services/passport'); //add in passport confirguation
 
+//create a general route for accessing content in the final build
+app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, "../client/build/index.html"), (err) => {
+        if(err) {
+            logger.warn("Incorrect path");
+            res.status(500).send();
+        }
+    })
+})
+
 //add routes as middleware
 app.use('/register', express.json(), registerRouter);
 app.use('/login', bouncer.block, express.json(), loginRouter);
@@ -100,15 +110,6 @@ app.use('/target', express.json(), targetRouter);
 app.use('/schedule', express.json(),  scheduleRouter);
 app.use('/logout', logoutRouter)
 
-//create a general route for accessing content in the final build
-app.get('/*', (req, res) => {
-    res.sendFile(path.join(__dirname, "../client/build/index.html"), (err) => {
-        if(err) {
-            logger.warn("Incorrect path");
-            res.status(500).send();
-        }
-    })
-})
 
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);
