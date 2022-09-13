@@ -7,7 +7,7 @@ const pool = new Pool({
     database: process.env.DATABASE,
     password: process.env.DATABASEPASSWORD,
     port: process.env.DATABASEPORT,
-    ssl: true
+    ssl: { rejectUnauthorized: false }
 });
 
 //create the query method on the pool object
