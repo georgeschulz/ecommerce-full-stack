@@ -102,9 +102,11 @@ app.use('/logout', logoutRouter)
 
 //create a general route for accessing content in the final build
 app.get('/*', (req, res) => {
-    res.sendFile(path.join(__dirname, "../client/build", "index.html"), (err) => {
-        logger.warn("Incorrect path");
-        res.status(500).send();
+    res.sendFile(path.join(__dirname, "../client/build/index.html"), (err) => {
+        if(err) {
+            logger.warn("Incorrect path");
+            res.status(500).send();
+        }
     })
 })
 
