@@ -22,7 +22,7 @@ function Home() {
         <div>
             <section id="hero">
                 <img src={logo} className="hidden-tablet-and-below" alt="logo" />
-                <h1>Solve Your Pest Problem How You Want To</h1>
+                <h1>TESTSolve Your Pest Problem How You Want To</h1>
                 <p className='subheader'>No pushy salespeople. Get your custom quote and schedule without ever having to call. Take the time you need to compare your options how YOU like to buy.</p>
                 <StartWizardButton />
             </section>
