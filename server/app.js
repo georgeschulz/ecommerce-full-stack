@@ -28,7 +28,7 @@ const helmet = require('helmet');
 app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 app.use(require('cookie-parser')()); // this middleware parses cookies sent with HTTP requests
 app.use(morgan('dev'));
-app.use(express.static('/public'));
+app.use(express.static('../client/build'));
 
 //handle uncaught exceptions that cause the app to be in an unknown state
 process.on("uncaughtException", (err) => {
