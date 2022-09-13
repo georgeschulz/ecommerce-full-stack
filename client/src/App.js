@@ -54,7 +54,7 @@ function App() {
             <Route path="/wizard/3" element={<WizardThree />} />
             <Route path="/wizard/4" element={<WizardFour />} />
             <Route path="/wizard/5" element={<WizardFive />} />
-            <Route path="/order" element={<ConfirmationPage />} />
+            <Route path="/confirmation" element={<ConfirmationPage />} />
           </Route>
 
           <Route path="*" element={<p>404 Not found</p>} />

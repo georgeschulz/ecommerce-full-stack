@@ -101,7 +101,7 @@ const createStripeSession = async (req, res) => {
     const session = await stripe.checkout.sessions.create({
         line_items: lineItems,
         mode: 'payment',
-        success_url: `https://pest-control-ecommerce.herokuapp.com/order?session_id={CHECKOUT_SESSION_ID}`,
+        success_url: `https://pest-control-ecommerce.herokuapp.com/confirmation?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: 'https://pest-control-ecommerce.herokuapp.com/wizard/5',
         automatic_tax: { enabled: false },
         client_reference_id: customer_id
