@@ -28,7 +28,6 @@ const helmet = require('helmet');
 app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 app.use(require('cookie-parser')()); // this middleware parses cookies sent with HTTP requests
 app.use(morgan('dev'));
-app.use(express.static('../client/build'));
 
 //handle uncaught exceptions that cause the app to be in an unknown state
 process.on("uncaughtException", (err) => {
@@ -102,13 +101,15 @@ app.use('/logout', logoutRouter)
 
 //create a general route for accessing content in the final build
 app.get('/*', (req, res) => {
-    res.sendFile(path.join(__dirname, "/index.html"), (err) => {
+    res.sendFile(path.join(__dirname, "..client/build/index.html"), (err) => {
         if(err) {
             logger.warn("Incorrect path");
             res.status(500).send(path.join(__dirname, "index.html"));
         }
     })
 })
+
+app.use(express.static('../client/build'));
 
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);
