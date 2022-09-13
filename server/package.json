@@ -25,12 +25,8 @@
     "toobusy-js": "^0.5.1",
     "winston": "^3.8.2"
   },
-  "scripts": {
-    "start": "clear; nodemon app.js"
-  },
   "devDependencies": {
     "eslint": "^8.23.0",
-    "eslint-plugin-react": "^7.31.8",
-    "nodemon": "^2.0.19"
+    "eslint-plugin-react": "^7.31.8"
   }
 }
