@@ -90,7 +90,7 @@ function Nav(props) {
             <nav>
                 <div className='nav-left-group'>
                     <Link to="/">
-                        <img src={home} className="home-icon" alt="home-icon" />
+                        <img src={home} className="home-icon hidden-tablet-and-below" alt="home-icon" />
                         <span className='hidden-tablet-and-below hidden-mobile'>{homeNavElement}</span>
                     </Link>
                     <Link to="/"><img className='hidden-desktop nav-logo' src={logo} alt="logo" /></Link>
