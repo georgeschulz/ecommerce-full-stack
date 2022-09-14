@@ -83,7 +83,7 @@ require('./services/passport'); //add in passport confirguation
 //add routes as middleware
 app.use('/register', express.json(), registerRouter);
 app.use('/login', bouncer.block, express.json(), loginRouter);
-app.use('/users', express.json(), checkIsAuthenticated, usersRouter);
+app.use('/users', express.json(), usersRouter);
 app.use('/services', express.json(), servicesRouter);
 app.use('/cart', cartRouter);
 app.use('/orders', express.json(), ordersRouter);

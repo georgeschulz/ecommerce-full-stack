@@ -3,6 +3,7 @@ const router = express.Router();
 const controllers = require('../controllers/users');
 const csurf = require('csurf');
 const validateUserUpdate = require('../helpers/validateUserUpdate');
+const checkIsAuthenticated = require('../helpers/checkIsAuthenticated');
 
 const csurfProtection = csurf({
     cookie: true
@@ -14,7 +15,7 @@ router.get('/getCSRFToken', (req, res) => {
     res.json({ csrfToken: req.csrfToken() });
 });
 
-router.get('/', controllers.getUserById);
-router.put('/', validateUserUpdate, controllers.updateUser);
+router.get('/', checkIsAuthenticated, controllers.getUserById);
+router.put('/', checkIsAuthenticated, validateUserUpdate, controllers.updateUser);
 
 module.exports = router;
