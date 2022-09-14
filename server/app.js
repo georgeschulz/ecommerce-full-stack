@@ -24,6 +24,7 @@ const logger = require('./logger');
 const bouncer = require('express-bouncer')(500, 900000, 20);
 const hpp = require('hpp')
 const helmet = require('helmet');
+const path = require('path');
 
 app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 app.use(require('cookie-parser')()); // this middleware parses cookies sent with HTTP requests
@@ -105,7 +106,6 @@ app.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname, "../client/build", "index.html"), (err) => {
         if(err) {
             logger.warn("Incorrect path");
-            console
             res.status(500).send(err);
         }
     })
