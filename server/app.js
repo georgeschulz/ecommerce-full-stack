@@ -48,7 +48,8 @@ app.use(
         contentSecurityPolicy: {
             directives: {
                 ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-                "script-src": ["'self", "'unsafe-inline'", "'pest-control-ecommerce.heroku.com"]
+                "script-src": ["'self", "'unsafe-inline'", "'pest-control-ecommerce.heroku.com'"],
+                "style-src": ["'self", "'unsafe-inline'", "'pest-control-ecommerce.heroku.com'"]
             }
         }
     })
