@@ -44,17 +44,6 @@ app.use(helmet.noSniff()) //prevents meddling with content-type header
 app.use(helmet.ieNoOpen()) //this prevents internet explorer from executing downloads
 app.use(helmet.hidePoweredBy()) //this one prevents the header's including info about the backend tech stack
 
-const csp = require('helmet-csp')
-/*
-app.use(csp({
-   directives: {
-       defaultSrc: ["'self'"],  // default value for all directives that are absent
-       scriptSrc: ["'self'"],   // helps prevent XSS attacks
-       frameAncestors: ["'none'"],  // helps prevent Clickjacking attacks
-       styleSrc: ["'none'"]
-    }
-}))*/
-
 //implement too-busy per OSWAP to protect against DDOS attacks
 app.use((req, res, next) => {
     if(toobusy()) {
