@@ -65,5 +65,3 @@ function App() {
 }
 
 export default App;
-
-//is it safe to store user ID in redux state

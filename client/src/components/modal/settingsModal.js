@@ -45,7 +45,6 @@ function SettingsModal() {
                     setSquareFeet(data.square_feet);
                 } catch (e) {
                     console.log(e)
-                    dispatch(deauthorize())
                 }
             })();
         }
