@@ -105,7 +105,8 @@ app.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname, "../client/build", "index.html"), (err) => {
         if(err) {
             logger.warn("Incorrect path");
-            res.status(500).send(path.join(__dirname, ));
+            console
+            res.status(500).send(err);
         }
     })
 })
