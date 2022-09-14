@@ -86,7 +86,7 @@ app.use('/login', bouncer.block, express.json(), loginRouter);
 app.use('/users', express.json(), checkIsAuthenticated, usersRouter);
 app.use('/services', express.json(), servicesRouter);
 app.use('/cart', cartRouter);
-app.use('/orders', checkIsAuthenticated, express.json(), ordersRouter);
+app.use('/orders', express.json(), ordersRouter);
 app.use('/target', express.json(), targetRouter);
 app.use('/schedule', express.json(),  scheduleRouter);
 app.use('/logout', logoutRouter)
