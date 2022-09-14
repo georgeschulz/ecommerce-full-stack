@@ -10,9 +10,6 @@ const validateUserLogin = require('../helpers/validateUserLogin');
 //creates a new user
 registerRouter.post('/', validateUserInfo, controllers.registerUser);
 
-//sends you to a login page; currently being used only for testing purposes
-loginRouter.get('/', (req, res) => res.send('Login page'))
-
 //authenticate the user
 loginRouter.post('/', validateUserLogin, passport.authenticate('local'), (req, res, next) => {
     res.status(200).send();
