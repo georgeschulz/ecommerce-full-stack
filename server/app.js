@@ -64,13 +64,13 @@ app.use(
         secret: process.env.SESSIONSECRET,
         cookie: { 
             maxAge: 172000000,
-            httpOnly: true,
+            httpOnly: process.env.NODE_ENV === 'production' ? true : false,
             sameSite: 'lax'
         },
         saveUninitialized: true,
         resave: false,
         sameSite: 'none',
-        secure: true
+        secure: process.env.NODE_ENV === 'production' ? true : false
     })
 );
 

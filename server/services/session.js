@@ -6,7 +6,7 @@ const conObject = {
     database: process.env.DATABASE,
     password: process.env.DATABASEPASSWORD,
     port: process.env.DATABASEPORT,
-    ssl: { rejectUnauthorized: false }
+    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
 }
 
 const store = new (require('connect-pg-simple')(session))({
