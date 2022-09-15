@@ -16,6 +16,15 @@ loginRouter.post('/', validateUserLogin, passport.authenticate('local'), (req, r
     next();
 }); 
 
+loginRouter.get('/google', passport.authenticate('google'));
+
+loginRouter.get('/google-account', 
+    passport.authenticate('google', {failureRedirect: '/login', failureMessage: true}),
+    function(req, res) {
+        res.redirect('/');
+    }
+)
+
 logoutRouter.post('/', (req, res, next) => {
     req.logout((err) => {
         if(err) next(err);

@@ -9,3 +9,7 @@ export const onLogin = async (loginData) => {
 export const onLogout = async () => {
     return await axios.post(`${endpoint}/logout`);
 }
+
+export const googleLogin = async () => {
+    return await axios.get(`${endpoint}/login/google`);
+}

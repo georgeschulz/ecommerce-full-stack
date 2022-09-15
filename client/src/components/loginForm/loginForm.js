@@ -3,7 +3,7 @@ import './loginForm.css';
 import { useDispatch } from "react-redux";
 import { authorize, setUserId } from '../../features/auth';
 import { onLogin } from '../../api/login';
-
+import { googleLogin } from "../../api/login";
 
 function LoginForm(props) {
     const [username, setUsername] = useState('');
@@ -26,6 +26,17 @@ function LoginForm(props) {
         }
     }
 
+    const handleGoogleButtonClick = () => {
+        (async () => {
+            try {
+                const response = await googleLogin();
+                console.log(response);
+            } catch (err) {
+                console.log(err)
+            }
+        })();
+    }
+
     return (
         <div id="login-form-container">
             <form onSubmit={handleSubmit}>
@@ -40,6 +51,7 @@ function LoginForm(props) {
                 </div>
                 <p style={{color: 'red'}}>{error}</p>
                 <div className="form-group row-center">
+                    <a className="button-medium button-color-primary" href="/login/google">Login with Google</a>
                     <button type="submit" className="submit-button">Login</button>
                 </div>
             </form>
