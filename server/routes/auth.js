@@ -16,7 +16,7 @@ loginRouter.post('/', validateUserLogin, passport.authenticate('local'), (req, r
     next();
 }); 
 
-loginRouter.get('/google', passport.authenticate('google'));
+loginRouter.get('/google', () => { console.log('hit /google route')}, passport.authenticate('google'));
 
 loginRouter.get('/google-account', 
     passport.authenticate('google', {failureRedirect: '/login', failureMessage: true}),
