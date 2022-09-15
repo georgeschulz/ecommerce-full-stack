@@ -4,11 +4,13 @@ import { useDispatch } from "react-redux";
 import { authorize, setUserId } from '../../features/auth';
 import { onLogin } from '../../api/login';
 import { googleLogin } from "../../api/login";
+import { useNavigate } from "react-router-dom";
 
 function LoginForm(props) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     const dispatch = useDispatch();
 
@@ -29,8 +31,14 @@ function LoginForm(props) {
     const handleGoogleButtonClick = () => {
         (async () => {
             try {
-                const response = await googleLogin();
-                console.log(response);
+                if(process.env.NODE_ENV === 'production') {
+                    console.log('production')
+                    navigate('/login/google');
+                } else {
+                    console.log('dev')
+                    const response = await googleLogin();
+                    console.log(response);
+                }
             } catch (err) {
                 console.log(err)
             }
@@ -51,7 +59,7 @@ function LoginForm(props) {
                 </div>
                 <p style={{color: 'red'}}>{error}</p>
                 <div className="form-group row-center">
-                    <a className="button-medium button-color-primary" href="/login/google">Login with Google</a>
+                    <a className="button-medium button-color-primary" onClick={() => handleGoogleButtonClick()}>Login with Google</a>
                     <button type="submit" className="submit-button">Login</button>
                 </div>
             </form>
