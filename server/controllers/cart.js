@@ -8,11 +8,11 @@ const endpointSecret = process.env.WEBHOOKSECRET;
 //controller that adds a service to the cart
 const addServiceToCart = async (req, res) => {
     try {
-         //extract parameters for api call from params (url) and request body
+        //extract parameters for api call from params (url) and request body
         const { service_id } = req.params;
         const customer_id = req.user.customer_id;
         const { target } = req.body;
-        
+
         if (target.length <= 0) {
             //handle cases where the user forgets to add a body to their request
             throw new Error('Please add a target')
@@ -31,11 +31,11 @@ const addServiceToCart = async (req, res) => {
 
         //Add the service to the cart
         await db.query(queries.addServiceToCart, [customer_id, service_id, price, setup_fee, billing_amount, billing_type]);
-        res.status(201).send({message: 'Success', data: serviceWithPricing});
+        res.status(201).send({ message: 'Success', data: serviceWithPricing });
     } catch (e) {
         res.status(404).send('Error: Missing either service or selected target.');
     }
-   
+
 }
 
 //Controller to return the cart contents of a specific user joined with more information about the service
@@ -77,37 +77,43 @@ const clearCart = async (req, res) => {
 }
 
 const createStripeSession = async (req, res) => {
-    //get the contents of the customer's cart
-    const customer_id = req.user.customer_id;
+    try {
+        //get the contents of the customer's cart
+        const customer_id = req.user.customer_id;
 
-    const cartQuery = await db.query(queries.getUserCart, [customer_id]);
-    const cart = cartQuery.rows;
+        const cartQuery = await db.query(queries.getUserCart, [customer_id]);
+        const cart = cartQuery.rows;
 
-    //structure the cart contents to prepare them for stripe's formatting
-    const lineItems = await cart.map(item => {
-        return {
-            price_data: {
-                currency: 'usd',
-                unit_amount: item.setup_fee * 100,
-                product_data: {
-                    name: `${item.service_name} Setup Fee`,
-                    description: `Setup fee is $${item.setup_fee}, then you will be billed $${item.billing_amount} per ${item.billing_type}. ${item.description}`
-                }
-            },
-            quantity: 1
-        }
-    })
-    
-    const session = await stripe.checkout.sessions.create({
-        line_items: lineItems,
-        mode: 'payment',
-        success_url: `https://pest-control-ecommerce.herokuapp.com/confirmation?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: 'https://pest-control-ecommerce.herokuapp.com/wizard/5',
-        automatic_tax: { enabled: false },
-        client_reference_id: customer_id
-    });
+        //structure the cart contents to prepare them for stripe's formatting
+        const lineItems = await cart.map(item => {
+            return {
+                price_data: {
+                    currency: 'usd',
+                    unit_amount: item.setup_fee * 100,
+                    product_data: {
+                        name: `${item.service_name} Setup Fee`,
+                        description: `Setup fee is $${item.setup_fee}, then you will be billed $${item.billing_amount} per ${item.billing_type}. ${item.description}`
+                    }
+                },
+                quantity: 1
+            }
+        })
 
-    res.status(200).send(session.url);
+        const session = await stripe.checkout.sessions.create({
+            line_items: lineItems,
+            mode: 'payment',
+            success_url: process.env.NODE_ENV === 'production' ? `https://pest-control-ecommerce.herokuapp.com/confirmation?session_id={CHECKOUT_SESSION_ID}` : 'http://localhost:3000/confirmation?session_id={CHECKOUT_SESSION_ID}',
+            cancel_url: process.env.NODE_ENV === 'production' ? 'https://pest-control-ecommerce.herokuapp.com/wizard/5' : 'http://localhost:3000/wizard/5',
+            automatic_tax: { enabled: false },
+            client_reference_id: customer_id
+        });
+
+        res.status(200).send(session.url);
+    } catch (err) {
+        logger.error(err);
+        res.status(400).send();
+    }
+   
 }
 
 const createOrder = async (dateCreated, customerId, dateScheduled, address, city, state, zip, firstName, lastName, routeId, amountPaid, stripePayment, stripeSession) => {
@@ -129,10 +135,10 @@ const createOrder = async (dateCreated, customerId, dateScheduled, address, city
             stripePayment,
             stripeSession
         ]);
-        
+
         const orderId = await db.query(queries.getMostRecentOrderId, [customerId]);
         return orderId.rows[0].order_id;
-    } catch(err) {
+    } catch (err) {
         logger.error(err);
         return false;
     }
@@ -148,7 +154,7 @@ const fufillOrder = async (session) => {
         const customerQuery = await db.query(queries.getUserById, [client_reference_id]);
         const customer = customerQuery.rows[0];
 
-        if(!customer) {
+        if (!customer) {
             throw new Error('We could not find your account to place your order.');
         }
 
@@ -156,7 +162,7 @@ const fufillOrder = async (session) => {
         const cartQuery = await db.query(queries.getUserCart, [client_reference_id]);
         const cart = cartQuery.rows;
 
-        if(cart.length <= 0) {
+        if (cart.length <= 0) {
             throw new Error('It looks like your cart was empty. Please add items to you cart and try again');
         }
 
@@ -164,13 +170,13 @@ const fufillOrder = async (session) => {
         const routeQuery = await db.query(queries.getRouteById, [cart[0].route_id]);
         const route = routeQuery.rows[0];
 
-        if(!route) {
+        if (!route) {
             throw new Error('The appointment could not be found. Pleasea try again.')
         }
 
         //create the order with the parameters extracted from other tables
         const orderId = await createOrder(dateCreatedString, client_reference_id, route.route_date, customer.address, customer.city, customer.state_abbreviation, customer.zip, customer.first_name, customer.last_name, route.route_id, amount_total, payment_intent, id)
-        if(!orderId) {
+        if (!orderId) {
             throw new Error('There was an unknown error creating your order');
         }
 
@@ -181,18 +187,18 @@ const fufillOrder = async (session) => {
 
         //decrement the availability on that day by 1 so the technician isn't overbooked
         await db.query(queries.decrementRouteAvailability, [route.route_id]);
-        
+
         //clear the user's cart once their orders have been generated
         await db.query(queries.clearCart, [client_reference_id])
     } catch (err) {
         logger.error(err)
     }
-    
+
 }
 
 const recievePayment = (request, response) => {
     let event = request.body;
-    if(endpointSecret) {
+    if (endpointSecret) {
         const signature = request.headers['stripe-signature'];
         try {
             event = stripe.webhooks.constructEvent(
@@ -206,9 +212,9 @@ const recievePayment = (request, response) => {
         }
     }
 
-    if(event.type === 'checkout.session.completed') {
+    if (event.type === 'checkout.session.completed') {
         const session = event.data.object;
-        if(session.payment_status === 'paid') {
+        if (session.payment_status === 'paid') {
             fufillOrder(session);
             response.status(200).end()
         }

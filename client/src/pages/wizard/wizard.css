@@ -261,11 +261,15 @@ h1.wizard-header {
     .wizard-content-container h1 {
         font-size: 22px;
     }
+
+    .wizard-button-container > p + a {
+        margin-top: 10px;
+    }
 }
 
 .wizard-button-container {
     display: flex;
     width: 100%;
     justify-content: center;
-    
+    flex-wrap: wrap;
 }
