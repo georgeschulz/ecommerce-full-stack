@@ -20,6 +20,8 @@ import { useDispatch } from 'react-redux';
 import { closeNav } from './features/wizardSlice';
 import { useSelector } from 'react-redux';
 import { selectShowNav } from './features/wizardSlice';
+import PrivacyPolicy from './pages/legal/privacyPolicy';
+import Terms from './pages/legal/terms';
 
 function App() {
   const dispatch = useDispatch();
@@ -45,6 +47,8 @@ function App() {
           <Route path="/service/general/:serviceId" element={<ServiceDetailNoPricing />} />
           <Route path="/catalog" element={<Catalog />} />
           <Route path="/wizard/1" element={<WizardOne />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<Terms />} />
           <Route element={<RestrictedRoutes />}>
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignupPage />} />

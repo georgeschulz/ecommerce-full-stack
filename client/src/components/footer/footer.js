@@ -23,7 +23,8 @@ function Footer() {
                         <li><Link to="/">Home</Link></li>
                         <li><Link to="/catalog">Services Catalog</Link></li>
                         <li><Link to={isAuth ? '/wizard/2' : '/wizard/1'}>Quote Wizard</Link></li>
-                        <li><a href="https://www.bettertermite.com/privacy-policy/">Privacy Policy</a></li>
+                        <li><Link to='/privacy'>Privacy Policy</Link></li>
+                        <li><Link to='/terms'>Terms and Conditions</Link></li>
                     </ul>
 
                 </div>

@@ -1,0 +1,15 @@
+.legal-content-container {
+    display: flex;
+    justify-content: center;
+}
+
+.legal-content {
+    max-width: 650px;
+    width: 100%;
+    margin: 30px;
+}
+
+.legal-content p {
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
