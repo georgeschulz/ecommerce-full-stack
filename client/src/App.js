@@ -50,12 +50,12 @@ function App() {
           <Route path="/wizard/1" element={<WizardOne />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<Terms />} />
+          <Route path="/google/account-setup" element={<FinishSetupPage />} />
           <Route element={<RestrictedRoutes />}>
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignupPage />} />
           </Route>
           <Route element={<PrivateRoutes />}>
-            <Route path="/google/account-setup" element={<FinishSetupPage />} />
             <Route path="/wizard/2" element={<WizardTwo />} />
             <Route path="/wizard/3" element={<WizardThree />} />
             <Route path="/wizard/4" element={<WizardFour />} />

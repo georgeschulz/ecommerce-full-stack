@@ -4,10 +4,10 @@ import { getAccountInfo } from "../../api/getAccountInfo";
 import { useDispatch } from "react-redux";
 import { updateAccountInfo } from "../../api/getAccountInfo";
 import { getCities } from "../../api/schedule";
-import { deauthorize } from "../../features/auth";
+import auth, { authorize, deauthorize } from "../../features/auth";
 import { selectIsAuth } from "../../features/auth";
 import { getCSRFToken } from "../../api/security";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
 
 function FinishSetupForm() {
@@ -28,6 +28,8 @@ function FinishSetupForm() {
     const [params] = useSearchParams();
 
     useEffect(() => {
+        //log the user in in the front end redux state
+        dispatch(authorize());
         //if the customer has already filled out the necessary info, skip the setup page and immediately push to wizard 2
         if(params.get('isSetup') === 'true') {
             navigate('/wizard/2')
@@ -49,6 +51,10 @@ function FinishSetupForm() {
                     setZip(data.zip);
                     setSquareFeet(data.square_feet);
                 } catch (e) {
+                    if(e.response.status === 401) {
+                        dispatch(deauthorize())
+                        navigate('/');
+                    }
                     console.log(e)
                 }
             })();

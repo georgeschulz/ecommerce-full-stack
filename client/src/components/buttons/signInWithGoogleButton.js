@@ -9,10 +9,8 @@ function SignInWithGoogleButton() {
         (async () => {
             try {
                 if(process.env.NODE_ENV === 'production') {
-                    dispatch(authorize());
                     window.location.href = 'https://pest-control-ecommerce.herokuapp.com/login/google';
                 } else {
-                    dispatch(authorize());
                     window.location.href = 'http://localhost:4000/login/google';
                 }
             } catch (err) {
