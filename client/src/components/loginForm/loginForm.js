@@ -3,7 +3,7 @@ import './loginForm.css';
 import { useDispatch } from "react-redux";
 import { authorize, setUserId } from '../../features/auth';
 import { onLogin } from '../../api/login';
-
+import SignInWithGoogleButton from "../buttons/signInWithGoogleButton";
 
 function LoginForm(props) {
     const [username, setUsername] = useState('');
@@ -25,22 +25,6 @@ function LoginForm(props) {
         }
     }
 
-    const handleGoogleButtonClick = () => {
-        (async () => {
-            try {
-                if(process.env.NODE_ENV === 'production') {
-                    dispatch(authorize());
-                    window.location.href = 'https://pest-control-ecommerce.herokuapp.com/login/google';
-                } else {
-                    dispatch(authorize());
-                    window.location.href = 'http://localhost:4000/login/google';
-                }
-            } catch (err) {
-                console.log(err)
-            }
-        })();
-    }
-
     return (
         <div id="login-form-container">
             <form onSubmit={handleSubmit}>
@@ -54,8 +38,8 @@ function LoginForm(props) {
                     <input type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                 </div>
                 <p style={{color: 'red'}}>{error}</p>
+                <SignInWithGoogleButton />
                 <div className="form-group row-center">
-                    <a className="button-medium button-color-primary" onClick={() => handleGoogleButtonClick()}>Login with Google</a>
                     <button type="submit" className="submit-button">Login</button>
                 </div>
             </form>
