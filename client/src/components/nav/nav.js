@@ -20,10 +20,12 @@ import { selectShowNav } from '../../features/wizardSlice';
 import { toggleNav } from '../../features/wizardSlice';
 import x from '../../assets/icons/x-white.png'
 import home from '../../assets/icons/home.png'
+import { selectIsAdmin } from '../../features/auth';
 
 function Nav(props) {
     const { showSolution, showServices, showAccountSettings } = props;
     let isAuth = useSelector(selectIsAuth)
+    let isAdmin = useSelector(selectIsAdmin);
     let numCartItems = useSelector(selectNumCartItems);
     let showNav = useSelector(selectShowNav);
     let homeNavElement = <Link to="/">{'Home'}</Link>;
@@ -48,7 +50,7 @@ function Nav(props) {
         }
     }
 
-    if (isAuth && showAccountSettings) {
+    if (isAuth && showAccountSettings && !isAdmin ) {
         cart = (
             <li className='nav-item cart-component' onClick={() => dispatch(toggleCartModal())}>
                 <img src={cartImg} className="cart-icon" alt="cart-menu" />
@@ -61,10 +63,13 @@ function Nav(props) {
 
     const navElements = (
         <ul className='nav-list'>
-            <li className={showSolution ? 'nav-item' : 'hidden'} onClick={() => startWizard()}>
+            <li className={isAdmin && isAuth ? 'nav-item' : 'hidden'}>
+                <Link to="/schedule">Schedule</Link>
+            </li>
+            <li className={showSolution && !isAdmin ? 'nav-item' : 'hidden'} onClick={() => startWizard()}>
                 Find a Solution
             </li>
-            <li className={showServices ? 'nav-item' : 'hidden'}>
+            <li className={showServices && !isAdmin ? 'nav-item' : 'hidden'}>
                 <Link onClick={() => dispatch(toggleNav())} to="/catalog">View Services Catalog</Link>
             </li>
             <li className={showAccountSettings && !isAuth ? 'nav-item' : 'hidden'}>
@@ -74,7 +79,7 @@ function Nav(props) {
                 <Link onClick={() => dispatch(toggleNav())} to="/signup">Signup</Link>
             </li>
             {cart}
-            <li onClick={() => dispatch(toggleSettingsModal())} className={showAccountSettings && isAuth ? 'nav-item' : 'hidden'}>
+            <li onClick={() => dispatch(toggleSettingsModal())} className={showAccountSettings && isAuth && !isAdmin ? 'nav-item' : 'hidden'}>
                 Settings
             </li>
             <li onClick={() => handleLogout()} className={showAccountSettings && isAuth ? 'nav-item' : 'hidden'}>

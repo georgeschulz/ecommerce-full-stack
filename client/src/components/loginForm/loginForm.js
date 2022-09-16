@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import './loginForm.css';
 import { useDispatch } from "react-redux";
-import { authorize, setUserId } from '../../features/auth';
+import { authorize, setAdmin, setUserId } from '../../features/auth';
 import { onLogin } from '../../api/login';
 import SignInWithGoogleButton from "../buttons/signInWithGoogleButton";
 
@@ -15,11 +15,10 @@ function LoginForm() {
         e.preventDefault();
         try {
             const response = await onLogin({username, password});
-            const customerId = response.data.id;
-            dispatch(setUserId({userId: customerId}));
+            const userType = response.data;
+            dispatch(setAdmin({isAdmin: userType == 'admin'}))
             dispatch(authorize());
             localStorage.setItem('isAuth', 'true');
-            localStorage.setItem('userId', customerId);
         } catch (err) {
             setError(err.response.data);
         }

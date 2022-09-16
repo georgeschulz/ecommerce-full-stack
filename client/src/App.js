@@ -24,6 +24,7 @@ import PrivacyPolicy from './pages/legal/privacyPolicy';
 import Terms from './pages/legal/terms';
 import FinishSetupPage from './pages/signup/finishSetupPage';
 import ScrollToTop from './components/scrollToTop/scrollToTop';
+import AdminRoutes from './components/restrictedRoutes/adminRoute';
 
 function App() {
   const dispatch = useDispatch();
@@ -43,7 +44,6 @@ function App() {
           showAccountSettings={true}
         />
         <div onClick={showNav ? () => handleMenuClickOff() : null}>
-
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/service/:serviceId" element={<ServiceDetail />} />
@@ -64,7 +64,9 @@ function App() {
               <Route path="/wizard/5" element={<WizardFive />} />
               <Route path="/confirmation" element={<ConfirmationPage />} />
             </Route>
-
+            <Route element={<AdminRoutes />}>
+              <Route path="/schedule" element={<p>Dashboard</p>} />
+            </Route>
             <Route path="*" element={<p>404 Not found</p>} />
           </Routes>
         </div>

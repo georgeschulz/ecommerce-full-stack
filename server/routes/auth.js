@@ -12,9 +12,21 @@ const queries = require('../queries');
 //creates a new user
 registerRouter.post('/', validateUserInfo, controllers.registerUser);
 
+const getCustomerById = async (id) => {
+    try {
+        const customerQuery = await db.query(queries.getUserById, [id]);
+        return customerQuery.rows[0];
+    } catch (err){
+        console.log(err)
+    }
+}
+
 //authenticate the user
-loginRouter.post('/', validateUserLogin, passport.authenticate('local'), (req, res, next) => {
-    res.status(200).send();
+loginRouter.post('/', validateUserLogin, passport.authenticate('local'), async (req, res, next) => {
+    console.log(req.user.customerID);
+    const customer = await getCustomerById(req.user.customerID);
+    console.log(customer.user_level);
+    res.status(200).send(customer.user_level);
     next();
 });
 
