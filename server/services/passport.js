@@ -32,7 +32,7 @@ passport.use(new LocalStrategy(function verify(username, password, cb) {
 passport.use(new GoogleStrategy({
     clientID: process.env['GOOGLE_CLIENT_ID'],
     clientSecret: process.env['GOOGLE_CLIENT_SECRET'],
-    callbackURL: process.env.NODE_ENV === 'production' ? 'https://www.pest-control-ecommerce.herokuapp.com/login/google-account' : 'http://localhost:4000/login/google-account'
+    callbackURL: process.env.NODE_ENV === 'production' ? 'https://pest-control-ecommerce.herokuapp.com/login/google-account' : 'http://localhost:4000/login/google-account'
 },
     function (issuer, profile, cb) {
         db.query('SELECT * FROM federated_credentials WHERE provider = $1 AND subject = $2', [
