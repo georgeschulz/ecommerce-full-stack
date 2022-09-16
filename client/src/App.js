@@ -23,6 +23,7 @@ import { selectShowNav } from './features/wizardSlice';
 import PrivacyPolicy from './pages/legal/privacyPolicy';
 import Terms from './pages/legal/terms';
 import FinishSetupPage from './pages/signup/finishSetupPage';
+import ScrollToTop from './components/scrollToTop/scrollToTop';
 
 function App() {
   const dispatch = useDispatch();
@@ -34,38 +35,40 @@ function App() {
 
   return (
     <Router>
-      <Nav
-        homeNav="store"
-        showSolution={true}
-        showServices={true}
-        showAccountSettings={true}
-      />
-      <div onClick={showNav ? () => handleMenuClickOff() : null}>
-        
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/service/:serviceId" element={<ServiceDetail />} />
-          <Route path="/service/general/:serviceId" element={<ServiceDetailNoPricing />} />
-          <Route path="/catalog" element={<Catalog />} />
-          <Route path="/wizard/1" element={<WizardOne />} />
-          <Route path="/privacy" element={<PrivacyPolicy />} />
-          <Route path="/terms" element={<Terms />} />
-          <Route path="/google/account-setup" element={<FinishSetupPage />} />
-          <Route element={<RestrictedRoutes />}>
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignupPage />} />
-          </Route>
-          <Route element={<PrivateRoutes />}>
-            <Route path="/wizard/2" element={<WizardTwo />} />
-            <Route path="/wizard/3" element={<WizardThree />} />
-            <Route path="/wizard/4" element={<WizardFour />} />
-            <Route path="/wizard/5" element={<WizardFive />} />
-            <Route path="/confirmation" element={<ConfirmationPage />} />
-          </Route>
+      <ScrollToTop>
+        <Nav
+          homeNav="store"
+          showSolution={true}
+          showServices={true}
+          showAccountSettings={true}
+        />
+        <div onClick={showNav ? () => handleMenuClickOff() : null}>
 
-          <Route path="*" element={<p>404 Not found</p>} />
-        </Routes>
-      </div>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/service/:serviceId" element={<ServiceDetail />} />
+            <Route path="/service/general/:serviceId" element={<ServiceDetailNoPricing />} />
+            <Route path="/catalog" element={<Catalog />} />
+            <Route path="/wizard/1" element={<WizardOne />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/google/account-setup" element={<FinishSetupPage />} />
+            <Route element={<RestrictedRoutes />}>
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<SignupPage />} />
+            </Route>
+            <Route element={<PrivateRoutes />}>
+              <Route path="/wizard/2" element={<WizardTwo />} />
+              <Route path="/wizard/3" element={<WizardThree />} />
+              <Route path="/wizard/4" element={<WizardFour />} />
+              <Route path="/wizard/5" element={<WizardFive />} />
+              <Route path="/confirmation" element={<ConfirmationPage />} />
+            </Route>
+
+            <Route path="*" element={<p>404 Not found</p>} />
+          </Routes>
+        </div>
+      </ScrollToTop>
     </Router>
   );
 }

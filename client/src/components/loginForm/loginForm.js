@@ -5,7 +5,7 @@ import { authorize, setUserId } from '../../features/auth';
 import { onLogin } from '../../api/login';
 import SignInWithGoogleButton from "../buttons/signInWithGoogleButton";
 
-function LoginForm(props) {
+function LoginForm() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
