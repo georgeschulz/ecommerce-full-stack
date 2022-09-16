@@ -32,12 +32,11 @@ function LoginForm(props) {
         (async () => {
             try {
                 if(process.env.NODE_ENV === 'production') {
-                    console.log('production')
+                    dispatch(authorize());
                     navigate('/login/google');
                 } else {
-                    console.log('dev')
-                    const response = await googleLogin();
-                    console.log(response);
+                    dispatch(authorize());
+                    window.location.href = 'http://localhost:4000/login/google';
                 }
             } catch (err) {
                 console.log(err)

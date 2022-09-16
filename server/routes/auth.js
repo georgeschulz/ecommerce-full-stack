@@ -16,12 +16,17 @@ loginRouter.post('/', validateUserLogin, passport.authenticate('local'), (req, r
     next();
 }); 
 
-loginRouter.get('/google', () => { console.log('hit /google route')}, passport.authenticate('google'));
+loginRouter.get('/google', passport.authenticate('google', {scope: ['email', 'profile']}));
 
 loginRouter.get('/google-account', 
     passport.authenticate('google', {failureRedirect: '/login', failureMessage: true}),
     function(req, res) {
-        res.redirect('/');
+        //handle routing based on whether it's production from auth based on whether it's production or dev
+        if(process.env.NODE_ENV === 'production') {
+            res.redirect('/')
+        } else {
+            res.redirect('http://localhost:3000/')
+        }
     }
 )
 
