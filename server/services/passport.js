@@ -28,58 +28,55 @@ passport.use(new LocalStrategy(function verify(username, password, cb) {
     })
 }));
 
-//google strategy
+//google strategy - supply the authorization stuff and it redirects the page to their auth page. Google then sends you to the approved callback url below (changed based on dev vs. production)
 passport.use(new GoogleStrategy({
     clientID: process.env['GOOGLE_CLIENT_ID'],
     clientSecret: process.env['GOOGLE_CLIENT_SECRET'],
     callbackURL: process.env.NODE_ENV === 'production' ? 'https://pest-control-ecommerce.herokuapp.com/login/google-account' : 'http://localhost:4000/login/google-account'
 },
     function (issuer, profile, cb) {
+        //check to see if a user with these google credentials exists
         db.query('SELECT * FROM federated_credentials WHERE provider = $1 AND subject = $2', [
             issuer,
             profile.id
         ], function (err, cred) {
-            console.log('first check');
-            if (err) { console.log('hit first error'); return cb(err) }
+            if (err) { return cb(err) }
             //if we can't find the user, make a new user
             if (cred.rowCount === 0) {
-                console.log('second query')
-                console.log(profile)
                 //create a date to timestamp account creation
                 const today = new Date();
                 const dateCreatedString = today.toISOString().split('T')[0];
-
+                //create a user with the info from google and a timestamp. When this happens, we need to collect more complete user information before going through the signup flow
                 db.query('INSERT INTO customers (email, date_created, first_name, last_name) VALUES ($1, $2, $3, $4) RETURNING customer_id', [profile.emails[0].value, dateCreatedString, profile.name.givenName, profile.name.familyName], function (err, result) {
-                    if (err) { console.log('hit second error'); return cb(err) }
+                    if (err) { return cb(err) }
                     let id = result.rows[0].customer_id;
+                    //create and link their google credentials in the federated credentials table (which stores social logins)
                     db.query('INSERT INTO federated_credentials (customer_id, provider, subject) VALUES ($1, $2, $3)', [
                         id,
                         issuer,
                         profile.id
                     ], function (err) {
-                        if (err) { console.og('thid error'); return cb(err); }
+                        if (err) { return cb(err); }
+                        //now log the user in by returning their customerId for serializing and deserializing
                         let user = {
                             customerID: id.toString()             
                         };
-                        console.log('user', user);
                         return cb(null, user);
                     })
                 })
             } else {
                 //the google account has previously logged in to the app. Get the linked user
-                console.log(cred);
-                console.log({customerID: cred.rows[0].customer_id})
                 return cb(null, {customerID: cred.rows[0].customer_id})
             } 
         })
     }))
 
-//serialize the user
+//serialize the user - used for storing the user's info with session info
 passport.serializeUser(function (user, done) {
     done(null, user.customerID);
 })
 
-//deserialize the user
+//deserialize the user - this makes the user's information accessible in each request without passing sensitive info like customer Id
 passport.deserializeUser(function (customerID, done) {
     db.query(queries.getUserById, [customerID], (err, result) => {
         done(null, result.rows[0])
