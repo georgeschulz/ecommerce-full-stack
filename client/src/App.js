@@ -22,6 +22,7 @@ import { useSelector } from 'react-redux';
 import { selectShowNav } from './features/wizardSlice';
 import PrivacyPolicy from './pages/legal/privacyPolicy';
 import Terms from './pages/legal/terms';
+import FinishSetupPage from './pages/signup/finishSetupPage';
 
 function App() {
   const dispatch = useDispatch();
@@ -54,6 +55,7 @@ function App() {
             <Route path="/signup" element={<SignupPage />} />
           </Route>
           <Route element={<PrivateRoutes />}>
+            <Route path="/google/account-setup" element={<FinishSetupPage />} />
             <Route path="/wizard/2" element={<WizardTwo />} />
             <Route path="/wizard/3" element={<WizardThree />} />
             <Route path="/wizard/4" element={<WizardFour />} />

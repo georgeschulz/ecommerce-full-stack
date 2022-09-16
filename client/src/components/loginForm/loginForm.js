@@ -3,15 +3,12 @@ import './loginForm.css';
 import { useDispatch } from "react-redux";
 import { authorize, setUserId } from '../../features/auth';
 import { onLogin } from '../../api/login';
-import { googleLogin } from "../../api/login";
-import { useNavigate } from "react-router-dom";
+
 
 function LoginForm(props) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const navigate = useNavigate();
-
     const dispatch = useDispatch();
 
     const handleSubmit = async (e) => {
