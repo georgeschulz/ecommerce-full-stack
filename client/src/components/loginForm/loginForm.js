@@ -33,7 +33,7 @@ function LoginForm(props) {
             try {
                 if(process.env.NODE_ENV === 'production') {
                     dispatch(authorize());
-                    navigate('/login/google');
+                    navigate('https://pest-control-ecommerce.herokuapp.com/login/google');
                 } else {
                     dispatch(authorize());
                     window.location.href = 'http://localhost:4000/login/google';
