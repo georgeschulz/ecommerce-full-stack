@@ -248,6 +248,22 @@ const getAllTechs = `SELECT * FROM techs;`
 
 const createNewRoute = `INSERT INTO routes (slots_available, tech_id, route_date) VALUES (0, $1, $2);`
 
+const getAllAvailability = `
+    SELECT
+    routes.route_id,
+    routes.slots_available,
+    routes.tech_id,
+    routes.route_date,
+    techs.tech_first_name,
+    techs.tech_last_name
+    FROM routes
+    INNER JOIN techs
+    ON routes.tech_id = techs.tech_id
+    ORDER BY route_date ASC;
+`;
+
+const getUniqueUpcomingAvailability = `SELECT DISTINCT(route_date) FROM routes WHERE route_date > $1 ORDER BY route_date ASC;`
+
 module.exports = {
     createCustomer,
     checkUserAuth,
@@ -290,5 +306,7 @@ module.exports = {
     getPestList,
     decrementRouteAvailability,
     getAllTechs,
-    createNewRoute
+    createNewRoute,
+    getAllAvailability,
+    getUniqueUpcomingAvailability
 }

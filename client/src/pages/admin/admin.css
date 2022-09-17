@@ -1,0 +1,15 @@
+.availability-table {
+    border-collapse: collapse;
+    margin: 30px;
+}
+
+.availability-table tr td, .availability-table th td {
+    border: 1px solid black;
+    padding: 5px;
+}
+
+.add-date {
+    margin: 10px 30px;
+    width: 420px;
+    display: flex;
+}
