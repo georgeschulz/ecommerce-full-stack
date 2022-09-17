@@ -25,6 +25,7 @@ import Terms from './pages/legal/terms';
 import FinishSetupPage from './pages/signup/finishSetupPage';
 import ScrollToTop from './components/scrollToTop/scrollToTop';
 import AdminRoutes from './components/restrictedRoutes/adminRoute';
+import SchedulePage from './pages/admin/schedule';
 
 function App() {
   const dispatch = useDispatch();
@@ -65,7 +66,7 @@ function App() {
               <Route path="/confirmation" element={<ConfirmationPage />} />
             </Route>
             <Route element={<AdminRoutes />}>
-              <Route path="/schedule" element={<p>Dashboard</p>} />
+              <Route path="/schedule" element={<SchedulePage />} />
             </Route>
             <Route path="*" element={<p>404 Not found</p>} />
           </Routes>

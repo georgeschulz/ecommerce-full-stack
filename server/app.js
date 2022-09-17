@@ -13,6 +13,7 @@ const ordersRouter = require('./routes/orders');
 const targetRouter = require('./routes/targets');
 const scheduleRouter = require('./routes/schedule');
 const logoutRouter = require('./routes/auth').logoutRouter;
+const adminRouter = require('./routes/admin');
 //const passport = require('passport'); //passport library to initialize it
 const session = require('express-session'); //creates a session
 var cors = require('cors');  
@@ -89,7 +90,8 @@ app.use('/cart', cartRouter);
 app.use('/orders', express.json(), ordersRouter);
 app.use('/target', express.json(), targetRouter);
 app.use('/schedule', express.json(),  scheduleRouter);
-app.use('/logout', logoutRouter)
+app.use('/logout', logoutRouter);
+app.use('/admin', express.json(), adminRouter);
 
 //create a general route for accessing content in the final build
 app.get('/*', (req, res) => {

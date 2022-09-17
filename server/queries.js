@@ -17,7 +17,8 @@ SELECT
     zip,
     square_feet,
     email,
-    phone
+    phone,
+    user_level
 FROM customers WHERE customer_id = $1`;
 
 const updateUserByIdPart1 = 'UPDATE customers SET ';
@@ -243,6 +244,10 @@ const decrementRouteAvailability = `
     SET slots_available = slots_available - 1
     WHERE route_id = $1;`
 
+const getAllTechs = `SELECT * FROM techs;`
+
+const createNewRoute = `INSERT INTO routes (slots_available, tech_id, route_date) VALUES (0, $1, $2);`
+
 module.exports = {
     createCustomer,
     checkUserAuth,
@@ -283,5 +288,7 @@ module.exports = {
     updateCustomer,
     getFeaturedServices,
     getPestList,
-    decrementRouteAvailability
+    decrementRouteAvailability,
+    getAllTechs,
+    createNewRoute
 }
