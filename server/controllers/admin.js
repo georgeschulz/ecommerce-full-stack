@@ -112,7 +112,6 @@ const getAllAvailability = async (req, res, next) => {
 const setAvailability = async (req, res) => {
     try {
         const { newValue, routeId } = req.body;
-        console.table({ newValue: Number(newValue), routeId})
         await updateSlotsAvailable(Number(newValue), routeId);
         res.status(200).send()
     } catch (err) {
