@@ -45,8 +45,6 @@ loginRouter.get('/google-account',
                 const { first_name, last_name, phone, address, city, state_abbreviation, zip, square_feet } = customerQuery.rows[0];
                 isSetup = first_name && last_name && phone && address && city && state_abbreviation && zip && square_feet ? true : false;
 
-                console.table({ first_name, last_name, phone, address, city, state_abbreviation, zip })
-                console.log(isSetup)
             } catch (err) {
                 console.log(err)
             }

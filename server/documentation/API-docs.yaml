@@ -1,0 +1,1944 @@
+openapi: 3.0.1
+info:
+  title: Ecommerce store API
+  version: 1.0.0
+  description: >-
+    A set of internal APIs for interfacing with my demo pest control ecommerce
+    page
+paths:
+  /register:
+    summary: An endpoint to create a new customer
+    description: >-
+      A registration endpoint used to create a new customer in the database for
+      authentication
+    post:
+      summary: Create a new user
+      description: Creates a new user by posting to the customers table
+      operationId: post_register
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                address:
+                  type: string
+                city:
+                  type: string
+                zip:
+                  type: string
+                email:
+                  type: string
+                phone:
+                  type: string
+                password:
+                  type: string
+                squareFeet:
+                  type: string
+      responses:
+        '201':
+          description: Successful creation of a user
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Successful creation of user:
+                  value: User successfully created
+        '401':
+          description: Request failed to create a new user
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Failure to create a uesr:
+                  value: 'Error: Could not create user'
+        default:
+          description: Default error sample response
+  /login:
+    summary: 'Authenticate and authorize the user '
+    description: >-
+      Checks to make sure the customer has registered and authorizes them to
+      place orders
+    post:
+      summary: Authorize the user
+      description: Post the login information from the login form to authorize the user
+      operationId: post_login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Successful login
+          content:
+            text/plain; application/json:
+              examples:
+                Successfully authorized:
+                  value: |-
+                    {
+                        "customerID": 7
+                    }
+        default:
+          description: Default error sample response
+  /login/google:
+    get:
+      summary: Send the user to google for authentication
+      description: >-
+        Passport.js google authentication route. This route sends the user to
+        Google to sign in. If they don't yet have an account, it will
+        automatically create a new account. Redirects user on completion to
+        /login/google-account
+      operationId: login_google
+      responses:
+        default:
+          description: Default error sample response
+  /login/google-account:
+    get:
+      summary: Receives google login success
+      description: >-
+        Redirects the user after authenticating through Google to success or
+        failure pages. If there is a success but it is a new user, sends the
+        user to a page to setup the rest of their account /google-account.
+      operationId: login_google_account
+      responses:
+        default:
+          description: Default error sample response
+  /logout:
+    post:
+      summary: Logs user out
+      description: Logs user out and ends user's session
+      operationId: logout
+      responses:
+        default:
+          description: Default error sample response
+  /users:
+    summary: Retrieves the information about an authenticated user
+    description: Retrieves detailed information about a user by their customer ID
+    get:
+      summary: Get information about the user by ID
+      description: >-
+        An endpoint to access specific information about a specific user
+        identified by ID
+      operationId: get_user_by_id
+      responses:
+        '200':
+          description: >-
+            Successfully finds the user by their ID and sends the value as an
+            object.
+          content:
+            application/json:
+              examples:
+                Successfully returns a user:
+                  value: |-
+                    [
+                        {
+                            "customer_id": 7,
+                            "first_name": "G",
+                            "last_name": "Schulz",
+                            "address": "4355 Penwood Drive",
+                            "city": "Alexandria",
+                            "state_abbreviation": "VA",
+                            "zip": "22310",
+                            "email": "georgeschulz33@gmail.com",
+                            "phone": "5714319531",
+                            "date_created": "2022-07-30T04:00:00.000Z",
+                            "square_feet": 2800
+                        }
+                    ]
+        '404':
+          description: There was no user found for the ID provided as a parameter
+          content:
+            application/json:
+              examples:
+                No user found with provided customer_id:
+                  value: []
+    put:
+      summary: Update the user's information
+      description: >-
+        Update the customer information after they have registered with PUT call
+        to the customer table. All emails must be unique.
+      operationId: put_users
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                address:
+                  type: string
+                city:
+                  type: string
+                zip:
+                  type: string
+                email:
+                  type: string
+                phone:
+                  type: string
+                squareFeet:
+                  type: string
+      responses:
+        '204':
+          description: Successful update of the customers user data
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Resource successfully updated:
+                  value: Resource succesfully updated.
+        '404':
+          description: Unsuccesful update
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Duplicate email constraint violated:
+                  value: Email already exists
+                General error with update:
+                  value: Error updating the values
+        default:
+          description: Default error sample response
+  /cart:
+    summary: Access a user's cart
+    description: Access the authenticated user's cart. Returns an array of cart items.
+    get:
+      summary: Get the user's cart
+      description: >-
+        Gets the authenticated user's cart. Returns an array of items in their
+        cart.
+      operationId: get_cart
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                Successful query with cart items:
+                  value: |-
+                    [
+                        {
+                            "cart_id": 328,
+                            "customer_id": 69,
+                            "price": "96",
+                            "service_id": 1,
+                            "setup_fee": "150",
+                            "billing_amount": "48",
+                            "billing_type": "month",
+                            "route_id": 100,
+                            "service_name": "All in One Program",
+                            "price_per_square_foot": "0.005",
+                            "tier_multiplier": "1.05",
+                            "services_per_year": 6,
+                            "base_price": "75",
+                            "img_path": "rodent.JPG",
+                            "frequency": 6,
+                            "description": "The All in One program bundles our termite warranties with pest and rodent control under 1 automatic monthly bill. It coverage for 33 common pests including termites, ants, spiders and rodents.",
+                            "featured": true,
+                            "isRecurring": true,
+                            "includesWarranty": true
+                        }
+                    ]
+                Empty cart:
+                  value: '[]'
+  /cart/service/:service_id:
+    summary: Add an item to the cart
+    post:
+      summary: Add an item to the user's cart
+      description: >-
+        Adds an item by service id to the customer's cart. Requires a selected
+        pest and authenticated user so that the price can be calculated before
+        adding to the cart. 
+      operationId: post_cart_item
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                Successful response:
+                  value: |-
+                    {
+                        "message": "Success",
+                        "data": {
+                            "service_id": 1,
+                            "service_name": "All in One Program",
+                            "price_per_square_foot": "0.005",
+                            "billing_type": "month",
+                            "tier_multiplier": "1.05",
+                            "services_per_year": 6,
+                            "base_price": "75",
+                            "setup_fee": "150",
+                            "img_path": "rodent.JPG",
+                            "frequency": 6,
+                            "description": "The All in One program bundles our termite warranties with pest and rodent control under 1 automatic monthly bill. It coverage for 33 common pests including termites, ants, spiders and rodents.",
+                            "featured": true,
+                            "isRecurring": true,
+                            "includesWarranty": true,
+                            "price": 88,
+                            "billing_amount": 44
+                        }
+                    }
+      requestBody:
+        description: The target pest must be included in the request body
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/targetBody'
+            example:
+              target: crickets
+  /cart/clear:
+    summary: Clear a user's cart
+    delete:
+      summary: Clear a user's cart
+      description: >-
+        Clear the cart of the authenticated user. Deletes all records with the
+        user's customer ID.
+      operationId: ''
+      responses:
+        default:
+          description: Default error sample response
+  /cart/{cart_id}:
+    delete:
+      summary: Delete a item from the user's cart
+      description: 'Delete a specific item from the user''s cart by the cart ID. '
+      operationId: delete_cart_item
+      responses:
+        default:
+          description: Default error sample response
+      parameters:
+        - in: path
+          name: cart_id
+          schema:
+            type: integer
+          required: true
+          description: The numeric of the cart item
+  /cart/stripe:
+    post:
+      summary: Creates a stripe session
+      description: >-
+        Creates a stripe session from the authenticated user's cart and returns
+        a url for stripe payments. The stripe session handles order fulfillment
+        and redirects to a success page.
+      operationId: create_stripe_session
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Successful creation of payment session:
+                  value: https://checkout.stripe.com/c/pay/************
+  /stripe/webhook:
+    post:
+      summary: Fulfills order after stripe payment
+      description: >-
+        Listens for stripe payment success webhook. When it occurs, stripe sends
+        a webhook that triggers an order to be created from the user's cart.
+      operationId: post_stripe_fulfill_order
+      responses:
+        default:
+          description: Default error sample response
+      parameters:
+        - in: query
+          name: stripe_session_id
+          schema:
+            type: string
+          required: true
+          description: The stripe ID of the order created by stripe
+  /admin/routes/new:
+    post:
+      summary: Create a new route for each technician
+      description: >-
+        Creates a route record for each technician for a provided date in the
+        request body. This route record can be updated to reflect availability
+        for the customer.
+      operationId: create_new_route
+      responses:
+        default:
+          description: Default error sample response
+      requestBody:
+        description: The date to create routes for.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/routeBody'
+            example:
+              date: '2022-09-20'
+  /admin/routes:
+    put:
+      summary: Update a techs availability on a date
+      description: >-
+        Takes a routeId and new slots available request body and updates the
+        availability in the routes table. This creates new slots for the
+        customer to book an appointment for in the customer-facing app.
+      operationId: put_admin_routes
+      responses:
+        default:
+          description: Default error sample response
+  /admin/schedule:
+    get:
+      summary: Get route data and technician data
+      description: >-
+        Retrieves an object containing technician information and route
+        availability by day by technician. This object is converted into an
+        editable pivot table that acts as a schedule for customer service reps.
+        Returns a 401 status code for user's not authenticated as an admin.
+      operationId: get_admin_schedule
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                'Successful schedule retrieval ':
+                  value: |-
+                    {
+                        "techs": [
+                            {
+                                "tech_id": 1,
+                                "tech_first_name": "John",
+                                "tech_last_name": "Smith",
+                                "tech_profile_pic": "john_smith.jpg"
+                            },
+                            {
+                                "tech_id": 2,
+                                "tech_first_name": "Jim",
+                                "tech_last_name": "Stevenson",
+                                "tech_profile_pic": "jim_stevenson.jpg"
+                            },
+                            {
+                                "tech_id": 3,
+                                "tech_first_name": "Steve",
+                                "tech_last_name": "Johnson",
+                                "tech_profile_pic": "steve_johnson.jpg"
+                            }
+                        ],
+                        "avaiabilityTable": [
+                            [
+                                "2022-09-19T04:00:00.000Z",
+                                {
+                                    "tech_id": 1,
+                                    "slots_available": 1,
+                                    "route_id": 100
+                                },
+                                {
+                                    "tech_id": 2,
+                                    "slots_available": 0,
+                                    "route_id": 101
+                                },
+                                {
+                                    "tech_id": 3,
+                                    "slots_available": 0,
+                                    "route_id": 102
+                                }
+                            ],
+                            [
+                                "2022-09-20T04:00:00.000Z",
+                                {
+                                    "tech_id": 1,
+                                    "slots_available": 2,
+                                    "route_id": 103
+                                },
+                                {
+                                    "tech_id": 2,
+                                    "slots_available": 0,
+                                    "route_id": 104
+                                },
+                                {
+                                    "tech_id": 3,
+                                    "slots_available": 0,
+                                    "route_id": 105
+                                }
+                            ],
+                            [
+                                "2022-09-21T04:00:00.000Z",
+                                {
+                                    "tech_id": 1,
+                                    "slots_available": 1,
+                                    "route_id": 106
+                                },
+                                {
+                                    "tech_id": 2,
+                                    "slots_available": 0,
+                                    "route_id": 107
+                                },
+                                {
+                                    "tech_id": 3,
+                                    "slots_available": 0,
+                                    "route_id": 108
+                                }
+                            ],
+                            [
+                                "2022-09-22T04:00:00.000Z",
+                                {
+                                    "tech_id": 1,
+                                    "slots_available": 1,
+                                    "route_id": 109
+                                },
+                                {
+                                    "tech_id": 2,
+                                    "slots_available": 0,
+                                    "route_id": 110
+                                },
+                                {
+                                    "tech_id": 3,
+                                    "slots_available": 0,
+                                    "route_id": 111
+                                }
+                            ],
+                            [
+                                "2022-09-23T04:00:00.000Z",
+                                {
+                                    "tech_id": 1,
+                                    "slots_available": 3,
+                                    "route_id": 112
+                                },
+                                {
+                                    "tech_id": 2,
+                                    "slots_available": 0,
+                                    "route_id": 113
+                                },
+                                {
+                                    "tech_id": 3,
+                                    "slots_available": 0,
+                                    "route_id": 114
+                                }
+                            ],
+                            [
+                                "2022-09-26T04:00:00.000Z",
+                                {
+                                    "tech_id": 1,
+                                    "slots_available": 1,
+                                    "route_id": 115
+                                },
+                                {
+                                    "tech_id": 2,
+                                    "slots_available": 0,
+                                    "route_id": 116
+                                },
+                                {
+                                    "tech_id": 3,
+                                    "slots_available": 0,
+                                    "route_id": 117
+                                }
+                            ],
+                            [
+                                "2022-09-27T04:00:00.000Z",
+                                {
+                                    "tech_id": 1,
+                                    "slots_available": 3,
+                                    "route_id": 118
+                                },
+                                {
+                                    "tech_id": 2,
+                                    "slots_available": 0,
+                                    "route_id": 119
+                                },
+                                {
+                                    "tech_id": 3,
+                                    "slots_available": 0,
+                                    "route_id": 120
+                                }
+                            ],
+                            [
+                                "2022-09-28T04:00:00.000Z",
+                                {
+                                    "tech_id": 1,
+                                    "slots_available": 5,
+                                    "route_id": 121
+                                },
+                                {
+                                    "tech_id": 2,
+                                    "slots_available": 0,
+                                    "route_id": 122
+                                },
+                                {
+                                    "tech_id": 3,
+                                    "slots_available": 0,
+                                    "route_id": 123
+                                }
+                            ],
+                            [
+                                "2022-09-29T04:00:00.000Z",
+                                {
+                                    "tech_id": 1,
+                                    "slots_available": 11,
+                                    "route_id": 124
+                                },
+                                {
+                                    "tech_id": 2,
+                                    "slots_available": 0,
+                                    "route_id": 125
+                                },
+                                {
+                                    "tech_id": 3,
+                                    "slots_available": 0,
+                                    "route_id": 126
+                                }
+                            ],
+                            [
+                                "2022-09-30T04:00:00.000Z",
+                                {
+                                    "tech_id": 1,
+                                    "slots_available": 16,
+                                    "route_id": 127
+                                },
+                                {
+                                    "tech_id": 2,
+                                    "slots_available": 0,
+                                    "route_id": 128
+                                },
+                                {
+                                    "tech_id": 3,
+                                    "slots_available": 0,
+                                    "route_id": 129
+                                }
+                            ]
+                        ]
+                    }
+  /services:
+    get:
+      summary: Get a list of all services in a generic format (no pricing)
+      description: >-
+        Returns an array of service objects without pricing information
+        included. This endpoint is used to access services on pages where the
+        user is not yet authenticated so pricing can not be calculated properly.
+      operationId: get_services
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                Success:
+                  value: |-
+                    [
+                        {
+                            "service_id": 4,
+                            "service_name": "LawnShield",
+                            "price_per_square_foot": "0.009",
+                            "billing_type": "month",
+                            "tier_multiplier": "1.08",
+                            "services_per_year": 9,
+                            "base_price": "75",
+                            "setup_fee": "75",
+                            "img_path": "lawnshield.JPG",
+                            "frequency": 9,
+                            "description": "LawnShield is our March through November tick and mosquito program. We'll eliminate ticks with Spring and Fall treatments, and perform monthly mosquito sprays to your property.",
+                            "featured": true,
+                            "isRecurring": true,
+                            "includesWarranty": true,
+                            "benefits": [
+                                {
+                                    "benefit_id": 22,
+                                    "service_id": 4,
+                                    "text": "Spray to the your property ecotone to prevent mosquitoes",
+                                    "isgood": true
+                                },
+                                {
+                                    "benefit_id": 23,
+                                    "service_id": 4,
+                                    "text": "Spring and Fall tick treatments",
+                                    "isgood": true
+                                },
+                                {
+                                    "benefit_id": 24,
+                                    "service_id": 4,
+                                    "text": "Free re-treatment if you have issues between services",
+                                    "isgood": true
+                                },
+                                {
+                                    "benefit_id": 25,
+                                    "service_id": 4,
+                                    "text": "Does not include pest or rodent control",
+                                    "isgood": false
+                                },
+                                {
+                                    "benefit_id": 26,
+                                    "service_id": 4,
+                                    "text": "Does not include termite control",
+                                    "isgood": false
+                                }
+                            ],
+                            "testimonials": [],
+                            "covered_pests": [
+                                "Mosquitoes",
+                                "Exterior Ticks"
+                            ]
+                        },
+                        {
+                            "service_id": 5,
+                            "service_name": "IN2Care Green Mosquito Care",
+                            "price_per_square_foot": "0.009",
+                            "billing_type": "month",
+                            "tier_multiplier": "1.08",
+                            "services_per_year": 7,
+                            "base_price": "75",
+                            "setup_fee": "150",
+                            "img_path": "in2Care.jpeg",
+                            "frequency": 7,
+                            "description": null,
+                            "featured": false,
+                            "isRecurring": true,
+                            "includesWarranty": true,
+                            "benefits": [
+                                {
+                                    "benefit_id": 27,
+                                    "service_id": 5,
+                                    "text": "Green no-spray mosquito control",
+                                    "isgood": true
+                                },
+                                {
+                                    "benefit_id": 32,
+                                    "service_id": 5,
+                                    "text": "Does not include tick treatments",
+                                    "isgood": false
+                                },
+                                {
+                                    "benefit_id": 33,
+                                    "service_id": 5,
+                                    "text": "Free re-treatment if you have issues between services",
+                                    "isgood": true
+                                },
+                                {
+                                    "benefit_id": 34,
+                                    "service_id": 5,
+                                    "text": "Does not include pest or rodent control",
+                                    "isgood": false
+                                },
+                                {
+                                    "benefit_id": 35,
+                                    "service_id": 5,
+                                    "text": "Does not include termite control",
+                                    "isgood": false
+                                }
+                            ],
+                            "testimonials": [],
+                            "covered_pests": [
+                                "Mosquitoes"
+                            ]
+                        },
+                        {
+                            "service_id": 6,
+                            "service_name": "Basic Annual Termite Renewal",
+                            "price_per_square_foot": "0.005",
+                            "billing_type": "year",
+                            "tier_multiplier": "1.2",
+                            "services_per_year": 1,
+                            "base_price": "100",
+                            "setup_fee": "0",
+                            "img_path": "woodtreatBanner.jpeg",
+                            "frequency": 1,
+                            "description": null,
+                            "featured": false,
+                            "isRecurring": true,
+                            "includesWarranty": true,
+                            "benefits": [
+                                {
+                                    "benefit_id": 36,
+                                    "service_id": 6,
+                                    "text": "Annual termite inspection for early termite detection",
+                                    "isgood": true
+                                },
+                                {
+                                    "benefit_id": 37,
+                                    "service_id": 6,
+                                    "text": "Prevenative termite treatment completed during construction",
+                                    "isgood": true
+                                },
+                                {
+                                    "benefit_id": 38,
+                                    "service_id": 6,
+                                    "text": "Retreatment if termite activity is found",
+                                    "isgood": true
+                                },
+                                {
+                                    "benefit_id": 39,
+                                    "service_id": 6,
+                                    "text": "Does not include proactive annual termite control",
+                                    "isgood": false
+                                },
+                                {
+                                    "benefit_id": 40,
+                                    "service_id": 6,
+                                    "text": "Does not cover termite damage",
+                                    "isgood": false
+                                }
+                            ],
+                            "testimonials": [],
+                            "covered_pests": [
+                                "Termites"
+                            ]
+                        },
+                        {
+                            "service_id": 2,
+                            "service_name": "Castle Program",
+                            "price_per_square_foot": "0.005",
+                            "billing_type": "month",
+                            "tier_multiplier": "1.04",
+                            "services_per_year": 6,
+                            "base_price": "70",
+                            "setup_fee": "125",
+                            "img_path": "deweb.JPG",
+                            "frequency": 6,
+                            "description": "Our Castle program offers bimonthly pest and rodent control. It provides rodent coverage, year round proactive coverage for 33 common pests, including ants, spiders, millipedes and rodents. Plus, it includes an annual termite inspection and a $250 voucher to remove any termites found.",
+                            "featured": true,
+                            "isRecurring": true,
+                            "includesWarranty": true,
+                            "benefits": [
+                                {
+                                    "benefit_id": 8,
+                                    "service_id": 2,
+                                    "text": "Basic pest coverage (ants, spiders, millipedes)",
+                                    "isgood": true
+                                },
+                                {
+                                    "benefit_id": 9,
+                                    "service_id": 2,
+                                    "text": "Intensive pest coverage (roaches)",
+                                    "isgood": true
+                                },
+                                {
+                                    "benefit_id": 10,
+                                    "service_id": 2,
+                                    "text": "Proactive exterior rodent baiting keeps away mice and rats",
+                                    "isgood": true
+                                },
+                                {
+                                    "benefit_id": 11,
+                                    "service_id": 2,
+                                    "text": "Annual termite inspection and termite warranty",
+                                    "isgood": false
+                                },
+                                {
+                                    "benefit_id": 12,
+                                    "service_id": 2,
+                                    "text": "Annual reapplication of termite treatment",
+                                    "isgood": false
+                                },
+                                {
+                                    "benefit_id": 13,
+                                    "service_id": 2,
+                                    "text": "Free callbacks",
+                                    "isgood": true
+                                },
+                                {
+                                    "benefit_id": 14,
+                                    "service_id": 2,
+                                    "text": "No mosquito coverage",
+                                    "isgood": false
+                                }
+                            ],
+                            "testimonials": [],
+                            "covered_pests": [
+                                "Box Elder Bugs",
+                                "Crickets",
+                                "Centipedes",
+                                "Milipedes",
+                                "Beetle",
+                                "Pantry Pests",
+                                "Moths",
+                                "Earwigs",
+                                "Silverfish",
+                                "Interior Fleas",
+                                "Lady Bugs",
+                                "Rodents",
+                                "Spiders",
+                                "Stink Bugs",
+                                "Termites",
+                                "Ants",
+                                "Bees",
+                                "Cockroaches",
+                                "Aphids"
+                            ]
+                        },
+                        {
+                            "service_id": 7,
+                            "service_name": "Sentricon Termite Baiting",
+                            "price_per_square_foot": "0.005",
+                            "billing_type": "year",
+                            "tier_multiplier": "1.2",
+                            "services_per_year": 4,
+                            "base_price": "300",
+                            "setup_fee": "750",
+                            "img_path": "sentricon.jpeg",
+                            "frequency": 1,
+                            "description": "Our Sentricon provides year-round 24/7 termite protection through baiting technology. It not only prevents termite infestations but it eliminates nearby colonies. This can save you thoasands in home repairs.",
+                            "featured": true,
+                            "isRecurring": true,
+                            "includesWarranty": false,
+                            "benefits": [
+                                {
+                                    "benefit_id": 41,
+                                    "service_id": 7,
+                                    "text": "Annual termite inspection for early termite detection",
+                                    "isgood": true
+                                },
+                                {
+                                    "benefit_id": 42,
+                                    "service_id": 7,
+                                    "text": "Prevenative termite treatment year round with baiting",
+                                    "isgood": true
+                                },
+                                {
+                                    "benefit_id": 43,
+                                    "service_id": 7,
+                                    "text": "Retreatment if termite activity is found",
+                                    "isgood": true
+                                },
+                                {
+                                    "benefit_id": 44,
+                                    "service_id": 7,
+                                    "text": "Includes replenishment and monitoring of stations",
+                                    "isgood": false
+                                },
+                                {
+                                    "benefit_id": 45,
+                                    "service_id": 7,
+                                    "text": "Does not cover termite damage",
+                                    "isgood": false
+                                }
+                            ],
+                            "testimonials": [],
+                            "covered_pests": [
+                                "Termites"
+                            ]
+                        }
+                    ]
+  /services/detail:
+    get:
+      summary: Get detailed service information
+      description: >-
+        Get detailed service info based on the authenticated user and the target
+        from params. Includes pricing information and benefits list.
+      operationId: get_services_detail
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                Success:
+                  value: |-
+                    {
+                        "services": [
+                            {
+                                "service_id": 1,
+                                "service_name": "All in One Program",
+                                "price_per_square_foot": "0.005",
+                                "billing_type": "month",
+                                "tier_multiplier": "1.05",
+                                "services_per_year": 6,
+                                "base_price": "75",
+                                "setup_fee": "150",
+                                "img_path": "rodent.JPG",
+                                "frequency": 6,
+                                "benefits": [
+                                    {
+                                        "benefit_id": 1,
+                                        "service_id": 1,
+                                        "text": "Basic pest coverage (ants, spiders, milllipedes)",
+                                        "isgood": true
+                                    },
+                                    {
+                                        "benefit_id": 2,
+                                        "service_id": 1,
+                                        "text": "Intensive pest coverage (roaches)",
+                                        "isgood": true
+                                    },
+                                    {
+                                        "benefit_id": 3,
+                                        "service_id": 1,
+                                        "text": "Proactive exterior rodent baiting keeps away mice and rats",
+                                        "isgood": true
+                                    },
+                                    {
+                                        "benefit_id": 4,
+                                        "service_id": 1,
+                                        "text": "Annual termite inspection and termite warranty",
+                                        "isgood": true
+                                    },
+                                    {
+                                        "benefit_id": 5,
+                                        "service_id": 1,
+                                        "text": "Annual reapplication of termite treatment",
+                                        "isgood": true
+                                    },
+                                    {
+                                        "benefit_id": 6,
+                                        "service_id": 1,
+                                        "text": "Free callbacks",
+                                        "isgood": true
+                                    },
+                                    {
+                                        "benefit_id": 7,
+                                        "service_id": 1,
+                                        "text": "No mosquito coverage",
+                                        "isgood": false
+                                    }
+                                ],
+                                "testimonials": [
+                                    {
+                                        "testimonial_id": 1,
+                                        "service_id": 1,
+                                        "name": "John Smith",
+                                        "body": "We were blown away by the outstanding service received from Better Termite! We required a specific inspection for closing on a VA loan refinance and time was of the essence. Not only did they fully understand what was needed but they were able to accommodate our tight timeline. Every employee we spoke to or welcomed into our home was professional and courteous. We can’t thank you enough for your assistance! We have been happy customers for over 10 years and will continue!"
+                                    },
+                                    {
+                                        "testimonial_id": 2,
+                                        "service_id": 1,
+                                        "name": "Steven Johnson",
+                                        "body": "Spectacular response and service from Better Termite. I really appreciate Juan's service to conduct an inspection. I was looking for a refinance termite inspection and Better came up in my search, I was helped by Michelle via chat and received a call in less than an hour from Brian who had a slot available the next day. Totally awesome! Less than 24 hours from when I searched to having a terrific affordable and prompt service completed. I will use Better Termite and Pest Control again and offer my strongest recommendation for others to use Better for their termite/pest needs."
+                                    },
+                                    {
+                                        "testimonial_id": 3,
+                                        "service_id": 1,
+                                        "name": "George Jonn",
+                                        "body": "We've used Better Termite for 30 years. They are very professional, courteous and most of all, knowledgeable."
+                                    }
+                                ],
+                                "price": 88,
+                                "billing_amount": 44
+                            },
+                            {
+                                "service_id": 2,
+                                "service_name": "Castle Program",
+                                "price_per_square_foot": "0.005",
+                                "billing_type": "month",
+                                "tier_multiplier": "1.04",
+                                "services_per_year": 6,
+                                "base_price": "70",
+                                "setup_fee": "125",
+                                "img_path": "deweb.JPG",
+                                "frequency": 6,
+                                "benefits": [
+                                    {
+                                        "benefit_id": 8,
+                                        "service_id": 2,
+                                        "text": "Basic pest coverage (ants, spiders, millipedes)",
+                                        "isgood": true
+                                    },
+                                    {
+                                        "benefit_id": 9,
+                                        "service_id": 2,
+                                        "text": "Intensive pest coverage (roaches)",
+                                        "isgood": true
+                                    },
+                                    {
+                                        "benefit_id": 10,
+                                        "service_id": 2,
+                                        "text": "Proactive exterior rodent baiting keeps away mice and rats",
+                                        "isgood": true
+                                    },
+                                    {
+                                        "benefit_id": 11,
+                                        "service_id": 2,
+                                        "text": "Annual termite inspection and termite warranty",
+                                        "isgood": false
+                                    },
+                                    {
+                                        "benefit_id": 12,
+                                        "service_id": 2,
+                                        "text": "Annual reapplication of termite treatment",
+                                        "isgood": false
+                                    },
+                                    {
+                                        "benefit_id": 13,
+                                        "service_id": 2,
+                                        "text": "Free callbacks",
+                                        "isgood": true
+                                    },
+                                    {
+                                        "benefit_id": 14,
+                                        "service_id": 2,
+                                        "text": "No mosquito coverage",
+                                        "isgood": false
+                                    }
+                                ],
+                                "testimonials": [],
+                                "price": 83,
+                                "billing_amount": 41.5
+                            },
+                            {
+                                "service_id": 3,
+                                "service_name": "Quarterly Pest Service",
+                                "price_per_square_foot": "0.007",
+                                "billing_type": "month",
+                                "tier_multiplier": "1.05",
+                                "services_per_year": 6,
+                                "base_price": "80",
+                                "setup_fee": "150",
+                                "img_path": "pestIntense.jpeg",
+                                "frequency": 4,
+                                "benefits": [
+                                    {
+                                        "benefit_id": 15,
+                                        "service_id": 3,
+                                        "text": "Basic pest coverage (ants, spiders, millipedes)",
+                                        "isgood": true
+                                    },
+                                    {
+                                        "benefit_id": 16,
+                                        "service_id": 3,
+                                        "text": "Intensive pest coverage (roaches)",
+                                        "isgood": false
+                                    },
+                                    {
+                                        "benefit_id": 17,
+                                        "service_id": 3,
+                                        "text": "Proactive exterior rodent baiting keeps away mice and rats",
+                                        "isgood": false
+                                    },
+                                    {
+                                        "benefit_id": 18,
+                                        "service_id": 3,
+                                        "text": "Annual termite inspection and termite warranty",
+                                        "isgood": false
+                                    },
+                                    {
+                                        "benefit_id": 19,
+                                        "service_id": 3,
+                                        "text": "Annual reapplication of termite treatment",
+                                        "isgood": false
+                                    },
+                                    {
+                                        "benefit_id": 20,
+                                        "service_id": 3,
+                                        "text": "Free retreatments available during 30 day warranty",
+                                        "isgood": true
+                                    },
+                                    {
+                                        "benefit_id": 21,
+                                        "service_id": 3,
+                                        "text": "No mosquito coverage",
+                                        "isgood": false
+                                    }
+                                ],
+                                "testimonials": [],
+                                "price": 98,
+                                "billing_amount": 32.67
+                            }
+                        ]
+                    }
+  /services/detail/{service_id}:
+    get:
+      summary: Get detailed information about a specific service
+      description: >-
+        Get detailed information about a specific service including pricing
+        information, testimonials, covered pests and benefits. Requires a
+        service ID in the path to look up the service.
+      operationId: get_service_detail_by_id
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                Success:
+                  value: |-
+                    {
+                        "service_id": 1,
+                        "service_name": "All in One Program",
+                        "price_per_square_foot": "0.005",
+                        "billing_type": "month",
+                        "tier_multiplier": "1.05",
+                        "services_per_year": 6,
+                        "base_price": "75",
+                        "setup_fee": "150",
+                        "price": 88,
+                        "billing_amount": 44,
+                        "frequency": 6,
+                        "tier": 1,
+                        "squareFeet": "2500",
+                        "img_path": "rodent.JPG",
+                        "benefits": [
+                            {
+                                "benefit_id": 1,
+                                "service_id": 1,
+                                "text": "Basic pest coverage (ants, spiders, milllipedes)",
+                                "isgood": true
+                            },
+                            {
+                                "benefit_id": 2,
+                                "service_id": 1,
+                                "text": "Intensive pest coverage (roaches)",
+                                "isgood": true
+                            },
+                            {
+                                "benefit_id": 3,
+                                "service_id": 1,
+                                "text": "Proactive exterior rodent baiting keeps away mice and rats",
+                                "isgood": true
+                            },
+                            {
+                                "benefit_id": 4,
+                                "service_id": 1,
+                                "text": "Annual termite inspection and termite warranty",
+                                "isgood": true
+                            },
+                            {
+                                "benefit_id": 5,
+                                "service_id": 1,
+                                "text": "Annual reapplication of termite treatment",
+                                "isgood": true
+                            },
+                            {
+                                "benefit_id": 6,
+                                "service_id": 1,
+                                "text": "Free callbacks",
+                                "isgood": true
+                            },
+                            {
+                                "benefit_id": 7,
+                                "service_id": 1,
+                                "text": "No mosquito coverage",
+                                "isgood": false
+                            }
+                        ],
+                        "testimonials": [
+                            {
+                                "testimonial_id": 1,
+                                "service_id": 1,
+                                "name": "John Smith",
+                                "body": "We were blown away by the outstanding service received from Better Termite! We required a specific inspection for closing on a VA loan refinance and time was of the essence. Not only did they fully understand what was needed but they were able to accommodate our tight timeline. Every employee we spoke to or welcomed into our home was professional and courteous. We can’t thank you enough for your assistance! We have been happy customers for over 10 years and will continue!"
+                            },
+                            {
+                                "testimonial_id": 2,
+                                "service_id": 1,
+                                "name": "Steven Johnson",
+                                "body": "Spectacular response and service from Better Termite. I really appreciate Juan's service to conduct an inspection. I was looking for a refinance termite inspection and Better came up in my search, I was helped by Michelle via chat and received a call in less than an hour from Brian who had a slot available the next day. Totally awesome! Less than 24 hours from when I searched to having a terrific affordable and prompt service completed. I will use Better Termite and Pest Control again and offer my strongest recommendation for others to use Better for their termite/pest needs."
+                            },
+                            {
+                                "testimonial_id": 3,
+                                "service_id": 1,
+                                "name": "George Jonn",
+                                "body": "We've used Better Termite for 30 years. They are very professional, courteous and most of all, knowledgeable."
+                            }
+                        ],
+                        "coveredPests": [
+                            "Box Elder Bugs",
+                            "Crickets",
+                            "Centipedes",
+                            "Milipedes",
+                            "Beetle",
+                            "Pantry Pests",
+                            "Moths",
+                            "Earwigs",
+                            "Silverfish",
+                            "Interior Fleas",
+                            "Lady Bugs",
+                            "Rodents",
+                            "Spiders",
+                            "Stink Bugs",
+                            "Termites",
+                            "Ants",
+                            "Bees",
+                            "Cockroaches",
+                            "Aphids"
+                        ],
+                        "supportingImages": [
+                            {
+                                "image_id": 1,
+                                "type": "Supporting",
+                                "path": "deweb",
+                                "file_type": "JPG"
+                            },
+                            {
+                                "image_id": 2,
+                                "type": "Supporting",
+                                "path": "lawnshield",
+                                "file_type": "JPG"
+                            },
+                            {
+                                "image_id": 4,
+                                "type": "Supporting",
+                                "path": "rodent",
+                                "file_type": "JPG"
+                            }
+                        ],
+                        "bannerImg": {
+                            "image_id": 3,
+                            "type": "Banner",
+                            "path": "lawnshieldBanner",
+                            "file_type": "JPG"
+                        },
+                        "description": "The All in One program bundles our termite warranties with pest and rodent control under 1 automatic monthly bill. It coverage for 33 common pests including termites, ants, spiders and rodents."
+                    }
+      parameters:
+        - in: path
+          name: service_id
+          schema:
+            type: integer
+          required: true
+          description: The numeric service_id
+  /service/{service_id}:
+    get:
+      summary: Get a generic service by service ID (no pricing)
+      description: >-
+        Gets service information for unauthenticated users without pricing. This
+        endpoint retrieves a single service determined by it's service ID
+      operationId: get_service_by_ud
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                Success:
+                  value: |-
+                    {
+                        "service_id": 1,
+                        "service_name": "All in One Program",
+                        "price_per_square_foot": "0.005",
+                        "billing_type": "month",
+                        "tier_multiplier": "1.05",
+                        "services_per_year": 6,
+                        "base_price": "75",
+                        "setup_fee": "150",
+                        "img_path": "rodent.JPG",
+                        "frequency": 6,
+                        "description": "The All in One program bundles our termite warranties with pest and rodent control under 1 automatic monthly bill. It coverage for 33 common pests including termites, ants, spiders and rodents.",
+                        "featured": true,
+                        "isRecurring": true,
+                        "includesWarranty": true,
+                        "benefits": [
+                            {
+                                "benefit_id": 1,
+                                "service_id": 1,
+                                "text": "Basic pest coverage (ants, spiders, milllipedes)",
+                                "isgood": true
+                            },
+                            {
+                                "benefit_id": 2,
+                                "service_id": 1,
+                                "text": "Intensive pest coverage (roaches)",
+                                "isgood": true
+                            },
+                            {
+                                "benefit_id": 3,
+                                "service_id": 1,
+                                "text": "Proactive exterior rodent baiting keeps away mice and rats",
+                                "isgood": true
+                            },
+                            {
+                                "benefit_id": 4,
+                                "service_id": 1,
+                                "text": "Annual termite inspection and termite warranty",
+                                "isgood": true
+                            },
+                            {
+                                "benefit_id": 5,
+                                "service_id": 1,
+                                "text": "Annual reapplication of termite treatment",
+                                "isgood": true
+                            },
+                            {
+                                "benefit_id": 6,
+                                "service_id": 1,
+                                "text": "Free callbacks",
+                                "isgood": true
+                            },
+                            {
+                                "benefit_id": 7,
+                                "service_id": 1,
+                                "text": "No mosquito coverage",
+                                "isgood": false
+                            }
+                        ],
+                        "testimonials": [
+                            {
+                                "testimonial_id": 1,
+                                "service_id": 1,
+                                "name": "John Smith",
+                                "body": "We were blown away by the outstanding service received from Better Termite! We required a specific inspection for closing on a VA loan refinance and time was of the essence. Not only did they fully understand what was needed but they were able to accommodate our tight timeline. Every employee we spoke to or welcomed into our home was professional and courteous. We can’t thank you enough for your assistance! We have been happy customers for over 10 years and will continue!"
+                            },
+                            {
+                                "testimonial_id": 2,
+                                "service_id": 1,
+                                "name": "Steven Johnson",
+                                "body": "Spectacular response and service from Better Termite. I really appreciate Juan's service to conduct an inspection. I was looking for a refinance termite inspection and Better came up in my search, I was helped by Michelle via chat and received a call in less than an hour from Brian who had a slot available the next day. Totally awesome! Less than 24 hours from when I searched to having a terrific affordable and prompt service completed. I will use Better Termite and Pest Control again and offer my strongest recommendation for others to use Better for their termite/pest needs."
+                            },
+                            {
+                                "testimonial_id": 3,
+                                "service_id": 1,
+                                "name": "George Jonn",
+                                "body": "We've used Better Termite for 30 years. They are very professional, courteous and most of all, knowledgeable."
+                            }
+                        ],
+                        "bannerImg": {
+                            "image_id": 3,
+                            "type": "Banner",
+                            "path": "lawnshieldBanner",
+                            "file_type": "JPG"
+                        },
+                        "supportingImages": [
+                            {
+                                "image_id": 1,
+                                "type": "Supporting",
+                                "path": "deweb",
+                                "file_type": "JPG"
+                            },
+                            {
+                                "image_id": 2,
+                                "type": "Supporting",
+                                "path": "lawnshield",
+                                "file_type": "JPG"
+                            },
+                            {
+                                "image_id": 4,
+                                "type": "Supporting",
+                                "path": "rodent",
+                                "file_type": "JPG"
+                            }
+                        ],
+                        "coveredPests": [
+                            "Box Elder Bugs",
+                            "Crickets",
+                            "Centipedes",
+                            "Milipedes",
+                            "Beetle",
+                            "Pantry Pests",
+                            "Moths",
+                            "Earwigs",
+                            "Silverfish",
+                            "Interior Fleas",
+                            "Lady Bugs",
+                            "Rodents",
+                            "Spiders",
+                            "Stink Bugs",
+                            "Termites",
+                            "Ants",
+                            "Bees",
+                            "Cockroaches",
+                            "Aphids"
+                        ]
+                    }
+      parameters:
+        - in: path
+          name: service_id
+          schema:
+            type: integer
+          required: true
+          description: The numeric service_id
+  /services/featured:
+    get:
+      summary: Get a list of featured services
+      description: >-
+        Gets a generic list of services without pricing for the front page of
+        the website. These are only the top services that we want customers to
+        see when browsing from the home page
+      operationId: get_services_featured
+      responses:
+        default:
+          description: Default error sample response
+  /target/home:
+    get:
+      summary: Get target options for home page
+      description: >-
+        Get a list of pest targets for the home page of the store. It includes
+        image paths and IDs for the pest button component
+      operationId: get_target_home
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                Success:
+                  value: |-
+                    [
+                        {
+                            "pest_name": "Ants",
+                            "tier": 2,
+                            "path": "ants.png",
+                            "include_wizard": true,
+                            "include_home": true
+                        },
+                        {
+                            "pest_name": "Cockroaches",
+                            "tier": 3,
+                            "path": "cockroach.png",
+                            "include_wizard": true,
+                            "include_home": true
+                        },
+                        {
+                            "pest_name": "Mosquitoes",
+                            "tier": 2,
+                            "path": "mosquito.png",
+                            "include_wizard": true,
+                            "include_home": true
+                        },
+                        {
+                            "pest_name": "Rodents",
+                            "tier": 3,
+                            "path": "rodent.png",
+                            "include_wizard": true,
+                            "include_home": true
+                        },
+                        {
+                            "pest_name": "Spiders",
+                            "tier": 1,
+                            "path": "spiders.png",
+                            "include_wizard": true,
+                            "include_home": true
+                        },
+                        {
+                            "pest_name": "Termites",
+                            "tier": 3,
+                            "path": "termites.png",
+                            "include_wizard": true,
+                            "include_home": true
+                        }
+                    ]
+  /target/wizard:
+    get:
+      summary: Gets a full list of targets for wizard step 2
+      description: >-
+        Gets a list pests to be included on wizard step 2 page that will be
+        rendered as pest button components
+      operationId: get_targets_wizard
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                Success:
+                  value: |-
+                    [
+                        {
+                            "pest_name": "Ants",
+                            "tier": 2,
+                            "path": "ants.png",
+                            "include_wizard": true,
+                            "include_home": true
+                        },
+                        {
+                            "pest_name": "Bees",
+                            "tier": 3,
+                            "path": "bees.png",
+                            "include_wizard": true,
+                            "include_home": false
+                        },
+                        {
+                            "pest_name": "Cockroaches",
+                            "tier": 3,
+                            "path": "cockroach.png",
+                            "include_wizard": true,
+                            "include_home": true
+                        },
+                        {
+                            "pest_name": "Mosquitoes",
+                            "tier": 2,
+                            "path": "mosquito.png",
+                            "include_wizard": true,
+                            "include_home": true
+                        },
+                        {
+                            "pest_name": "Rodents",
+                            "tier": 3,
+                            "path": "rodent.png",
+                            "include_wizard": true,
+                            "include_home": true
+                        },
+                        {
+                            "pest_name": "Interior Fleas",
+                            "tier": 3,
+                            "path": "fleas.png",
+                            "include_wizard": true,
+                            "include_home": false
+                        },
+                        {
+                            "pest_name": "General Pests",
+                            "tier": 3,
+                            "path": "other.png",
+                            "include_wizard": true,
+                            "include_home": false
+                        },
+                        {
+                            "pest_name": "Spiders",
+                            "tier": 1,
+                            "path": "spiders.png",
+                            "include_wizard": true,
+                            "include_home": true
+                        },
+                        {
+                            "pest_name": "Exterior Ticks",
+                            "tier": 3,
+                            "path": "ticks.png",
+                            "include_wizard": true,
+                            "include_home": false
+                        },
+                        {
+                            "pest_name": "Termites",
+                            "tier": 3,
+                            "path": "termites.png",
+                            "include_wizard": true,
+                            "include_home": true
+                        },
+                        {
+                            "pest_name": "Aphids",
+                            "tier": 2,
+                            "path": "aphids.png",
+                            "include_wizard": true,
+                            "include_home": false
+                        }
+                    ]
+  /target/select:
+    get:
+      summary: Get list of possible target names
+      description: Get a list of possible targets for the drop down on the catalog page
+      operationId: get_target_select
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                Success:
+                  value: |-
+                    [
+                        {
+                            "text": "Box Elder Bugs",
+                            "value": "Box Elder Bugs"
+                        },
+                        {
+                            "text": "Crickets",
+                            "value": "Crickets"
+                        },
+                        {
+                            "text": "Centipedes",
+                            "value": "Centipedes"
+                        },
+                        {
+                            "text": "Milipedes",
+                            "value": "Milipedes"
+                        },
+                        {
+                            "text": "Beetle",
+                            "value": "Beetle"
+                        },
+                        {
+                            "text": "Pantry Pests",
+                            "value": "Pantry Pests"
+                        },
+                        {
+                            "text": "Moths",
+                            "value": "Moths"
+                        },
+                        {
+                            "text": "Earwigs",
+                            "value": "Earwigs"
+                        },
+                        {
+                            "text": "Silverfish",
+                            "value": "Silverfish"
+                        },
+                        {
+                            "text": "Lady Bugs",
+                            "value": "Lady Bugs"
+                        },
+                        {
+                            "text": "Stink Bugs",
+                            "value": "Stink Bugs"
+                        },
+                        {
+                            "text": "Ants",
+                            "value": "Ants"
+                        },
+                        {
+                            "text": "Bees",
+                            "value": "Bees"
+                        },
+                        {
+                            "text": "Cockroaches",
+                            "value": "Cockroaches"
+                        },
+                        {
+                            "text": "Mosquitoes",
+                            "value": "Mosquitoes"
+                        },
+                        {
+                            "text": "Rodents",
+                            "value": "Rodents"
+                        },
+                        {
+                            "text": "Interior Fleas",
+                            "value": "Interior Fleas"
+                        },
+                        {
+                            "text": "General Pests",
+                            "value": "General Pests"
+                        },
+                        {
+                            "text": "Spiders",
+                            "value": "Spiders"
+                        },
+                        {
+                            "text": "Exterior Ticks",
+                            "value": "Exterior Ticks"
+                        },
+                        {
+                            "text": "Termites",
+                            "value": "Termites"
+                        },
+                        {
+                            "text": "Aphids",
+                            "value": "Aphids"
+                        }
+                    ]
+  /schedule/cities:
+    get:
+      summary: Get a list of covered cities
+      description: >-
+        Returns an array containing a list of covered cities for usage in
+        dropdown menus needed for scheduling with technicians.
+      operationId: get_cities
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                Success:
+                  value: |-
+                    [
+                        "Alexandria",
+                        "Springfield",
+                        "Annandale",
+                        "West Springfield",
+                        "Reston",
+                        "Herndon",
+                        "Sterling",
+                        "Fairfax",
+                        "Reston",
+                        "McClean",
+                        "Clifton"
+                    ]
+  /schedule/availability:
+    get:
+      summary: Get availability for a customer's area
+      description: >-
+        Returns an array of options that the customer could book with from the
+        routes table. The authenticated user's area is searched for a technician
+        and available dates.
+      operationId: get_availability
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                Success:
+                  value: |-
+                    [
+                        {
+                            "route_id": 100,
+                            "route_date": "2022-09-19T04:00:00.000Z",
+                            "area_id": 2,
+                            "tech_id": 1,
+                            "slots_available": 1,
+                            "tech_first_name": "John",
+                            "tech_last_name": "Smith",
+                            "tech_profile_pic": "john_smith.jpg",
+                            "city": "Springfield"
+                        },
+                        {
+                            "route_id": 103,
+                            "route_date": "2022-09-20T04:00:00.000Z",
+                            "area_id": 2,
+                            "tech_id": 1,
+                            "slots_available": 2,
+                            "tech_first_name": "John",
+                            "tech_last_name": "Smith",
+                            "tech_profile_pic": "john_smith.jpg",
+                            "city": "Springfield"
+                        },
+                        {
+                            "route_id": 106,
+                            "route_date": "2022-09-21T04:00:00.000Z",
+                            "area_id": 2,
+                            "tech_id": 1,
+                            "slots_available": 1,
+                            "tech_first_name": "John",
+                            "tech_last_name": "Smith",
+                            "tech_profile_pic": "john_smith.jpg",
+                            "city": "Springfield"
+                        },
+                        {
+                            "route_id": 109,
+                            "route_date": "2022-09-22T04:00:00.000Z",
+                            "area_id": 2,
+                            "tech_id": 1,
+                            "slots_available": 1,
+                            "tech_first_name": "John",
+                            "tech_last_name": "Smith",
+                            "tech_profile_pic": "john_smith.jpg",
+                            "city": "Springfield"
+                        },
+                        {
+                            "route_id": 112,
+                            "route_date": "2022-09-23T04:00:00.000Z",
+                            "area_id": 2,
+                            "tech_id": 1,
+                            "slots_available": 3,
+                            "tech_first_name": "John",
+                            "tech_last_name": "Smith",
+                            "tech_profile_pic": "john_smith.jpg",
+                            "city": "Springfield"
+                        }
+                    ]
+  /schedule/route/{route_id}:
+    put:
+      summary: Set the route for items in a user's cart
+      description: >-
+        Update all items of a customer's cart based on the day they booked. This
+        adds a value to the cart.route_id value for each cart item linked to the
+        authenticated customer.
+      operationId: update_route
+      responses:
+        '200':
+          description: successful update
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Success:
+                  value: '""'
+        default:
+          description: Default error sample response
+      parameters:
+        - in: path
+          name: route_id
+          schema:
+            type: integer
+          required: true
+          description: The numeric ID of the route
+  /orders:
+    get:
+      summary: Get all orders
+      description: >-
+        Returns an array containing all orders and their items. Must be in an
+        administrative authenticated account to access this resource
+      operationId: get_orders
+      responses:
+        '200':
+          description: Successful query
+          content:
+            application/json:
+              examples:
+                Success:
+                  value: |-
+                    [
+                        {
+                            "order_id": 70,
+                            "date_created": "2022-09-18T04:00:00.000Z",
+                            "customer_id": 69,
+                            "date_scheduled": "2022-09-19T04:00:00.000Z",
+                            "city": "Springfield",
+                            "state": "VA",
+                            "zip": "22314",
+                            "first_name": "George",
+                            "last_name": "Schulz",
+                            "route_id": 100,
+                            "amount_paid": "15000",
+                            "address": "4355 Penwood Drive",
+                            "billing_email": "G",
+                            "time_created": "2022-09-18T23:31:06.627Z",
+                            "stripe_payment": "pi_3LjWwfKmntHLJqZJ00uLdrOm",
+                            "stripe_session_id": "cs_test_a196bFQ7Y0FoqgNlAQmSCilSM7KKOR0oyMhlLjyXS1kizvNthFV9rnXefY"
+                        }
+                    ]
+        default:
+          description: Default error sample response
+  /orders/{order_id}:
+    get:
+      summary: Retrieve a specific order
+      description: >-
+        Retrieve order details by order id. Returns an object containing
+        information about the order
+      operationId: get_order_by_id
+      responses:
+        default:
+          description: Default error sample response
+      parameters:
+        - in: path
+          name: order_id
+          schema:
+            type: integer
+          required: true
+          description: The numeric ID of the order
+  /orders/stripe/{stripe_session_id}:
+    get:
+      summary: Retrieve order details by stripe session
+      description: >-
+        Retrieves an object of information about an order based on the stripe
+        session ID. This can be used as a query param in on confirmation page,
+        passed in by Stripe payment's successful payment.
+      operationId: get_order_by_stripe_session
+      responses:
+        '200':
+          description: Successful call
+          content:
+            application/json:
+              examples:
+                Success:
+                  value: |-
+                    {
+                        "first_name": "George",
+                        "last_name": "Schulz",
+                        "email": "georgeschulz33@gmail.com",
+                        "phone": "571-431-9531",
+                        "date_created": "2022-09-18T04:00:00.000Z",
+                        "date_scheduled": "2022-09-19T04:00:00.000Z",
+                        "address": "4355 Penwood Drive",
+                        "city": "Springfield",
+                        "state": "VA",
+                        "zip": "22314",
+                        "amount_paid": "15000",
+                        "tech_first_name": "John",
+                        "tech_last_name": "Smith",
+                        "tech_profile_pic": "john_smith.jpg",
+                        "items": [
+                            {
+                                "service_name": "All in One Program",
+                                "frequency": 6,
+                                "price": "96",
+                                "billing_amount": "48",
+                                "billing_type": "month",
+                                "setup_fee": "150"
+                            }
+                        ]
+                    }
+      parameters:
+        - in: path
+          name: stripe_session_id
+          schema:
+            type: integer
+          required: true
+          description: The stripe session ID, passed in by redirect from the stripe payments page.
+components:
+  schemas:
+    targetBody:
+      type: object
+      properties:
+        target:
+          type: string
+    routeBody:
+      type: object
+      properties:
+        date:
+          type: string

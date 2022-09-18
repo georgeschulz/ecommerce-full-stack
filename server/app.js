@@ -40,7 +40,7 @@ process.on("uncaughtException", (err) => {
 
 //using helmet to configure security settings in http headers
 app.use(helmet.frameguard({ action: 'deny' })); //stops clickjacking attacks via iframes
-app.use(helmet.xssFilter()); //helps with xss protection
+//app.use(helmet.xssFilter()); //helps with xss protection
 app.use(helmet.noSniff()) //prevents meddling with content-type header
 app.use(helmet.ieNoOpen()) //this prevents internet explorer from executing downloads
 app.use(helmet.hidePoweredBy()) //this one prevents the header's including info about the backend tech stack
