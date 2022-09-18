@@ -13,7 +13,6 @@ const getAllTechs = async () => {
 }
 
 const createNewDayFromTechList = async (techs, date) => {
-    console.log('get tech list')
     try {
         techs.forEach(async (tech) => {
             await db.query(queries.createNewRoute, [tech.tech_id, date])
@@ -36,7 +35,6 @@ const getUniqueDates = async () => {
     try {
         const today = new Date();
         const query = await db.query(queries.getUniqueUpcomingAvailability, [today.toISOString().split('T')[0]]);
-        console.log(query.rows)
         return query.rows.map(date => new Date(date.route_date));
     } catch (err) {
         console.log(err);
@@ -45,7 +43,6 @@ const getUniqueDates = async () => {
 
 function sameDay(d1, d2) {
     //check day
-    console.table({d1, d2})
     let isSame = false;
     if(d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate()) {
         isSame = true;
@@ -60,12 +57,23 @@ function checkTechIsEqual(tech1, tech2) {
     return tech1 == tech2;
 }
 
+const updateSlotsAvailable = async (newValue, route_id) => {
+    try {
+        await db.query(queries.updateRouteAvailability, [newValue, route_id])
+        return true;
+    } catch (err) {
+        console.log(err)
+        return false;
+    }
+}
+
 //controllers to export
 const createDayRoute = async (req, res, next) => {
     try {
         const techs = await getAllTechs();
         const date = req.body.date;
         await createNewDayFromTechList(techs, date);
+        res.status(200).send()
     } catch (err) {
         logger.error(err);
         res.status(400).send('Could not create a route')
@@ -90,11 +98,9 @@ const getAllAvailability = async (req, res, next) => {
                     //console.table({isSameDay, isTechEqual})
                     return (isSameDay && isTechEqual);
                 });
-                slot ? avaiabilityTable[i].push({tech_id: slot.tech_id, slots_available: slot.slots_available}) : avaiabilityTable[i].push(null);
+                slot ? avaiabilityTable[i].push({tech_id: slot.tech_id, slots_available: slot.slots_available, route_id: slot.route_id}) : avaiabilityTable[i].push(null);
             })
         })
-        //console.log(avaiabilityTable)
-
 
         res.status(200).send({techs: techs, avaiabilityTable})
     } catch (err) {
@@ -103,7 +109,19 @@ const getAllAvailability = async (req, res, next) => {
     }
 }
 
+const setAvailability = async (req, res) => {
+    try {
+        const { newValue, routeId } = req.body;
+        console.table({ newValue: Number(newValue), routeId})
+        await updateSlotsAvailable(Number(newValue), routeId);
+        res.status(200).send()
+    } catch (err) {
+        res.status(400).send('There was an error updating the database')
+    }
+}
+
 module.exports = {
     getAllAvailability,
-    createDayRoute
+    createDayRoute,
+    setAvailability
 }

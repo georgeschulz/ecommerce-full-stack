@@ -1,3 +1,7 @@
+.main-container {
+    margin: 30px;
+}
+
 .availability-table {
     border-collapse: collapse;
     margin: 30px;

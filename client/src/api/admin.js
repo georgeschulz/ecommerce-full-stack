@@ -9,3 +9,7 @@ export const createRoute = async (date) => {
 export const getAvailability = async () => {
     return await axios.get(`${endpoint}/admin/schedule`);
 }
+
+export const setAvailability = async (newValue, routeId) => {
+    return await axios.put(`${endpoint}/admin/routes`, {newValue, routeId});
+}

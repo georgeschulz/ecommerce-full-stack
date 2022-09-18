@@ -264,6 +264,8 @@ const getAllAvailability = `
 
 const getUniqueUpcomingAvailability = `SELECT DISTINCT(route_date) FROM routes WHERE route_date > $1 ORDER BY route_date ASC;`
 
+const updateRouteAvailability = `UPDATE routes SET slots_available = $1 WHERE route_id = $2`;
+
 module.exports = {
     createCustomer,
     checkUserAuth,
@@ -308,5 +310,6 @@ module.exports = {
     getAllTechs,
     createNewRoute,
     getAllAvailability,
-    getUniqueUpcomingAvailability
+    getUniqueUpcomingAvailability,
+    updateRouteAvailability
 }

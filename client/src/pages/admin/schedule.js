@@ -1,34 +1,39 @@
 import { createRoute, getAvailability } from "../../api/admin";
 import { useState, useEffect } from "react";
+import UpdateDayField from "./updateDayField";
 import './admin.css'
 
 function SchedulePage() {
     const [newDate, setNewDate] = useState(null);
     const [availability, setAvailability] = useState(null);
+    const [rerender, setRerender] = useState(0); //use this hook to force component to rerender when new routes are made
+    const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
 
     useEffect(() => {
         (async () => {
             try {
                 const response = await getAvailability();
-                console.log(response)
                 setAvailability(response.data)
 
             } catch (err) {
                 console.log(err)
             }
         })();
-    }, [])
+    }, [rerender])
 
     const handleClick = async () => {
         try {
             await createRoute(newDate);
+            setRerender(rerender + 1);
         } catch (err) {
             console.log(err)
         }
+        
     }
 
     return (
-        <div>
+        <div className="main-container">
             <h1>Schedule</h1>
             {availability ?
                 <table className="availability-table">
@@ -36,7 +41,7 @@ function SchedulePage() {
                         <td><b>Days Available</b></td>
                         {availability.techs.map(tech => {
                             return (
-                                <td><b>{tech.tech_first_name} {tech.tech_last_name} (id: {tech.tech_id})</b></td>
+                                <td style={{"textAlign": "center"}}><b>{tech.tech_first_name} {tech.tech_last_name}</b></td>
                             )
                         })}
                     </tr>
@@ -45,9 +50,9 @@ function SchedulePage() {
                     {availability.avaiabilityTable.map((row, i) => {
                         const slots = availability.avaiabilityTable[i].slice(1, availability.length)
                         return (<tr>
-                            <td>{new Date(row[0]).toLocaleDateString()}</td>
+                            <td>{days[new Date(row[0]).getDay()]}, {new Date(row[0]).toLocaleDateString()}</td>
                             {slots != null
-                                ? slots.map(slot => { return (<td>{slot ? slot.slots_available : 'none'}</td>) })
+                                ? slots.map(slot => { return (<td>{<UpdateDayField routeId={slot.route_id} value={slot.slots_available} />}</td>) })
                                 : <td>None</td>
                             }
                         </tr>)

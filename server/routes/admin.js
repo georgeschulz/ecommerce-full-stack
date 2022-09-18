@@ -6,5 +6,6 @@ const controllers = require('../controllers/admin');
 
 router.get('/schedule', checkIsAuthenticatedAdmin, controllers.getAllAvailability);
 router.post('/routes/new', checkIsAuthenticatedAdmin, controllers.createDayRoute);
+router.put('/routes', checkIsAuthenticatedAdmin, controllers.setAvailability);
 
 module.exports = router;
