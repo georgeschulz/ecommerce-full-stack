@@ -1,3 +1,7 @@
+.main-logo {
+    width: 300px;
+}
+
 #hero {
     text-align: center;
     display: flex;

@@ -10,10 +10,10 @@ function Footer() {
         <footer>
             <div className='nav-group'>
                 <div className='column'>
-                    <b>{'Better Termite & Pest Control'}</b>
-                    <p>2647 Duke Street</p>
-                    <p>Alexandria, VA 22314</p>
-                    <p>{'(703) 683-2000'}</p>
+                    <b>ABC Pest Control</b>
+                    <p>123 ABC Way</p>
+                    <p>Harrisonburg, VA 22801</p>
+                    <p>{'(123) 123-1234'}</p>
                     <br />
                     <p className='hidden-mobile'>Copyright 2022. All Rights Reserved</p>
                 </div>
