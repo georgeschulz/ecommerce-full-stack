@@ -27,6 +27,7 @@ const getOrderById = async (req, res) => {
 
 const getOrderByStripeSession = async (req, res) => {
     try {
+        //stripe session is an identifier for the actual session on stripe end. We use it to get the details of the order on the success page since it can be provided by Stripe
         const { stripeSession } = req.params;
         const orderQuery = await db.query(queries.getOrderByStripeSession, [stripeSession]);
         const data = orderQuery.rows;
@@ -34,6 +35,7 @@ const getOrderByStripeSession = async (req, res) => {
             throw new Error('Your order could not be located')
         }
 
+        //destructure the order - could this have been better done with the spread operator?
         const { 
             first_name, 
             last_name, 
@@ -49,7 +51,8 @@ const getOrderByStripeSession = async (req, res) => {
             tech_first_name, 
             tech_last_name, 
             tech_profile_pic } = data[0];
-
+        
+        //retstructure the values for the response
         const orderResponse = {
             first_name,
             last_name,
@@ -65,6 +68,7 @@ const getOrderByStripeSession = async (req, res) => {
             tech_first_name,
             tech_last_name,
             tech_profile_pic,
+            //turn items into an array of items
             items: data.map(item => {
                 const { service_name, frequency, price, billing_amount, billing_type, setup_fee } = item;
                 return {

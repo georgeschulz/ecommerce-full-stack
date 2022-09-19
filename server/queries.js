@@ -1,3 +1,5 @@
+//this project structure was based on a tutorial I watched. Thought I liked the structure but this got way out of hand. In the future I would create a better model layer
+
 const createCustomer = `
     INSERT INTO customers (first_name, last_name, address, city, state_abbreviation, zip, email, phone, password, square_feet, date_created, area_id) 
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`;

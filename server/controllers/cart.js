@@ -76,6 +76,7 @@ const clearCart = async (req, res) => {
     }
 }
 
+//this creates a stripe session, which is basically a checkout page at a unique URL based on the inputs to this fxn
 const createStripeSession = async (req, res) => {
     try {
         //get the contents of the customer's cart
@@ -99,6 +100,7 @@ const createStripeSession = async (req, res) => {
             }
         })
 
+        //create the session. note that the redirect urls change based on the enviornment since you need a full path from the 3rd party site
         const session = await stripe.checkout.sessions.create({
             line_items: lineItems,
             mode: 'payment',
@@ -108,6 +110,7 @@ const createStripeSession = async (req, res) => {
             client_reference_id: customer_id
         });
 
+        //send the url to the front end for the useNavigate hook
         res.status(200).send(session.url);
     } catch (err) {
         logger.error(err);
@@ -117,6 +120,7 @@ const createStripeSession = async (req, res) => {
 }
 
 const createOrder = async (dateCreated, customerId, dateScheduled, address, city, state, zip, firstName, lastName, routeId, amountPaid, stripePayment, stripeSession) => {
+    //this logic creates an order in the database
     try {
         await db.query(queries.createOrder, [
             dateCreated,
@@ -136,6 +140,7 @@ const createOrder = async (dateCreated, customerId, dateScheduled, address, city
             stripeSession
         ]);
 
+        //return the order ID from the function
         const orderId = await db.query(queries.getMostRecentOrderId, [customerId]);
         return orderId.rows[0].order_id;
     } catch (err) {
@@ -196,11 +201,15 @@ const fufillOrder = async (session) => {
 
 }
 
+//controller that is listening on the stripe webhook route. It runs biz logic to fulffill order if stripe let's us know a payment has happned.
 const recievePayment = (request, response) => {
     let event = request.body;
+    //the endpoint secret is unique to each webhook and stored in .env file
     if (endpointSecret) {
+        //this header has to be added to confirm that our request is coming from Stripe (not a hacker)
         const signature = request.headers['stripe-signature'];
         try {
+            //create the actual webook here
             event = stripe.webhooks.constructEvent(
                 request.body,
                 signature,
@@ -212,6 +221,7 @@ const recievePayment = (request, response) => {
         }
     }
 
+    //when the event is sent signaling that the checkout has been done, this runs -> fufilling the order
     if (event.type === 'checkout.session.completed') {
         const session = event.data.object;
         if (session.payment_status === 'paid') {

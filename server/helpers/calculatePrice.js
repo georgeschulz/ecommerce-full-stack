@@ -1,6 +1,7 @@
 const queries = require('../queries');
 const db = require('../db');
 
+//this reusable function takes a service, user id and target to calculate the price of service. These are all needed because price is based on 1) service parameters 2) the size of a customers house 3) the difficulty to remove the pest
 const calculatePrice = async (service, userId, target) => {
     //get the square feet
     let squareFeetQuery = await db.query(queries.getSquareFeet, [userId]);
@@ -16,6 +17,7 @@ const calculatePrice = async (service, userId, target) => {
     const multiplier = Number(service.tier_multiplier);
     const frequency = Number(service.frequency)
 
+    //pricing formula, built at actual job
     const cost = Math.round(
         (Math.pow(multiplier, tier - 1) * 
         (base + (pricePerSquareFeet * Number(squareFeet))))

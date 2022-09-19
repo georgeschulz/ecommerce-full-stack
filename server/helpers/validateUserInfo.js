@@ -9,6 +9,7 @@ const validateUserInfo = [
         .not()
         .isEmpty()
         .withMessage('First Name can not be empty')
+        //bail means that it will stop looking for more issues and throw the error.
         .bail()
         .isLength({min: 1, max: 50})
         .withMessage('Please make sure your first and last name are no longer than 30 characters'),
@@ -28,6 +29,7 @@ const validateUserInfo = [
         .isEmpty()
         .withMessage('Phone can not be empty')
         .bail()
+        //regex that checks whether it's a phone number
         .matches(/^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$/)
         .withMessage('Please enter a valid phone number'),
     check('email')
@@ -39,10 +41,12 @@ const validateUserInfo = [
         .bail()
         .isEmail()
         .withMessage('Please submit a valid email')
+        //does things like removing white spaces and capitalization so emails are stored in db in a consitent format
         .normalizeEmail()
         .isLength({max: 62})
         .withMessage('Please Make sure you are only submitting one email. You can always add another one at a leter time!'),
     check('password')
+        //checks for spaces in the password which could lead to weird whitespacing issues
         .custom(value => !/\s/.test(value))
         .withMessage('Please do not include any spaces in your password')
         .bail()
@@ -101,6 +105,7 @@ const validateUserInfo = [
         const errors = validationResult(req);
         if(!errors.isEmpty()) {
             logger.error('Input validation error: ', errors.errors)
+            //send any errors back. These errors can be directly shown to the user
             res.status(422).json(errors.errors[0].msg)
         } else {
             next();

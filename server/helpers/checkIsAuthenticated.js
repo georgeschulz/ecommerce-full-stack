@@ -1,6 +1,5 @@
 //protect routes where the user is not authorized
 const checkIsAuthenticated = (req, res, next) => {
-    console.log(req.cookies)
     if(req.isAuthenticated()) {
         return next();
     }

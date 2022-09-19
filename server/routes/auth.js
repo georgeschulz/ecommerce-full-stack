@@ -12,6 +12,7 @@ const queries = require('../queries');
 //creates a new user
 registerRouter.post('/', validateUserInfo, controllers.registerUser);
 
+//model function usd to get data abotu a customer
 const getCustomerById = async (id) => {
     try {
         const customerQuery = await db.query(queries.getUserById, [id]);
@@ -21,17 +22,17 @@ const getCustomerById = async (id) => {
     }
 }
 
-//authenticate the user
+//authenticate the user using passport local strategy. Send back their level to partially handle access to admin protected routes in front end
 loginRouter.post('/', validateUserLogin, passport.authenticate('local'), async (req, res, next) => {
-    console.log(req.user.customerID);
     const customer = await getCustomerById(req.user.customerID);
-    console.log(customer.user_level);
     res.status(200).send(customer.user_level);
     next();
 });
 
+//this route is used to redirect the user to google auth page
 loginRouter.get('/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
 
+//this route recieves the redirect from the google auth page
 loginRouter.get('/google-account',
     passport.authenticate('google', { failureRedirect: '/login', failureMessage: true }),
     function (req, res) {
@@ -41,6 +42,7 @@ loginRouter.get('/google-account',
 
         (async () => {
             try {
+                //check if the customer has already added their contact info or if we need to send them to a page to finish that up
                 const customerQuery = await db.query(queries.getUserById, [customerID])
                 const { first_name, last_name, phone, address, city, state_abbreviation, zip, square_feet } = customerQuery.rows[0];
                 isSetup = first_name && last_name && phone && address && city && state_abbreviation && zip && square_feet ? true : false;
@@ -59,6 +61,7 @@ loginRouter.get('/google-account',
     }
 )
 
+//simple route to handle logout requests
 logoutRouter.post('/', (req, res, next) => {
     req.logout((err) => {
         if (err) next(err);
