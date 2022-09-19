@@ -1,5 +1,6 @@
 import { endpoint } from "./config";
 import axios from "axios";
+//this attatches cookie automatically. Very important or you will run into endless 401 errors
 axios.defaults.withCredentials = true;
 
 export const createRoute = async (date) => {
